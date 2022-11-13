@@ -16,7 +16,7 @@ const links = [{
 }]
 const Sidebar = () => { 
   return (
-    <div className='py-3  pl-16 pr-56 border-r min-h-screen border-gray-200 fixed left-0 top-0'>
+    <div className='py-3  pl-16 w-80 pr-8 min-h-screen  fixed left-0 top-0'>
       <div className='w-12 mb-2 hover:bg-blue-100 cursor-pointer transition-all duration-200  ease-in-out grid place-items-center rounded-full  h-12'>
         <BsTwitter className='text-3xl text-primary'/>
 
@@ -34,6 +34,9 @@ const Sidebar = () => {
         ))}
         
       </ul>
+      <button className='rounded-full px-y py-2 mt-4 w-full text-white font-semibold bg-primary'>
+        Tweet 
+      </button>
     </div>
   )
 }

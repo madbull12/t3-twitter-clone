@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import Right from './Right'
 import Sidebar from './Sidebar'
 
 interface IProps {
@@ -9,6 +10,7 @@ const Layout = ({ children }:IProps) => {
     <div>
         <Sidebar />
         {children}
+        <Right />
     </div>
   )
 }
