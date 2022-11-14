@@ -4,6 +4,7 @@ import { BsTwitter } from 'react-icons/bs'
 import { AiFillHome,AiFillBell } from 'react-icons/ai'
 import { RiHashtag } from 'react-icons/ri'
 import { v4 } from 'uuid'
+import { signIn } from 'next-auth/react'
 const links = [{
   name:"Home",
   icon:<AiFillHome />
@@ -36,6 +37,13 @@ const Sidebar = () => {
       </ul>
       <button className='rounded-full px-y py-2 mt-4 w-full text-white font-semibold bg-primary'>
         Tweet 
+      </button>
+      <button onClick={()=>signIn("twitter")} className="border-primary flex items-center justify-center gap-x-2 border rounded-full  px-y py-2 mt-4 w-full text-black  font-semibold ">
+          
+          <BsTwitter className='text-primary' />
+        <span>
+          Sign in   
+        </span> 
       </button>
     </div>
   )

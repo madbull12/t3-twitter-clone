@@ -7,7 +7,7 @@ import { trpc } from "../utils/trpc";
 import CreateTweet from "../components/CreateTweet";
 
 const Home: NextPage = () => {
-  const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
+  // const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
 
   return (
     <>
