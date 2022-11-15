@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineFileGif, AiOutlinePicture } from "react-icons/ai";
 import { RiCloseLine, RiEarthFill } from "react-icons/ri";
 import { BiPoll } from "react-icons/bi";
@@ -7,7 +7,7 @@ import Button from "./Button";
 import Image from "next/image";
 import { usePreviewStore } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
-
+import { toast } from 'react-hot-toast'
 const CreateTweet = () => {
   const { data: session, status } = useSession();
   const { mutateAsync:createTweet } = trpc.tweet.createTweet.useMutation();
@@ -15,9 +15,18 @@ const CreateTweet = () => {
   const [preview, setPreview] = useState<string>();
   const [text,setText] = useState("");
 
+  const textRef = useRef<HTMLInputElement>(null);
   const handleSubmit = (e:React.SyntheticEvent) => {
     e.preventDefault()
-    createTweet({ text })
+    toast.promise(createTweet({ text }),{
+      success:"Tweet created",
+      loading:"Creating tweet",
+      error:"Oops.. something went wrong"
+    });
+
+    textRef!.current!.value = ""
+
+
   }
   console.log(selectedFile)
   useEffect(() => {
@@ -52,6 +61,7 @@ const CreateTweet = () => {
       />
       <form className="flex-1 space-y-3" onSubmit={handleSubmit}>
         <input
+          ref={textRef}
           type="text"
           onChange={(e)=>setText(e.target.value)}
           placeholder="What's happening?"

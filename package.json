@@ -21,6 +21,7 @@
     "next-auth": "^4.15.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hot-toast": "^2.4.0",
     "react-icons": "^4.6.0",
     "superjson": "1.9.1",
     "uuid": "^9.0.0",
