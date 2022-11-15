@@ -9,6 +9,17 @@
 const config = {
   reactStrictMode: true,
   swcMinify: true,
+  images:{
+    remotePatterns:[
+      {
+        protocol:"https",
+        hostname:"abs.twimg.com",
+        port:"",
+        pathname:"/sticky/**"
+
+      }
+    ],
+  },
   i18n: {
     locales: ["en"],
     defaultLocale: "en",

@@ -1,52 +1,69 @@
-import Link from 'next/link'
-import React from 'react'
-import { BsTwitter } from 'react-icons/bs'
-import { AiFillHome,AiFillBell } from 'react-icons/ai'
-import { RiHashtag } from 'react-icons/ri'
-import { v4 } from 'uuid'
-import { signIn } from 'next-auth/react'
-const links = [{
-  name:"Home",
-  icon:<AiFillHome />
-},{
-  name:"Explore",
-  icon:<RiHashtag />
-},{
-  name:"Notifications",
-  icon:<AiFillBell />
-}]
-const Sidebar = () => { 
+import Link from "next/link";
+import React from "react";
+import { BsTwitter } from "react-icons/bs";
+import { AiFillHome, AiFillBell } from "react-icons/ai";
+import { RiHashtag } from "react-icons/ri";
+import { v4 } from "uuid";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Button from "./Button";
+import Profile from "./Profile";
+const links = [
+  {
+    name: "Home",
+    icon: <AiFillHome />,
+  },
+  {
+    name: "Explore",
+    icon: <RiHashtag />,
+  },
+  {
+    name: "Notifications",
+    icon: <AiFillBell />,
+  },
+];
+const Sidebar = () => {
+  const { status } = useSession();
   return (
-    <div className='py-3  pl-16 w-80 pr-8 min-h-screen  fixed left-0 top-0'>
-      <div className='w-12 mb-2 hover:bg-blue-100 cursor-pointer transition-all duration-200  ease-in-out grid place-items-center rounded-full  h-12'>
-        <BsTwitter className='text-3xl text-primary'/>
-
+    <div className="fixed  left-0 top-0 min-h-screen w-80  py-3 pl-16 pr-8">
+      <div className="mb-2 grid h-12 w-12 cursor-pointer place-items-center  rounded-full transition-all duration-200 ease-in-out  hover:bg-blue-100">
+        <BsTwitter className="text-3xl text-primary" />
       </div>
       <ul>
-        {links.map((link)=>(
-          <li key={v4()} className='rounded-full px-4 py-2  hover:bg-gray-100  transition-all duration-200  ease-in-out'>
+        {links.map((link) => (
+          <li
+            key={v4()}
+            className="rounded-full px-4 py-2  transition-all  duration-200 ease-in-out  hover:bg-gray-100"
+          >
             <Link href="/">
-              <span className='flex items-center gap-x-4 text-2xl'>
+              <span className="flex items-center gap-x-4 text-2xl">
                 {link.icon}
                 {link.name}
               </span>
             </Link>
-        </li>
+          </li>
         ))}
-        
       </ul>
-      <button className='rounded-full px-y py-2 mt-4 w-full text-white font-semibold bg-primary'>
-        Tweet 
-      </button>
-      <button onClick={()=>signIn("twitter")} className="border-primary flex items-center justify-center gap-x-2 border rounded-full  px-y py-2 mt-4 w-full text-black  font-semibold ">
-          
-          <BsTwitter className='text-primary' />
-        <span>
-          Sign in   
-        </span> 
-      </button>
+      <Button text="Tweet" />
+      {status === "authenticated" ? (
+        <button
+          onClick={() => signOut()}
+          className="px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  text-black "
+        >
+          <BsTwitter className="text-primary" />
+          <span>Sign out</span>
+        </button>
+      ) : (
+        <button
+          onClick={() => signIn("twitter")}
+          className="px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  text-black "
+        >
+          <BsTwitter className="text-primary" />
+          <span>Sign in</span>
+        </button>
+      )}
+      {status === "authenticated" ? <Profile /> : null}
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
