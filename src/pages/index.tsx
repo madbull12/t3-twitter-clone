@@ -5,9 +5,10 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 import { trpc } from "../utils/trpc";
 import CreateTweet from "../components/CreateTweet";
+import Tweet from "../components/Tweet";
 
 const Home: NextPage = () => {
-  // const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
+  const { data:tweets } = trpc.tweet.getTweets.useQuery();
   const { data } = useSession();
   console.log(data)
 
@@ -21,6 +22,11 @@ const Home: NextPage = () => {
       <main className="ml-80 max-w-2xl border-x min-h-screen container border-gray-100 p-4">
         <h1 className="font-semibold text-xl">Home</h1>
         <CreateTweet />
+        {
+          tweets?.map((tweet)=>(
+            <Tweet tweet={tweet} />
+          ))
+        }
       </main>
     </>
   );
