@@ -1,0 +1,32 @@
+import { z } from "zod";
+
+import { router, publicProcedure } from "../trpc";
+
+export const tweetRouter = router({
+  createTweet: publicProcedure
+    .input(z.object({ text:z.string() }))
+    .mutation(({ input, ctx }) => {
+        const userId= ctx.session?.user?.id;
+        if(!ctx.session) {
+            throw new Error("You have to be logged in in order to perform this action!")
+        }
+
+        return ctx.prisma.tweet.create({
+          data:{
+            text:input?.text,
+            user:{
+              connect:{
+                id:userId
+              }
+            }
+          }
+        })
+
+
+    
+  }),
+
+  getTweets: publicProcedure.query(({ ctx }) => {
+    return ctx.prisma.tweet.findMany()
+  }),
+});

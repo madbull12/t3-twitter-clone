@@ -73,4 +73,5 @@ model Tweet {
   text   String?
   userId String
   user   User    @relation(fields: [userId], references: [id])
+  image  String?
 }
