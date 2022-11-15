@@ -15,7 +15,8 @@ const CreateTweet = () => {
   const [preview, setPreview] = useState<string>();
   const [text,setText] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = (e:React.SyntheticEvent) => {
+    e.preventDefault()
     createTweet({ text })
   }
   console.log(selectedFile)
@@ -49,7 +50,7 @@ const CreateTweet = () => {
         width={40}
         height={40}
       />
-      <form className="flex-1 space-y-3">
+      <form className="flex-1 space-y-3" onSubmit={handleSubmit}>
         <input
           type="text"
           onChange={(e)=>setText(e.target.value)}
