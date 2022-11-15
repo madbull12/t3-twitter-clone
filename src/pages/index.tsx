@@ -8,6 +8,8 @@ import CreateTweet from "../components/CreateTweet";
 
 const Home: NextPage = () => {
   // const hello = trpc.example.hello.useQuery({ text: "from tRPC" });
+  const { data } = useSession();
+  console.log(data)
 
   return (
     <>
