@@ -4,7 +4,7 @@ import { router, publicProcedure } from "../trpc";
 
 export const tweetRouter = router({
   createTweet: publicProcedure
-    .input(z.object({ text:z.string(),imageUrl:z.string().nullish() }))
+    .input(z.object({ text:z.string(),imageUrl:z.string().nullable() }))
     .mutation(({ input, ctx }) => {
         const userId= ctx.session?.user?.id;
         if(!ctx.session) {

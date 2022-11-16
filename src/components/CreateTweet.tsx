@@ -17,28 +17,32 @@ const CreateTweet = () => {
   const textRef = useRef<HTMLInputElement>(null);
   const handleSubmit = async (e:React.SyntheticEvent) => {
     e.preventDefault();
+    let imageUrl = null;
 
     //upload image
+    if(selectedFile) {
+      const formData = new FormData();
+      formData.append("file",selectedFile);
+      formData.append("upload_preset","xap2a5k4")
+      // formData.append("file", );
+      
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dem2vt6lj/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      ).then((res) => res.json());
+  
+      imageUrl = res.secure_url ;
+    } 
 
-    const formData = new FormData();
-    formData.append("file",selectedFile);
-    formData.append("upload_preset","xap2a5k4")
-    // formData.append("file", );
     
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dem2vt6lj/image/upload",
-      {
-        method: "POST",
-        body: formData,
-      }
-    ).then((res) => res.json());
-
-    const imageUrl = res.secure_url;
 
     toast.promise(createTweet({ text,imageUrl }),{
       success:"Tweet created",
       loading:"Creating tweet",
-      error:"Oops.. something went wrong"
+      error:(err)=>"Oops.. something went wrong " + err
     });
 
     textRef!.current!.value = ""
