@@ -7,62 +7,63 @@ import Button from "./Button";
 import Image from "next/image";
 import { usePreviewStore } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
-import { toast } from 'react-hot-toast'
+import { toast } from "react-hot-toast";
 const CreateTweet = () => {
   const { data: session, status } = useSession();
+  useEffect(() => {}, []);
   const utils = trpc.useContext();
-  const { mutateAsync:createTweet } = trpc.tweet.createTweet.useMutation({
-    onMutate:()=>{
+  const { mutateAsync: createTweet } = trpc.tweet.createTweet.useMutation({
+    onMutate: () => {
       utils.tweet.getTweets.cancel();
       const optimisticUpdate = utils.tweet.getTweets.getData();
-      if(optimisticUpdate) {
+      if (optimisticUpdate) {
         utils.tweet.getTweets.setData(optimisticUpdate);
       }
     },
-    onSettled:()=>{
-      utils.tweet.getTweets.invalidate()
-    }
+    onSettled: () => {
+      utils.tweet.getTweets.invalidate();
+    },
   });
   const [selectedFile, setSelectedFile] = useState<any>();
   const [preview, setPreview] = useState<string>();
-  const [text,setText] = useState("");
+  const [text, setText] = useState("");
   const textRef = useRef<HTMLInputElement>(null);
-  const handleSubmit = async (e:React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     let imageUrl = null;
 
     //upload image
-    if(selectedFile) {
+    if (selectedFile) {
       const formData = new FormData();
-      formData.append("file",selectedFile);
-      formData.append("upload_preset","xap2a5k4")
+      formData.append("file", selectedFile);
+      formData.append("upload_preset", "xap2a5k4");
       // formData.append("file", );
-      
+
       const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dem2vt6lj/image/upload",
+        `https://api.cloudinary.com/v1_1/dem2vt6lj/${
+          selectedFile.type === "video/mp4" ? "video" : "image"
+        }/upload`,
         {
           method: "POST",
           body: formData,
         }
       ).then((res) => res.json());
-  
-      imageUrl = res.secure_url ;
-    } 
 
-    
+      imageUrl = res.secure_url;
+    }
 
-    toast.promise(createTweet({ text,imageUrl }),{
-      success:"Tweet created",
-      loading:"Creating tweet",
-      error:(err)=>"Oops.. something went wrong " + err
+    console.log(selectedFile);
+
+    toast.promise(createTweet({ text, imageUrl }), {
+      success: "Tweet created",
+      loading: "Creating tweet",
+      error: (err) => "Oops.. something went wrong " + err,
     });
 
-    textRef!.current!.value = ""
-    setSelectedFile(undefined)
-
-
-  }
-  console.log(selectedFile)
+    textRef!.current!.value = "";
+    setSelectedFile(undefined);
+  };
+  console.log(selectedFile);
   useEffect(() => {
     if (!selectedFile) {
       setPreview(undefined);
@@ -97,7 +98,7 @@ const CreateTweet = () => {
         <input
           ref={textRef}
           type="text"
-          onChange={(e)=>setText(e.target.value)}
+          onChange={(e) => setText(e.target.value)}
           placeholder="What's happening?"
           className="text-xl outline-none placeholder:text-gray-600"
         />
@@ -126,7 +127,7 @@ const CreateTweet = () => {
                 hidden
                 type="file"
                 onChange={onSelectFile}
-                accept="image/png, image/gif, image/jpeg"
+                accept="image/png, image/gif, image/jpeg,video/mp4,video/x-m4v,video/*"
               />
               <label htmlFor="imageSelect" className="cursor-pointer">
                 <AiOutlinePicture />

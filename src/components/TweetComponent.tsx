@@ -17,7 +17,15 @@ const TweetComponent = ({ tweet }:IProps) => {
 
           {tweet.image ? (
             <div className='w-3/4  h-96 relative'>
-              <Image objectFit='cover' alt={tweet?.text ?? "" } src={tweet.image} className='rounded-2xl' layout="fill"  /> 
+              {tweet.image.includes("video") ? (
+                <video  controls className='relative w-full h-full rounded-2xl'>
+                  <source src={tweet.image} type="video/mp4"></source>
+                </video>
+
+              ):(
+                <Image objectFit='cover' alt={tweet?.text ?? "" } src={tweet.image} className='rounded-2xl' layout="fill"  /> 
+              
+              )}
 
             </div>
           ): null}
