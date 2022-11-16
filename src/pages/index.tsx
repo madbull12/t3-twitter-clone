@@ -30,7 +30,7 @@ const Home:NextPage = () => {
         <CreateTweet />
         {
           tweets?.map((tweet)=>(
-            <TweetComponent tweet={tweet} key={v4()} />
+            <TweetComponent tweet={tweet} key={v4()} />  
           ))
         }
       </main>
