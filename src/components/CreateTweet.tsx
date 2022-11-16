@@ -10,7 +10,19 @@ import { trpc } from "../utils/trpc";
 import { toast } from 'react-hot-toast'
 const CreateTweet = () => {
   const { data: session, status } = useSession();
-  const { mutateAsync:createTweet } = trpc.tweet.createTweet.useMutation();
+  const utils = trpc.useContext();
+  const { mutateAsync:createTweet } = trpc.tweet.createTweet.useMutation({
+    onMutate:()=>{
+      utils.tweet.getTweets.cancel();
+      const optimisticUpdate = utils.tweet.getTweets.getData();
+      if(optimisticUpdate) {
+        utils.tweet.getTweets.setData(optimisticUpdate);
+      }
+    },
+    onSettled:()=>{
+      utils.tweet.getTweets.invalidate()
+    }
+  });
   const [selectedFile, setSelectedFile] = useState<any>();
   const [preview, setPreview] = useState<string>();
   const [text,setText] = useState("");

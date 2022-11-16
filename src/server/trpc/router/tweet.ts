@@ -13,6 +13,7 @@ export const tweetRouter = router({
 
         return ctx.prisma.tweet.create({
           data:{
+            
             text:input?.text,
             image:input?.imageUrl,
             user:{
@@ -31,6 +32,9 @@ export const tweetRouter = router({
     return ctx.prisma.tweet.findMany({
       include:{
         user:true
+      },
+      orderBy:{
+        createdAt:"desc"
       }
     })
   }),

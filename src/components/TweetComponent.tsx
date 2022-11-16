@@ -11,7 +11,7 @@ const TweetComponent = ({ tweet }:IProps) => {
   return (
     <div className='p-4 flex items-start gap-x-2'>
         <Image src={tweet.user.image || ""} alt="profile-image" width={50} height={50} className="rounded-full" />
-        <div className='flex flex-col w-full'>
+        <div className='flex flex-col gap-y-3 w-full'>
           <h1 className='text-lg font-semibold'>{tweet.user.name}</h1>
           <p>{tweet.text}</p>
 
