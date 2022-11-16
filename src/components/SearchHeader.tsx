@@ -36,7 +36,7 @@ const SearchHeader = () => {
                 }
               )
             }
-            className="cursor-pointer font-semibold capitalize text-gray-500"
+            className={`${router.query.f === link ? "border-b-4    border-primary":null} px-6 py-4 hover:bg-gray-100 cursor-pointer font-semibold capitalize text-gray-500`}
           >
             {link}
           </li>
