@@ -7,7 +7,19 @@ const Search = () => {
   const router = useRouter();
   const handleSubmit = (e:React.SyntheticEvent) => {
     e.preventDefault()
-    router.push(`/search?q=${term}`)
+    router.replace(
+      {
+        pathname:"/search",
+        query: {
+          ...router.query, // list all the queries here
+          q: term,
+        },
+      },
+      undefined,
+      {
+        shallow: true,
+      }
+    )
   }
   return (
     <form onSubmit={handleSubmit} className='rounded-full text-gray-500 bg-gray-100 px-4 py-2 flex items-center gap-x-4'>

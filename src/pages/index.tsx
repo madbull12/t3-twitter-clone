@@ -9,15 +9,15 @@ import TweetComponent from "../components/TweetComponent";
 import { ITweet } from "../../interface";
 import { v4 } from "uuid";
 import Body from "../components/Body";
+import { Ring } from "@uiball/loaders";
+import Loader from "../components/Loader";
 
-
-
-const Home:NextPage = () => {
-  const { data:tweets } = trpc.tweet.getTweets.useQuery();
-  console.log(tweets)
+const Home: NextPage = () => {
+  const { data: tweets, isLoading } = trpc.tweet.getTweets.useQuery();
+  console.log(tweets);
 
   const { data } = useSession();
-  console.log(data)
+  console.log(data);
 
   return (
     <>
@@ -27,13 +27,17 @@ const Home:NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Body>
-        <h1 className="font-semibold text-xl">Home</h1>
+        <h1 className="text-xl font-semibold">Home</h1>
         <CreateTweet />
-        {
-          tweets?.map((tweet)=>(
-            <TweetComponent tweet={tweet} key={v4()} />  
-          ))
-        }
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            {tweets?.map((tweet) => (
+              <TweetComponent tweet={tweet} key={v4()} />
+            ))}
+          </>
+        )}
       </Body>
     </>
   );
@@ -46,7 +50,7 @@ const AuthShowcase: React.FC = () => {
 
   const { data: secretMessage } = trpc.auth.getSecretMessage.useQuery(
     undefined, // no input
-    { enabled: sessionData?.user !== undefined },
+    { enabled: sessionData?.user !== undefined }
   );
 
   return (
@@ -68,4 +72,3 @@ const AuthShowcase: React.FC = () => {
     </div>
   );
 };
-
