@@ -5,10 +5,16 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 import { trpc } from "../utils/trpc";
 import CreateTweet from "../components/CreateTweet";
-import Tweet from "../components/Tweet";
+import TweetComponent from "../components/TweetComponent";
+import { ITweet } from "../../interface";
+import { v4 } from "uuid";
 
-const Home: NextPage = () => {
+
+
+const Home:NextPage = () => {
   const { data:tweets } = trpc.tweet.getTweets.useQuery();
+  console.log(tweets)
+
   const { data } = useSession();
   console.log(data)
 
@@ -24,7 +30,7 @@ const Home: NextPage = () => {
         <CreateTweet />
         {
           tweets?.map((tweet)=>(
-            <Tweet tweet={tweet} />
+            <TweetComponent tweet={tweet} key={v4()} />
           ))
         }
       </main>

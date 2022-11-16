@@ -4,7 +4,7 @@ import { router, publicProcedure } from "../trpc";
 
 export const tweetRouter = router({
   createTweet: publicProcedure
-    .input(z.object({ text:z.string(),imageUrl:z.string() }))
+    .input(z.object({ text:z.string(),imageUrl:z.string().nullish() }))
     .mutation(({ input, ctx }) => {
         const userId= ctx.session?.user?.id;
         if(!ctx.session) {
@@ -28,6 +28,10 @@ export const tweetRouter = router({
   }),
 
   getTweets: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.tweet.findMany()
+    return ctx.prisma.tweet.findMany({
+      include:{
+        user:true
+      }
+    })
   }),
 });
