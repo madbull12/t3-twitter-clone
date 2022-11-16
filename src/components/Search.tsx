@@ -1,12 +1,19 @@
-import React from 'react'
+import { useRouter } from 'next/router';
+import React,{ useState } from 'react'
 import { BiSearch } from 'react-icons/bi'
 
 const Search = () => {
+  const[term,setTerm] = useState("");
+  const router = useRouter();
+  const handleSubmit = (e:React.SyntheticEvent) => {
+    e.preventDefault()
+    router.push(`/search?q=${term}`)
+  }
   return (
-    <div className='rounded-full text-gray-500 bg-gray-100 px-4 py-2 flex items-center gap-x-4'>
+    <form onSubmit={handleSubmit} className='rounded-full text-gray-500 bg-gray-100 px-4 py-2 flex items-center gap-x-4'>
         <BiSearch />
-        <input type="text" className='bg-transparent outline-none' placeholder='Search Twitter' />
-    </div>
+        <input onChange={(e)=>setTerm(e.target.value)} type="text" className='bg-transparent outline-none' placeholder='Search Twitter' />
+    </form>
   )
 }
 
