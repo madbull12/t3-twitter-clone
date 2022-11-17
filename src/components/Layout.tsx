@@ -10,18 +10,14 @@ interface IProps {
 const Layout = ({ children }: IProps) => {
   const { modal } = useReplyModal();
 
-
-    useEffect(() => {
-      if (modal) {
-        window.scrollTo(0,0)
-        document.body.style.overflow = 'hidden'
-      } else {
-        document.body.style.overflow = 'unset'
-
-      }
-
-    }, [modal])
-
+  useEffect(() => {
+    if (modal) {
+      window.scrollTo(0, 0);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [modal]);
 
   return (
     <div>
