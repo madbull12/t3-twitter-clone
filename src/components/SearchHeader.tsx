@@ -9,8 +9,8 @@ const links = ["top", "latest", "people", "photos", "videos"];
 const SearchHeader = () => {
   const router = useRouter();
   return (
-    <div>
-      <div className="flex items-center justify-between">
+    <div className="sticky top-0 z-50 bg-white border-b border-gray-100 ">
+      <div className="flex items-center justify-between p-2">
         <BsArrowLeft
           className="cursor-pointer text-xl"
           onClick={() => router.back()}
@@ -19,7 +19,7 @@ const SearchHeader = () => {
           <Search />
         </div>
       </div>
-      <ul className="mt-4 flex items-center justify-between">
+      <ul className=" flex items-center justify-between">
         {links.map((link: string) => (
           <li
             onClick={() =>

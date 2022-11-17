@@ -9,10 +9,14 @@ interface IProps {
 }
 
 const TweetComponent = ({ tweet }:IProps) => {
-  let oneDay = new Date().getTime() + (1 * 24 * 60 * 60 * 1000)
-  let dateCreated = tweet.createdAt.getTime()
-  const moreThan24hr = oneDay < dateCreated;
-  console.log(moreThan24hr);
+
+  const now = new Date();
+  const msBetweenDates = Math.abs(tweet.createdAt.getTime() - now.getTime());
+
+// 👇️ convert ms to hours                  min  sec   ms
+const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
+
+console.log(hoursBetweenDates);
 
   return (
     <div className='p-4 flex items-start gap-x-2'>
@@ -21,7 +25,7 @@ const TweetComponent = ({ tweet }:IProps) => {
           <div className='flex items-center gap-x-2'>
             <h1 className='text-lg font-semibold'>{tweet.user.name}</h1>
             <p className='text-gray-400 text-sm'>
-              {moreThan24hr ? <span>{moment(tweet.createdAt).format("ll")}</span> : <ReactTimeAgo date={tweet.createdAt} locale="en-US" /> }
+              {hoursBetweenDates > 24 ? <span>{moment(tweet.createdAt).format("ll")}</span> : <ReactTimeAgo date={tweet.createdAt} locale="en-US" /> }
               
             </p>
           </div>

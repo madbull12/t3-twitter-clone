@@ -37,65 +37,77 @@ export const tweetRouter = router({
     });
   }),
   searchTweets: publicProcedure
-    .input(z.object({ term: z.string(),filtering:z.string() }))
-    .query(({ ctx,input }) => {
-      switch(input.filtering) {
+    .input(z.object({ term: z.string(), filtering: z.string() }))
+    .query(({ ctx, input }) => {
+      switch (input.filtering) {
         case "top":
+          return ctx.prisma.tweet.findMany({
+            include: {
+              user: true,
+            },
+            where: {
+              text: {
+                contains: input.term,
+              },
+            }
+          });
+
         case "latest":
-            return ctx.prisma.tweet.findMany({
-                include:{
-                  user:true
-                },
-                where:{
-                  text:{
-                    contains:input.term
-                  }
-                }
-            });
+          return ctx.prisma.tweet.findMany({
+            include: {
+              user: true,
+            },
+            where: {
+              text: {
+                contains: input.term,
+              },
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          });
 
         case "photos":
           return ctx.prisma.tweet.findMany({
-            include:{
-              user:true
+            include: {
+              user: true,
             },
-            where:{
-              text:{
-                contains:input.term
-
+            where: {
+              text: {
+                contains: input.term,
               },
-              image:{
-                endsWith:".jpg"
-              }
-            }
-          })
+              image: {
+                endsWith: ".jpg",
+              },
+            },
+          });
         case "videos":
           return ctx.prisma.tweet.findMany({
-            include:{
-              user:true
+            include: {
+              user: true,
             },
-            where:{
-              text:{
-                contains:input.term
-
+            where: {
+              text: {
+                contains: input.term,
               },
-              image:{
-                endsWith:".mp4"
-              }
-            }
-          })
- 
+              image: {
+                endsWith: ".mp4",
+              },
+            },
+          });
+
         default:
-            break;
-    }
+          break;
+      }
       return ctx.prisma.tweet.findMany({
-        include:{
-          user:true
+        include: {
+          user: true,
         },
-        where:{
-          text:{
-            contains:input.term
-          }
-        }
-      })
+        where: {
+          text: {
+            contains: input.term,
+          },
+        },
+      });
     }),
 });

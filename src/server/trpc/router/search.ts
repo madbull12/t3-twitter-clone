@@ -8,6 +8,16 @@ export const searchRouter = router({
     .query(({ ctx,input }) => {
         switch(input.filtering) {
             case "top":
+                return ctx.prisma.tweet.findMany({
+                    include:{
+                      user:true
+                    },
+                    where:{
+                      text:{
+                        contains:input.term
+                      }
+                    }
+                });
             case "latest":
                 return ctx.prisma.tweet.findMany({
                     include:{
@@ -17,6 +27,9 @@ export const searchRouter = router({
                       text:{
                         contains:input.term
                       }
+                    },
+                    orderBy:{
+                        createdAt:"desc"
                     }
                 });
             case "people":
