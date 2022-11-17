@@ -4,6 +4,8 @@ import React from 'react'
 import { ITweet } from '../../interface'
 import moment from 'moment'
 import ReactTimeAgo from 'react-time-ago'
+import { IoAnalyticsOutline } from 'react-icons/io5'
+import { AiOutlineComment, AiOutlineHeart, AiOutlineRetweet, AiOutlineShareAlt } from 'react-icons/ai'
 interface IProps {
   tweet:Tweet
 }
@@ -21,7 +23,7 @@ console.log(hoursBetweenDates);
   return (
     <div className='p-4 flex items-start gap-x-4'>
         <Image src={tweet.user.image || ""} alt="profile-image" width={50} height={50} className="rounded-full" />
-        <div className='flex flex-col gap-y-3 w-full'>
+        <div className='flex flex-col  w-full'>
           <div className='flex items-center gap-x-2'>
             <h1 className='text-lg font-semibold'>{tweet.user.name}</h1>
             <p className='text-gray-400 text-sm'>
@@ -45,6 +47,28 @@ console.log(hoursBetweenDates);
 
             </div>
           ): null}
+          <div className='flex  items-center justify-between'>
+            <div className='cursor-pointer hover:bg-blue-50 group  rounded-full p-2'>
+              <AiOutlineComment className='group-hover:text-primary'  />
+
+            </div>
+            <div className='cursor-pointer hover:bg-blue-50 group  rounded-full p-2'>
+              <AiOutlineHeart className='group-hover:text-primary'  />
+
+            </div>
+            <div className='cursor-pointer hover:bg-blue-50 group  rounded-full p-2'>
+              <AiOutlineRetweet className='group-hover:text-primary'  />
+
+            </div>
+            <div className='cursor-pointer hover:bg-blue-50 group  rounded-full p-2'>
+              <AiOutlineShareAlt className='group-hover:text-primary'  />
+
+            </div>
+            <div className='cursor-pointer hover:bg-blue-50 group  rounded-full p-2'>
+              <IoAnalyticsOutline className='group-hover:text-primary'  />
+
+            </div>
+          </div>
         </div>
     </div>
   )
