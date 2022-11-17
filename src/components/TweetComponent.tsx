@@ -19,7 +19,7 @@ const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
 console.log(hoursBetweenDates);
 
   return (
-    <div className='p-4 flex items-start gap-x-2'>
+    <div className='p-4 flex items-start gap-x-4'>
         <Image src={tweet.user.image || ""} alt="profile-image" width={50} height={50} className="rounded-full" />
         <div className='flex flex-col gap-y-3 w-full'>
           <div className='flex items-center gap-x-2'>

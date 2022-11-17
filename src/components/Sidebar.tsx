@@ -24,7 +24,7 @@ const links = [
 const Sidebar = () => {
   const { status } = useSession();
   return (
-    <div className="fixed  left-0 top-0 min-h-screen w-80  py-3 pl-16 pr-8">
+    <div className="fixed space-y-4 left-0 top-0 min-h-screen w-80  py-3 pl-16 pr-8">
       <div className="mb-2 grid h-12 w-12 cursor-pointer place-items-center  rounded-full transition-all duration-200 ease-in-out  hover:bg-blue-100">
         <BsTwitter className="text-3xl text-primary" />
       </div>

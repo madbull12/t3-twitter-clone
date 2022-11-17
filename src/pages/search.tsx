@@ -25,7 +25,11 @@ const SearchPage = () => {
   return (
     <Body>
       <SearchHeader />
-      {isLoading ? <Loader /> : null}
+      {router.query.f !== "people" ? (
+        <>{isLoading ? <Loader /> : null}</>
+      ) : (
+        <>{isUserLoading ? <Loader /> : null}</>
+      )}
 
       {router.query.f !== "people" ? (
         <>

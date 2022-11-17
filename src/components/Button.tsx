@@ -5,7 +5,7 @@ interface IProps {
 }
 const Button = ({ text }:IProps) => {
   return (
-    <button className='rounded-full px-y py-2 mt-4 w-full text-white font-semibold bg-primary'>
+    <button className='rounded-full px-4 py-2  w-full text-white font-semibold bg-primary'>
         {text}
     </button>
   )
