@@ -8,6 +8,7 @@ import Image from "next/image";
 import { usePreviewStore } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import { toast } from "react-hot-toast";
+import MediaTools from "./MediaTools";
 const CreateTweet = () => {
   const { data: session, status } = useSession();
   useEffect(() => {}, []);
@@ -130,7 +131,7 @@ const CreateTweet = () => {
           <p>Everyone can reply</p>
         </div>
         <div className="flex w-full items-center justify-between border-t py-2">
-          <div className="mx-auto flex flex-[0.6] items-center gap-x-4 text-lg text-primary">
+          {/* <div className="mx-auto flex flex-[0.6] items-center gap-x-4 text-lg text-primary">
             <div>
               <input
                 className=""
@@ -146,7 +147,9 @@ const CreateTweet = () => {
             </div>
             <AiOutlineFileGif />
             <BiPoll />
-          </div>
+            
+          </div> */}
+          <MediaTools onSelectFile={(e:any)=>onSelectFile(e)} />
           <div className="flex-[0.4]">
             <Button text="Tweet" />
           </div>

@@ -6,6 +6,7 @@ import moment from 'moment'
 import ReactTimeAgo from 'react-time-ago'
 import { IoAnalyticsOutline } from 'react-icons/io5'
 import { AiOutlineComment, AiOutlineHeart, AiOutlineRetweet, AiOutlineShareAlt } from 'react-icons/ai'
+import { useReplyModal } from '../../lib/zustand'
 interface IProps {
   tweet:Tweet
 }
@@ -19,6 +20,8 @@ const TweetComponent = ({ tweet }:IProps) => {
 const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
 
 console.log(hoursBetweenDates);
+
+const { modal,setModal } = useReplyModal();
 
   return (
     <div className='p-4 flex items-start gap-x-4'>
@@ -48,7 +51,7 @@ console.log(hoursBetweenDates);
             </div>
           ): null}
           <div className='flex  items-center justify-between'>
-            <div className='cursor-pointer hover:bg-blue-50 group  rounded-full p-2'>
+            <div onClick={()=>setModal(true)} className='cursor-pointer hover:bg-blue-50 group  rounded-full p-2'>
               <AiOutlineComment className='group-hover:text-primary'  />
 
             </div>
