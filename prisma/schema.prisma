@@ -57,7 +57,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  Tweet         Tweet[]
+  tweets        Tweet[]
 }
 
 model VerificationToken {
@@ -69,11 +69,12 @@ model VerificationToken {
 }
 
 model Tweet {
-  id     String  @id @default(uuid())
-  createdAt   DateTime @default(now())
-  text   String?
-  userId String
-  user   User    @relation(fields: [userId], references: [id])
-  image  String?
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  text      String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  image     String?
+
   @@index([userId])
 }

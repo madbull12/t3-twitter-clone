@@ -37,8 +37,56 @@ export const tweetRouter = router({
     });
   }),
   searchTweets: publicProcedure
-    .input(z.object({ term: z.string() }))
+    .input(z.object({ term: z.string(),filtering:z.string() }))
     .query(({ ctx,input }) => {
+      switch(input.filtering) {
+        case "top":
+        case "latest":
+            return ctx.prisma.tweet.findMany({
+                include:{
+                  user:true
+                },
+                where:{
+                  text:{
+                    contains:input.term
+                  }
+                }
+            });
+
+        case "photos":
+          return ctx.prisma.tweet.findMany({
+            include:{
+              user:true
+            },
+            where:{
+              text:{
+                contains:input.term
+
+              },
+              image:{
+                endsWith:".jpg"
+              }
+            }
+          })
+        case "videos":
+          return ctx.prisma.tweet.findMany({
+            include:{
+              user:true
+            },
+            where:{
+              text:{
+                contains:input.term
+
+              },
+              image:{
+                endsWith:".mp4"
+              }
+            }
+          })
+ 
+        default:
+            break;
+    }
       return ctx.prisma.tweet.findMany({
         include:{
           user:true

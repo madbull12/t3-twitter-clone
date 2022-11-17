@@ -11,7 +11,9 @@ const Search = () => {
       {
         pathname:"/search",
         query: {
+          
           ...router.query, // list all the queries here
+          f:router.query.q ? router.query.f : "top",
           q: term,
         },
       },
@@ -24,7 +26,7 @@ const Search = () => {
   return (
     <form onSubmit={handleSubmit} className='rounded-full text-gray-500 bg-gray-100 px-4 py-2 flex items-center gap-x-4'>
         <BiSearch />
-        <input onChange={(e)=>setTerm(e.target.value)} type="text" className='bg-transparent outline-none' placeholder='Search Twitter' />
+        <input defaultValue={router.query.q} onChange={(e)=>setTerm(e.target.value)} type="text" className='bg-transparent outline-none' placeholder='Search Twitter' />
     </form>
   )
 }
