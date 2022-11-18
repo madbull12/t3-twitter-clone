@@ -8,6 +8,7 @@ import { trpc } from "../utils/trpc";
 import { User } from "@prisma/client";
 import PeopleComponent from "../components/PeopleComponent";
 import NoResults from "../components/NoResults";
+import { v4 } from "uuid";
 
 const SearchPage = () => {
   const router = useRouter();
@@ -38,7 +39,7 @@ const SearchPage = () => {
           ) : (
             <>
               {searchResults?.map((result) => (
-                <TweetComponent tweet={result} />
+                <TweetComponent tweet={result} key={v4()} />
               ))}
             </>
           )}
@@ -50,7 +51,7 @@ const SearchPage = () => {
           ) : (
             <>
               {searchUsers?.map((user) => (
-                <PeopleComponent user={user} />
+                <PeopleComponent user={user} key={v4()} />
               ))}
             </>
           )}

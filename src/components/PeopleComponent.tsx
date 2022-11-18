@@ -1,6 +1,7 @@
 import { User } from '@prisma/client'
 import Image from 'next/image'
 import React from 'react'
+import Avatar from './Avatar'
 import Button from './Button'
 
 interface IProps {
@@ -9,7 +10,7 @@ interface IProps {
 const PeopleComponent = ({ user }:IProps) => {
   return (
     <div className='p-2 flex items-start justify-between gap-x-4'>
-        <Image alt={user.name || ""} src={user.image || ""} width={40} height={40} className="rounded-full" />
+      <Avatar image={user.image || ""} />
         <div>
             <h1 className='font-semibold text-lg'>{user.name}</h1>
         </div>

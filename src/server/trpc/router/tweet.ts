@@ -36,6 +36,19 @@ export const tweetRouter = router({
       },
     });
   }),
+  getSingleTweet:publicProcedure
+    .input(z.object({ tweetId:z.string()}))
+    .query(({ ctx,input })=>{
+      return ctx.prisma.tweet.findUnique({
+        where:{
+          id:input?.tweetId
+        },
+        include:{
+          user:true
+        }
+      })
+    })
+  ,
   searchTweets: publicProcedure
     .input(z.object({ term: z.string(), filtering: z.string() }))
     .query(({ ctx, input }) => {

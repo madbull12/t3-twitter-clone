@@ -9,6 +9,7 @@ import { usePreviewStore } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import { toast } from "react-hot-toast";
 import MediaTools from "./MediaTools";
+import Avatar from "./Avatar";
 const CreateTweet = () => {
   const { data: session, status } = useSession();
   useEffect(() => {}, []);
@@ -89,13 +90,7 @@ const CreateTweet = () => {
   };
   return (
     <div className="mt-4 flex items-start gap-x-4 border-b p-2  ">
-      <Image
-        alt="profile-image"
-        className="rounded-full"
-        src={session?.user?.image || ""}
-        width={40}
-        height={40}
-      />
+      <Avatar image={session?.user?.image || ""} />
       <form className="flex-1 space-y-3" onSubmit={handleSubmit}>
         <input
           ref={textRef}
