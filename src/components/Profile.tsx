@@ -8,7 +8,7 @@ const Profile = () => {
   return (
     <div className="mt-4 flex  items-center gap-x-2">
       <Avatar image={session?.user?.image || ""} />
-      <p className="font-semibold hidden lg:block">{session?.user?.name}</p>
+      <p className="font-semibold hidden xl:block">{session?.user?.name}</p>
     </div>
   );
 };
