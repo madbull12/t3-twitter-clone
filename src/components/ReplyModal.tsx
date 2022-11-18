@@ -58,7 +58,7 @@ const ReplyModal = () => {
   console.log(tweetReply);
 
   const now = new Date();
-  const msBetweenDates = tweetReply?.createdAt.getTime() - now.getTime();
+  const msBetweenDates = tweetReply!.createdAt.getTime() - now.getTime() ?? 0;
 
   // 👇️ convert ms to hours                  min  sec   ms
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
