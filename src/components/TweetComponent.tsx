@@ -8,8 +8,16 @@ import { IoAnalyticsOutline } from 'react-icons/io5'
 import { AiOutlineComment, AiOutlineHeart, AiOutlineRetweet, AiOutlineShareAlt } from 'react-icons/ai'
 import { useReplyModal, useTweetId } from '../../lib/zustand'
 import Avatar from './Avatar'
+import { Prisma } from '@prisma/client'
+
+type TweetWithUser = Prisma.TweetGetPayload<{
+  include:{
+    user:true
+  }
+}>
+
 interface IProps {
-  tweet:Tweet
+  tweet:TweetWithUser
 }
 
 const TweetComponent = ({ tweet }:IProps) => {
