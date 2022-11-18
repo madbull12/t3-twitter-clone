@@ -18,6 +18,8 @@ export const serverSchema = z.object({
   ),
   TWITTER_CLIENT_ID: z.string(),
   TWITTER_CLIENT_SECRET: z.string(),
+  CLOUDINARY_API_KEY:z.string(),
+  CLOUDINARY_API_SECRET:z.string()
 });
 
 /**

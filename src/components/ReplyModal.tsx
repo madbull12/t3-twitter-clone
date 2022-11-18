@@ -31,7 +31,7 @@ const ReplyForm = () => {
       </div>
       <div className="items-center gap-x-64 flex ">
         <div className="mr-auto">
-          <MediaTools onSelectFile={()=>{}} />
+          {/* <MediaTools onSelectFile={()=>{}} /> */}
 
         </div>
 

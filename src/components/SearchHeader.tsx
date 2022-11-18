@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { BsArrowLeft } from "react-icons/bs";
+import { v4 } from "uuid";
 import Search from "./Search";
 
 const links = ["top", "latest", "people", "photos", "videos"];
@@ -22,6 +23,7 @@ const SearchHeader = () => {
       <ul className=" flex items-center justify-between">
         {links.map((link: string) => (
           <li
+            key={v4()}
             onClick={() =>
               router.replace(
                 {
