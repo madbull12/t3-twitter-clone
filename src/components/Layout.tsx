@@ -1,5 +1,7 @@
+import { useSession } from "next-auth/react";
 import React, { FC, useEffect } from "react";
 import { useReplyModal } from "../../lib/zustand";
+import Footer from "./Footer";
 import ReplyModal from "./ReplyModal";
 import Right from "./Right";
 import Sidebar from "./Sidebar";
@@ -10,6 +12,7 @@ interface IProps {
 const Layout = ({ children }: IProps) => {
   const { modal } = useReplyModal();
 
+  const { status } = useSession();
   useEffect(() => {
     if (modal) {
       window.scrollTo(0, 0);
@@ -25,6 +28,7 @@ const Layout = ({ children }: IProps) => {
       <Sidebar />
       {children}
       <Right />
+      {status==="unauthenticated" ? <Footer /> : null }
     </div>
   );
 };

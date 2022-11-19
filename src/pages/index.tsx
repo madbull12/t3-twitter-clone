@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   const { data: tweets, isLoading } = trpc.tweet.getTweets.useQuery();
   // console.log(tweets);
 
-  const { data } = useSession();
+  const { data,status } = useSession();
   // console.log(data);
 
   return (
@@ -28,7 +28,7 @@ const Home: NextPage = () => {
       </Head>
       <Body>
         <h1 className="text-xl font-semibold px-4">Home</h1>
-        <CreateTweet />
+        {status==="authenticated" ? <CreateTweet /> : null}
         {isLoading ? (
           <Loader />
         ) : (

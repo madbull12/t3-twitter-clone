@@ -35,14 +35,11 @@ const Sidebar = () => {
         {links.map((link) => (
           <li
             key={v4()}
-            className="rounded-full  transition-all  duration-200 ease-in-out  hover:bg-gray-100"
+            className="rounded-full  px-4  py-2 transition-all duration-200 ease-in-out  hover:bg-gray-100"
           >
             <Link href="/">
               <div className="flex items-center gap-x-4 text-2xl">
-                <span>
-                {link.icon}
-
-                </span>
+                <span>{link.icon}</span>
                 <span className="hidden xl:block ">{link.name}</span>
               </div>
             </Link>
@@ -51,7 +48,9 @@ const Sidebar = () => {
 
         {!matches ? <IoMdAddCircle className="text-6xl text-primary" /> : null}
       </ul>
-      {matches ? <Button text="Tweet" /> : null}
+      {status === "authenticated" ? (
+        <>{matches ? <Button text="Tweet" /> : null}</>
+      ) : null}
 
       {status === "authenticated" ? (
         <button
