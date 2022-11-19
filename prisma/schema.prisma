@@ -109,7 +109,7 @@ model Tweet {
   originalTweetId String?
   replies         Tweet[]   @relation("replies")
   hashtags        Hashtag[]
-  Like            Like[]
+  likes           Like[]
 }
 
 // model Reply {

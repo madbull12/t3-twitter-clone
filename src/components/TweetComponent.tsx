@@ -17,15 +17,10 @@ import { Prisma } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-type ReplyWithUser = Prisma.ReplyGetPayload<{
-  include: {
-    user: true;
-  };
-}>;
+
 type TweetWithUser = Prisma.TweetGetPayload<{
   include: {
     user: true;
-    replies:true;
   };
 }>;
 

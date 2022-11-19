@@ -4,7 +4,12 @@ import { router, publicProcedure } from "../trpc";
 
 export const tweetRouter = router({
   createTweet: publicProcedure
-    .input(z.object({ text: z.string(), imageUrl: z.string().nullable() }))
+    .input(
+      z.object({
+        text: z.string(),
+        imageUrl: z.string().nullable(),
+      })
+    )
     .mutation(({ input, ctx }) => {
       const userId = ctx.session?.user?.id;
       if (!ctx.session) {
@@ -30,27 +35,24 @@ export const tweetRouter = router({
     return ctx.prisma.tweet.findMany({
       include: {
         user: true,
-        replies:true
       },
       orderBy: {
         createdAt: "desc",
       },
     });
   }),
-  getSingleTweet:publicProcedure
-    .input(z.object({ tweetId:z.string()}))
-    .query(({ ctx,input })=>{
+  getSingleTweet: publicProcedure
+    .input(z.object({ tweetId: z.string() }))
+    .query(({ ctx, input }) => {
       return ctx.prisma.tweet.findUnique({
-        where:{
-          id:input?.tweetId
+        where: {
+          id: input?.tweetId,
         },
-        include:{
-          user:true,
-          replies:true
-        }
-      })
-    })
-  ,
+        include: {
+          user: true,
+        },
+      });
+    }),
   searchTweets: publicProcedure
     .input(z.object({ term: z.string(), filtering: z.string() }))
     .query(({ ctx, input }) => {
@@ -59,27 +61,24 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
-              replies:true
             },
             where: {
               text: {
                 contains: input.term,
-                mode:"insensitive"
+                mode: "insensitive",
               },
-            }
+            },
           });
 
         case "latest":
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
-              replies:true
             },
             where: {
               text: {
                 contains: input.term,
-                mode:"insensitive"
-
+                mode: "insensitive",
               },
             },
             orderBy: {
@@ -91,13 +90,11 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
-              replies:true
             },
             where: {
               text: {
                 contains: input.term,
-                mode:"insensitive"
-
+                mode: "insensitive",
               },
               image: {
                 endsWith: ".jpg",
@@ -108,13 +105,10 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
-              replies:true
             },
             where: {
               text: {
                 contains: input.term,
-                mode:"insensitive"
-
               },
               image: {
                 endsWith: ".mp4",
@@ -128,7 +122,6 @@ export const tweetRouter = router({
       return ctx.prisma.tweet.findMany({
         include: {
           user: true,
-          replies:true
         },
         where: {
           text: {

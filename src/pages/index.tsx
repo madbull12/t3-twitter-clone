@@ -1,4 +1,5 @@
 import { type NextPage } from "next";
+import { Tweet } from "@prisma/client";
 import Head from "next/head";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
