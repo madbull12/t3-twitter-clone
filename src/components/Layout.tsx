@@ -20,7 +20,7 @@ const Layout = ({ children }: IProps) => {
   }, [modal]);
 
   return (
-    <div >
+    <div>
       {modal ? <ReplyModal /> : null}
       <Sidebar />
       {children}

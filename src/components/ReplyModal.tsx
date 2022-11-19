@@ -2,7 +2,7 @@ import { Tweet } from "@prisma/client";
 import moment from "moment";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { useRef,useState } from "react";
+import React, { useRef, useState } from "react";
 import { IoClose } from "react-icons/io5";
 import ReactTimeAgo from "react-time-ago";
 import useOnClickOutside from "../../hooks/useOutsideClick";
@@ -29,16 +29,13 @@ const ReplyForm = () => {
           placeholder="Tweet your reply"
         />
       </div>
-      <div className="items-center gap-x-64 flex ">
+      <div className="flex items-center gap-x-64 ">
         <div className="mr-auto">
           {/* <MediaTools onSelectFile={()=>{}} /> */}
-
         </div>
 
         <Button text="Reply" />
-
       </div>
-
     </form>
   );
 };

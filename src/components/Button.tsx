@@ -1,14 +1,14 @@
-import React from 'react'
+import React from "react";
 
 interface IProps {
-    text:string
+  text: string;
 }
-const Button = ({ text }:IProps) => {
+const Button = ({ text }: IProps) => {
   return (
-    <button className='rounded-full px-4 py-2  w-full text-white font-semibold bg-primary'>
-        {text}
+    <button className="w-full rounded-full bg-primary  px-4 py-2 font-semibold text-white">
+      {text}
     </button>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;

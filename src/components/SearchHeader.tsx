@@ -10,7 +10,7 @@ const links = ["top", "latest", "people", "photos", "videos"];
 const SearchHeader = () => {
   const router = useRouter();
   return (
-    <div className="sticky top-0 z-50 bg-white border-b border-gray-100 ">
+    <div className="sticky top-0 z-50 border-b border-gray-100 bg-white ">
       <div className="flex items-center justify-between p-2">
         <BsArrowLeft
           className="cursor-pointer text-xl"
@@ -38,7 +38,9 @@ const SearchHeader = () => {
                 }
               )
             }
-            className={`${router.query.f === link ? "border-b-4    border-primary":null} px-6 py-4 hover:bg-gray-100 cursor-pointer font-semibold capitalize text-gray-500`}
+            className={`${
+              router.query.f === link ? "border-b-4    border-primary" : null
+            } cursor-pointer px-6 py-4 font-semibold capitalize text-gray-500 hover:bg-gray-100`}
           >
             {link}
           </li>

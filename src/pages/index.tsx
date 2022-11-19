@@ -14,10 +14,10 @@ import Loader from "../components/Loader";
 
 const Home: NextPage = () => {
   const { data: tweets, isLoading } = trpc.tweet.getTweets.useQuery();
-  console.log(tweets);
+  // console.log(tweets);
 
   const { data } = useSession();
-  console.log(data);
+  // console.log(data);
 
   return (
     <>

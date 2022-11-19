@@ -30,8 +30,8 @@ const CreateTweet = () => {
   const [preview, setPreview] = useState<string>();
   const [text, setText] = useState("");
   const textRef = useRef<HTMLInputElement>(null);
-  console.log(selectedFile);
-  console.log(preview)
+  // console.log(selectedFile);
+  // console.log(preview)
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     let imageUrl = null;
@@ -55,8 +55,6 @@ const CreateTweet = () => {
 
       imageUrl = res.secure_url;
     }
-
-
 
     toast.promise(createTweet({ text, imageUrl }), {
       success: "Tweet created",
@@ -101,23 +99,21 @@ const CreateTweet = () => {
         />
         {selectedFile && (
           <>
-            {
-              selectedFile.type === "video/mp4" ? (
-                <video controls className="relative h-full w-full rounded-2xl">
-                  <source src={preview} type="video/mp4"></source>
-                </video>
-              ) : (
-                <div className="relative">
-                  <img src={preview} />
-                  <div
-                    onClick={() => setSelectedFile(undefined)}
-                    className="absolute top-4 right-4  grid h-8 w-8  cursor-pointer  place-items-center rounded-full bg-[#00000083] text-xl text-white"
-                  >
-                    <RiCloseLine />
-                  </div>
+            {selectedFile.type === "video/mp4" ? (
+              <video controls className="relative h-full w-full rounded-2xl">
+                <source src={preview} type="video/mp4"></source>
+              </video>
+            ) : (
+              <div className="relative">
+                <img src={preview} />
+                <div
+                  onClick={() => setSelectedFile(undefined)}
+                  className="absolute top-4 right-4  grid h-8 w-8  cursor-pointer  place-items-center rounded-full bg-[#00000083] text-xl text-white"
+                >
+                  <RiCloseLine />
                 </div>
-              )
-            }
+              </div>
+            )}
           </>
         )}
 
@@ -144,7 +140,7 @@ const CreateTweet = () => {
             <BiPoll />
             
           </div> */}
-          <MediaTools onSelectFile={(e:any)=>onSelectFile(e)} />
+          <MediaTools onSelectFile={(e: any) => onSelectFile(e)} />
           <div className="flex-[0.4]">
             <Button text="Tweet" />
           </div>

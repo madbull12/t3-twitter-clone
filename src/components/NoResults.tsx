@@ -1,13 +1,13 @@
-import { useRouter } from 'next/router';
-import React from 'react'
+import { useRouter } from "next/router";
+import React from "react";
 
 const NoResults = () => {
-    const router = useRouter();
+  const router = useRouter();
   return (
-    <div className='flex min-h-screen justify-center items-center'>
-        <h1 className='text-2xl font-bold'>No results for "{router.query.q}"</h1>
+    <div className="flex min-h-screen items-center justify-center">
+      <h1 className="text-2xl font-bold">No results for "{router.query.q}"</h1>
     </div>
-  )
-}
+  );
+};
 
-export default NoResults
+export default NoResults;

@@ -22,7 +22,7 @@ const SearchPage = () => {
       term,
     });
 
-  console.log(searchResults);
+  // console.log(searchResults);
   return (
     <Body>
       <SearchHeader />
