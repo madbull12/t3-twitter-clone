@@ -11,7 +11,7 @@ export const appRouter = router({
   auth: authRouter,
   tweet:tweetRouter,
   user:userRouter,
-  reply:replyRouter
+  // reply:replyRouter
 });
 
 // export type definition of API

@@ -30,6 +30,7 @@ export const tweetRouter = router({
     return ctx.prisma.tweet.findMany({
       include: {
         user: true,
+        replies:true
       },
       orderBy: {
         createdAt: "desc",
@@ -58,6 +59,7 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              replies:true
             },
             where: {
               text: {
@@ -71,6 +73,7 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              replies:true
             },
             where: {
               text: {
@@ -88,6 +91,7 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              replies:true
             },
             where: {
               text: {
@@ -104,6 +108,7 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              replies:true
             },
             where: {
               text: {
@@ -123,6 +128,7 @@ export const tweetRouter = router({
       return ctx.prisma.tweet.findMany({
         include: {
           user: true,
+          replies:true
         },
         where: {
           text: {

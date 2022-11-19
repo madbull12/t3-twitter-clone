@@ -58,7 +58,10 @@ model User {
   accounts      Account[]
   sessions      Session[]
   tweets        Tweet[]
-  replies       Reply[]
+  // replies       Reply[]
+  followers     Follows[] @relation("follower")
+  followings    Follows[] @relation("following")
+  likes         Like[]
 }
 
 model VerificationToken {
@@ -69,27 +72,55 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model Tweet {
+model Like {
   id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  text      String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  image     String?
-  replies   Reply[]
-
-  @@index([userId])
-}
-
-model Reply {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  text      String?
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  image     String?
+  tweet     Tweet    @relation(fields: [tweetId], references: [id], onDelete: Cascade)
   tweetId   String
-  tweet     Tweet @relation(fields: [tweetId],references: [id])
-
-  @@index([userId])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
 }
+
+model Follows {
+  follower    User     @relation("follower", fields: [followerId], references: [id])
+  followerId  String
+  followingId String
+  following   User     @relation("following", fields: [followingId], references: [id])
+  createdAt   DateTime @default(now())
+
+  @@id([followerId, followingId])
+}
+
+model Hashtag {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  tweets    Tweet[]
+}
+
+model Tweet {
+  id              String    @id @default(uuid())
+  createdAt       DateTime  @default(now())
+  text            String?
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  image           String?
+  originalTweet   Tweet?    @relation("replies", fields: [originalTweetId], references: [id], onDelete: Cascade)
+  originalTweetId String?
+  replies         Tweet[]   @relation("replies")
+  hashtags        Hashtag[]
+  Like            Like[]
+}
+
+// model Reply {
+//   id        String   @id @default(uuid())
+//   createdAt DateTime @default(now())
+//   text      String?
+//   userId    String
+//   user      User     @relation(fields: [userId], references: [id])
+//   image     String?
+//   tweetId   String
+//   tweet     Tweet @relation(fields: [tweetId],references: [id])
+
+//   @@index([userId])
+// }

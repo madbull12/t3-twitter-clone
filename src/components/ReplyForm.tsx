@@ -15,14 +15,14 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
   const textRef = useRef<HTMLTextAreaElement>(null);
   const { mutateAsync: createReply } = trpc.reply.createReply.useMutation({
     onMutate: () => {
-      utils.tweet.getTweets.cancel();
+      utils.tweet.getSingleTweet.cancel();
       const optimisticUpdate = utils.tweet.getSingleTweet.getData({ tweetId });
       if (optimisticUpdate) {
         utils.tweet.getSingleTweet.setData(optimisticUpdate);
       }
     },
     onSettled: () => {
-      utils.tweet.getTweets.invalidate();
+      utils.tweet.getSingleTweet.invalidate();
     },
   });
 

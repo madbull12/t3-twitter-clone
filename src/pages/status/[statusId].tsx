@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import moment from "moment";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -8,15 +9,22 @@ import Avatar from "../../components/Avatar";
 import Body from "../../components/Body";
 import Loader from "../../components/Loader";
 import ReplyForm from "../../components/ReplyForm";
+import TweetComponent from "../../components/TweetComponent";
 import { trpc } from "../../utils/trpc";
+
+
+
+
 
 const StatusPage = () => {
   const router: any = useRouter();
   const { statusId } = router.query;
 
-  const { data: tweetDetails, isLoading } = trpc?.tweet.getSingleTweet.useQuery({
-    tweetId: statusId,
-  });
+  const { data: tweetDetails, isLoading } = trpc?.tweet.getSingleTweet.useQuery(
+    {
+      tweetId: statusId,
+    }
+  );
   return (
     <Body>
       <div className="sticky top-0  z-50 flex items-center gap-x-8 bg-white/30 p-4 backdrop-blur-lg">
@@ -54,22 +62,16 @@ const StatusPage = () => {
           ) : null}
           <div className="flex items-center gap-x-2 ">
             <p className=" text-gray-500">
-                {moment(tweetDetails?.createdAt).format('LT')}
+              {moment(tweetDetails?.createdAt).format("LT")}
             </p>
             <p className=" text-gray-500">
-                {moment(tweetDetails?.createdAt).format("ll")}
+              {moment(tweetDetails?.createdAt).format("ll")}
             </p>
           </div>
+          <div></div>
+          <ReplyForm tweetId={tweetDetails?.id || ""} />
           <div>
-
-          </div>
-          <ReplyForm tweetId={tweetDetails?.id || ''} />
-          <div>
-            {tweetDetails?.replies.map((reply)=>(
-                <div key={v4()}>
-                    <h1>{reply.text}</h1>
-                </div>
-            ))}
+       
           </div>
         </div>
       )}
