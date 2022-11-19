@@ -55,7 +55,7 @@ const ReplyModal = () => {
   console.log(tweetReply);
 
   const now = new Date();
-  const msBetweenDates = tweetReply!.createdAt.getTime() - now.getTime() ?? 0;
+  const msBetweenDates = (tweetReply?.createdAt?.getTime() ?? 0) - now.getTime();
 
   // 👇️ convert ms to hours                  min  sec   ms
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
@@ -101,9 +101,9 @@ const ReplyModal = () => {
                 </div>
                 <p>{tweetReply?.text}</p>
 
-                <p className="mt-4 text-gray-500">
-                  Replying to{" "}
-                  <span className="text-primary">{tweetReply?.user.name}</span>{" "}
+                <p className="mt-4 text-gray-500 flex gap-x-2 items-center">
+                  Replying to
+                  <span className="text-primary">{tweetReply?.user.name}</span>
                 </p>
               </div>
             </div>
