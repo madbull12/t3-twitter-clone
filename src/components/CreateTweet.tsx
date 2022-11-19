@@ -29,7 +29,7 @@ const CreateTweet = () => {
   const [selectedFile, setSelectedFile] = useState<any>();
   const [preview, setPreview] = useState<string>();
   const [text, setText] = useState("");
-  const textRef = useRef<HTMLInputElement>(null);
+  const textRef = useRef<HTMLTextAreaElement>(null);
   // console.log(selectedFile);
   // console.log(preview)
   const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -90,12 +90,12 @@ const CreateTweet = () => {
     <div className="mt-4 flex items-start gap-x-4 border-b p-2  ">
       <Avatar image={session?.user?.image || ""} />
       <form className="flex-1 space-y-3" onSubmit={handleSubmit}>
-        <input
+        <textarea
+          cols={50}
           ref={textRef}
-          type="text"
           onChange={(e) => setText(e.target.value)}
           placeholder="What's happening?"
-          className="text-xl outline-none placeholder:text-gray-600"
+          className="text-xl outline-none placeholder:text-gray-600 resize-none w-full overflow-hidden"
         />
         {selectedFile && (
           <>

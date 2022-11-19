@@ -44,7 +44,8 @@ export const tweetRouter = router({
           id:input?.tweetId
         },
         include:{
-          user:true
+          user:true,
+          replies:true
         }
       })
     })
