@@ -27,17 +27,20 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Body>
-        <h1 className="text-xl font-semibold px-4">Home</h1>
-        {status==="authenticated" ? <CreateTweet /> : null}
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <>
-            {tweets?.map((tweet) => (
-              <TweetComponent tweet={tweet} key={v4()} />
-            ))}
-          </>
-        )}
+        <div className="py-4">
+          <h1 className="text-xl font-semibold px-4">Home</h1>
+          {status==="authenticated" ? <CreateTweet /> : null}
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <>
+              {tweets?.map((tweet) => (
+                <TweetComponent tweet={tweet} key={v4()} />
+              ))}
+            </>
+          )}
+        </div>
+        
       </Body>
     </>
   );

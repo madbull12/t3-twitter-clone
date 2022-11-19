@@ -10,7 +10,7 @@ const links = ["top", "latest", "people", "photos", "videos"];
 const SearchHeader = () => {
   const router = useRouter();
   return (
-    <div className="sticky top-0 z-50 border-b border-gray-100 bg-white ">
+    <div className="sticky backdrop-blur-xl bg-white/30 top-0 z-50 border-b border-gray-100  ">
       <div className="flex items-center justify-between p-2">
         <BsArrowLeft
           className="cursor-pointer text-xl"

@@ -5,6 +5,7 @@ import Image from "next/image";
 import React, { useRef, useState,useEffect } from "react";
 import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
+import { RiCloseLine } from "react-icons/ri";
 import ReactTimeAgo from "react-time-ago";
 import useOnClickOutside from "../../hooks/useOutsideClick";
 import { useReplyModal, useTweetId } from "../../lib/zustand";
@@ -61,8 +62,8 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
     }
 
     toast.promise(createReply({ text, mediaUrl, tweetId }), {
-      success: "Tweet created",
-      loading: "Creating tweet",
+      success: "Reply created",
+      loading: "Replying...",
       error: (err) => "Oops.. something went wrong " + err,
     });
 
@@ -92,18 +93,38 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
   };
 
   return (
-    <form className="flex flex-col">
+    <form className="flex flex-col" onSubmit={handleSubmit}>
       <div className="flex items-start gap-x-4">
         <Avatar image={session?.user?.image || ""} />
         <textarea
           ref={textRef}
           cols={50}
           rows={6}
+          onChange={(e)=>setText(e.target.value)}
           className="w-full resize-none text-xl outline-none"
           placeholder="Tweet your reply"
         />
       </div>
-      <div className="flex items-center gap-x-64 ">
+      {selectedFile && (
+          <>
+            {selectedFile.type === "video/mp4" ? (
+              <video controls className="relative h-full w-full rounded-2xl">
+                <source src={preview} type="video/mp4"></source>
+              </video>
+            ) : (
+              <div className="relative">
+                <img src={preview} />
+                <div
+                  onClick={() => setSelectedFile(undefined)}
+                  className="absolute top-4 right-4  grid h-8 w-8  cursor-pointer  place-items-center rounded-full bg-[#00000083] text-xl text-white"
+                >
+                  <RiCloseLine />
+                </div>
+              </div>
+            )}
+          </>
+        )}
+      <div className="flex items-center gap-x-64 mt-4 ">
         <div className="mr-auto">
           <MediaTools onSelectFile={onSelectFile} />
         </div>
@@ -138,7 +159,7 @@ const ReplyModal = () => {
     <Backdrop>
       <div
         ref={modalRef}
-        className="relative mx-auto max-w-lg rounded-2xl  bg-white p-4 text-black"
+        className="relative mx-auto max-w-lg rounded-2xl overflow-y-scroll h-[500px]  bg-white p-4 text-black"
       >
         {isLoading ? (
           <Loader />

@@ -61,6 +61,7 @@ export const tweetRouter = router({
             where: {
               text: {
                 contains: input.term,
+                mode:"insensitive"
               },
             }
           });
@@ -73,6 +74,8 @@ export const tweetRouter = router({
             where: {
               text: {
                 contains: input.term,
+                mode:"insensitive"
+
               },
             },
             orderBy: {
@@ -88,6 +91,8 @@ export const tweetRouter = router({
             where: {
               text: {
                 contains: input.term,
+                mode:"insensitive"
+
               },
               image: {
                 endsWith: ".jpg",
@@ -102,6 +107,8 @@ export const tweetRouter = router({
             where: {
               text: {
                 contains: input.term,
+                mode:"insensitive"
+
               },
               image: {
                 endsWith: ".mp4",

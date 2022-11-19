@@ -38,7 +38,7 @@ const TweetComponent = ({ tweet }: IProps) => {
   const { setTweetId } = useTweetId();
 
   return (
-    <div className="flex items-start gap-x-4 p-4">
+    <div className="flex items-start gap-x-4 cursor-pointer p-4 transition-all duration-100 ease-in-out hover:bg-gray-100">
       <Avatar image={tweet.user.image || ""} />
       <div className="flex w-full  flex-col">
         <div className="flex items-center gap-x-2">
