@@ -25,6 +25,11 @@ const StatusPage = () => {
       tweetId: statusId,
     }
   );
+
+  const { data:replies } = trpc?.tweet.getTweetReplies.useQuery({
+    tweetId:statusId
+  })
+
   return (
     <Body>
       <div className="sticky top-0  z-50 flex items-center gap-x-8 bg-white/30 p-4 backdrop-blur-lg">
@@ -71,7 +76,9 @@ const StatusPage = () => {
           <div></div>
           <ReplyForm tweetId={tweetDetails?.id || ""} />
           <div>
-       
+            {replies?.map((reply)=>(
+              <TweetComponent tweet={reply} key={v4()}/>
+            ))}
           </div>
         </div>
       )}

@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState,useRef,useEffect } from 'react'
 import toast from "react-hot-toast";
 import { RiCloseLine } from "react-icons/ri";
@@ -8,14 +9,16 @@ import Button from "./Button";
 import MediaTools from "./MediaTools";
 const ReplyForm = ({ tweetId }: { tweetId: string }) => {
   const { data: session } = useSession();
+  const router = useRouter()
   const [text, setText] = useState("");
   const [selectedFile, setSelectedFile] = useState<any>();
   const [preview, setPreview] = useState<string>();
   const utils = trpc.useContext();
   const textRef = useRef<HTMLTextAreaElement>(null);
-  const { mutateAsync: createReply } = trpc.reply.createReply.useMutation({
+  const { mutateAsync: createReply } = trpc.tweet.createReply.useMutation({
     onMutate: () => {
       utils.tweet.getSingleTweet.cancel();
+      utils.tweet.getTweetReplies.cancel()
       const optimisticUpdate = utils.tweet.getSingleTweet.getData({ tweetId });
       if (optimisticUpdate) {
         utils.tweet.getSingleTweet.setData(optimisticUpdate);
@@ -58,6 +61,8 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
 
     textRef!.current!.value = "";
     setSelectedFile(undefined);
+    
+    await router.push(`/status/${tweetId}`);
   };
   useEffect(() => {
     if (!selectedFile) {

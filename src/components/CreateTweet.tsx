@@ -34,7 +34,7 @@ const CreateTweet = () => {
   // console.log(preview)
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    let imageUrl = null;
+    let mediaUrl = null;
 
     //upload image
     if (selectedFile) {
@@ -53,10 +53,10 @@ const CreateTweet = () => {
         }
       ).then((res) => res.json());
 
-      imageUrl = res.secure_url;
+      mediaUrl = res.secure_url;
     }
 
-    toast.promise(createTweet({ text, imageUrl }), {
+    toast.promise(createTweet({ text, mediaUrl }), {
       success: "Tweet created",
       loading: "Creating tweet",
       error: (err) => "Oops.. something went wrong " + err,

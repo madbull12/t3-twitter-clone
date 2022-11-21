@@ -7,11 +7,11 @@ export const tweetRouter = router({
     .input(
       z.object({
         text: z.string(),
-        imageUrl: z.string().nullable(),
+        mediaUrl: z.string().nullable(),
       })
     )
     .mutation(({ input, ctx }) => {
-      const userId = ctx.session?.user?.id;
+      const userId = ctx?.session?.user?.id;
       if (!ctx.session) {
         throw new Error(
           "You have to be logged in in order to perform this action!"
@@ -21,7 +21,7 @@ export const tweetRouter = router({
       return ctx.prisma.tweet.create({
         data: {
           text: input?.text,
-          image: input?.imageUrl,
+          image: input?.mediaUrl,
           user: {
             connect: {
               id: userId,
@@ -30,6 +30,57 @@ export const tweetRouter = router({
         },
       });
     }),
+  createReply: publicProcedure
+    .input(
+      z.object({
+        text: z.string(),
+        mediaUrl: z.string().nullable(),
+        tweetId: z.string().nullable(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      const userId = ctx?.session?.user?.id;
+
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
+
+      return ctx.prisma.tweet.create({
+        data: {
+          text: input?.text,
+          image: input?.mediaUrl,
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          originalTweet: {
+           
+            connect:{
+              id:input.tweetId as string
+            }
+          },
+        },
+      });
+    }),
+  
+    getTweetReplies:publicProcedure
+      .input(z.object({ tweetId:z.string() }))
+      .query(({ ctx,input })=>{
+        return ctx.prisma.tweet.findMany({
+          where:{
+            originalTweetId:input.tweetId
+          },
+          include:{
+            user:true
+          },
+          orderBy:{
+            createdAt:"desc"
+          }
+        })
+      }),
 
   getTweets: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.tweet.findMany({
