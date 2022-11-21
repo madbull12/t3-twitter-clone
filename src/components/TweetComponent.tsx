@@ -21,6 +21,11 @@ import { useRouter } from "next/router";
 type TweetWithUser = Prisma.TweetGetPayload<{
   include: {
     user: true;
+    originalTweet:{
+      include:{
+        user:true
+      }
+    }
   };
 }>;
 
@@ -57,6 +62,7 @@ const TweetComponent = ({ tweet }: IProps) => {
             </p>
           </div>
           <p>{tweet?.text}</p>
+          {tweet?.originalTweet ? <p className="text-gray-500">Replying to <span className="text-primary">{tweet.originalTweet.user.name}</span></p> :null}
 
           {tweet?.image ? (
             <div className="relative  h-96 w-3/4">

@@ -57,35 +57,44 @@ export const tweetRouter = router({
             },
           },
           originalTweet: {
-           
-            connect:{
-              id:input.tweetId as string
-            }
+            connect: {
+              id: input.tweetId as string,
+            },
           },
         },
       });
     }),
-  
-    getTweetReplies:publicProcedure
-      .input(z.object({ tweetId:z.string() }))
-      .query(({ ctx,input })=>{
-        return ctx.prisma.tweet.findMany({
-          where:{
-            originalTweetId:input.tweetId
+
+  getTweetReplies: publicProcedure
+    .input(z.object({ tweetId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.tweet.findMany({
+        where: {
+          originalTweetId: input.tweetId,
+        },
+        include: {
+          user: true,
+          originalTweet: {
+            include: {
+              user: true,
+            },
           },
-          include:{
-            user:true
-          },
-          orderBy:{
-            createdAt:"desc"
-          }
-        })
-      }),
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
 
   getTweets: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.tweet.findMany({
       include: {
         user: true,
+        originalTweet: {
+          include: {
+            user: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",
