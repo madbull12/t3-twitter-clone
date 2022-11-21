@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, Tweet } from "@prisma/client";
 import moment from "moment";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -42,11 +42,15 @@ const StatusPage = () => {
       {isLoading ? (
         <Loader />
       ) : (
+        
         <div className="space-y-4 p-4">
+          {tweetDetails?.originalTweet !== null ? <TweetComponent tweet={tweetDetails?.originalTweet} />:null}
           <div className="flex items-center gap-x-4">
             <Avatar image={tweetDetails?.user.image as string} />
             <p className="font-semibold">{tweetDetails?.user.name}</p>
           </div>
+          {tweetDetails?.originalTweet ? <p className="text-gray-500">Replying to <span className="text-primary">{tweetDetails?.originalTweet?.user.name}</span></p> :null}
+
           <p className="text-2xl">{tweetDetails?.text}</p>
           {tweetDetails?.image ? (
             <div className="relative  h-96 w-3/4">

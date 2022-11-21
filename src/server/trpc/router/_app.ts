@@ -1,5 +1,6 @@
 import { router } from "../trpc";
 import { authRouter } from "./auth";
+import { likeRouter } from "./like";
 import { searchRouter } from "./search";
 import { tweetRouter } from "./tweet";
 import { userRouter } from "./user";
@@ -10,6 +11,7 @@ export const appRouter = router({
   auth: authRouter,
   tweet:tweetRouter,
   user:userRouter,
+  like:likeRouter
   // reply:replyRouter
 });
 

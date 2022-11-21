@@ -110,6 +110,12 @@ export const tweetRouter = router({
         },
         include: {
           user: true,
+          
+          originalTweet:{
+            include:{
+              user:true
+            }
+          }
         },
       });
     }),
