@@ -30,11 +30,16 @@ const CreateTweet = () => {
   const [preview, setPreview] = useState<string>();
   const [text, setText] = useState("");
   const textRef = useRef<HTMLTextAreaElement>(null);
+
   // console.log(selectedFile);
-  // console.log(preview)
+  // console.log(text.split(" ").filter((word)=>word.startsWith("#")).map((word)=>word.slice(1)))
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     let mediaUrl = null;
+    let hashtags = text
+      .split(" ")
+      .filter((word) => word.startsWith("#"))
+      .map((word) => word.slice(1));
 
     //upload image
     if (selectedFile) {
@@ -56,7 +61,7 @@ const CreateTweet = () => {
       mediaUrl = res.secure_url;
     }
 
-    toast.promise(createTweet({ text, mediaUrl }), {
+    toast.promise(createTweet({ text, mediaUrl, hashtags }), {
       success: "Tweet created",
       loading: "Creating tweet",
       error: (err) => "Oops.. something went wrong " + err,
@@ -95,7 +100,7 @@ const CreateTweet = () => {
           ref={textRef}
           onChange={(e) => setText(e.target.value)}
           placeholder="What's happening?"
-          className="text-xl outline-none placeholder:text-gray-600 resize-none w-full overflow-hidden"
+          className={`w-full  resize-none overflow-hidden text-xl outline-none placeholder:text-gray-600 `}
         />
         {selectedFile && (
           <>
