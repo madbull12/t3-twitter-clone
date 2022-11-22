@@ -12,13 +12,14 @@ import {
   AiOutlineRetweet,
   AiOutlineShareAlt,
 } from "react-icons/ai";
-import { useReplyModal, useTweetId } from "../../lib/zustand";
+import { useLoginModal, useReplyModal, useTweetId } from "../../lib/zustand";
 import Avatar from "./Avatar";
 import { Prisma } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 type TweetWithUser = Prisma.TweetGetPayload<{
   include: {
@@ -39,6 +40,7 @@ interface IProps {
 
 const TweetComponent = ({ tweet }: IProps) => {
   const now = new Date();
+  const { data: session, status } = useSession();
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
   const router = useRouter();
   const utils = trpc.useContext();
@@ -74,13 +76,26 @@ const TweetComponent = ({ tweet }: IProps) => {
   // console.log(hoursBetweenDates);
 
   const { modal, setModal } = useReplyModal();
+  const { setModal: setLoginModal } = useLoginModal();
+
   const { setTweetId } = useTweetId();
 
   const { data: alreadyLiked } = trpc.like.userLikeTweet.useQuery({
     tweetId: tweet.id,
   });
 
-  console.log(alreadyLiked === null || !hasLiked);
+  const handleLike = (e: React.SyntheticEvent) => {
+    e.stopPropagation();
+
+    if (status === "authenticated") {
+      toast.success(alreadyLiked !== null ? "Tweet unliked" : "Tweet liked");
+         alreadyLiked !== null
+          ? unlikeTweet({ tweetId: tweet.id })
+          : likeTweet({ tweetId: tweet.id })
+    } else {
+      setLoginModal(true);
+    }
+  };
 
   return (
     <div
@@ -134,7 +149,7 @@ const TweetComponent = ({ tweet }: IProps) => {
           <div
             onClick={(e) => {
               e.stopPropagation();
-              setModal(true);
+              status === "authenticated" ? setModal(true) : setLoginModal(true);
               setTweetId(tweet.id);
             }}
             className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50"
@@ -143,15 +158,9 @@ const TweetComponent = ({ tweet }: IProps) => {
           </div>
           <div
             className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50"
-            onClick={(e) => {
-              e.stopPropagation();
-              toast.success( alreadyLiked !== null ? "Tweet unliked" : "Tweet liked");
-              alreadyLiked !== null
-                ? unlikeTweet({ tweetId: tweet.id })
-                : likeTweet({ tweetId: tweet.id });
-            }}
+            onClick={handleLike}
           >
-            {alreadyLiked !== null || hasLiked ? (
+            {(alreadyLiked !== null || hasLiked) && (status==="authenticated") ? (
               <AiFillHeart
                 onClick={() => setHasLiked(false)}
                 className="text-primary"
