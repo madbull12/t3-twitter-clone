@@ -95,6 +95,7 @@ export const tweetRouter = router({
             user: true,
           },
         },
+        likes:true
       },
       orderBy: {
         createdAt: "desc",

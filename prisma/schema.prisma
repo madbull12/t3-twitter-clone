@@ -79,6 +79,8 @@ model Like {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   createdAt DateTime @default(now())
+
+  @@unique([userId,tweetId])
 }
 
 model Follows {

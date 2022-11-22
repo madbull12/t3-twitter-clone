@@ -22,5 +22,39 @@ export const likeRouter = router({
             })
 
 
+    }),
+    unlikeTweet:publicProcedure
+        .input(z.object({ tweetId:z.string() }))
+        .mutation(({ ctx,input })=>{
+            const userId = ctx.session?.user?.id;
+            return ctx.prisma.like.delete({
+               where:{
+                userId_tweetId:{
+                    userId:userId as string,
+                    tweetId:input.tweetId
+                }
+               }
+            })
+
+
+    }),
+    
+
+    userLikeTweet:publicProcedure
+        .input((z.object({ tweetId:z.string() })))
+        .query(({ ctx,input })=>{
+            const userId = ctx.session?.user?.id;
+
+            return ctx.prisma.like.findUnique({
+                where:{
+                    userId_tweetId:{
+                        userId:userId as string,
+                        tweetId:input.tweetId
+                    }
+                }
+            })
         })
+
+
+    
 })

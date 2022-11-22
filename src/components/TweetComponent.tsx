@@ -18,15 +18,18 @@ import { Prisma } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
+import toast from "react-hot-toast";
 
 type TweetWithUser = Prisma.TweetGetPayload<{
   include: {
     user: true;
+
     originalTweet: {
       include: {
         user: true;
       };
     };
+    likes:true
   };
 }>;
 
@@ -38,7 +41,19 @@ const TweetComponent = ({ tweet }: IProps) => {
   const now = new Date();
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
   const router = useRouter();
-  const { mutate: likeTweet } = trpc.like.likeTweet.useMutation();
+  const utils = trpc.useContext()
+  const { mutate: likeTweet } = trpc.like.likeTweet.useMutation({
+    onMutate: () => {
+      utils.tweet.getTweets.cancel();
+      const optimisticUpdate = utils.tweet.getTweets.getData();
+      if (optimisticUpdate) {
+        utils.tweet.getTweets.setData(optimisticUpdate);
+      }
+    },
+    onSettled: () => {
+      utils.tweet.getTweets.invalidate();
+    },
+  });
   const [hasLiked, setHasLiked] = useState(false);
 
   // 👇️ convert ms to hours                  min  sec   ms
@@ -48,6 +63,13 @@ const TweetComponent = ({ tweet }: IProps) => {
 
   const { modal, setModal } = useReplyModal();
   const { setTweetId } = useTweetId();
+
+  const { data:alreadyLiked } = trpc.like.userLikeTweet.useQuery({
+    tweetId:tweet.id
+  });
+
+  console.log(alreadyLiked === null || !hasLiked)
+
 
   return (
     <div
@@ -113,10 +135,10 @@ const TweetComponent = ({ tweet }: IProps) => {
             onClick={(e) => {
               e.stopPropagation();
               likeTweet({ tweetId: tweet.id });
-              setHasLiked((prev) => !prev);
+              toast.success("Tweet liked!")
             }}
           >
-            {!hasLiked ?<AiOutlineHeart className="group-hover:text-primary" /> : <AiFillHeart className="text-primary" />}
+            {(alreadyLiked !== null || hasLiked) ? <AiFillHeart onClick={()=>setHasLiked(false)} className="text-primary" /> : <AiOutlineHeart onClick={()=>setHasLiked(true)} className="group-hover:text-primary" />}
             
           </div>
           <div className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50">
