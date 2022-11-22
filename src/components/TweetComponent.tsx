@@ -29,7 +29,7 @@ type TweetWithUser = Prisma.TweetGetPayload<{
         user: true;
       };
     };
-    likes:true
+    likes: true;
   };
 }>;
 
@@ -41,8 +41,20 @@ const TweetComponent = ({ tweet }: IProps) => {
   const now = new Date();
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
   const router = useRouter();
-  const utils = trpc.useContext()
+  const utils = trpc.useContext();
   const { mutate: likeTweet } = trpc.like.likeTweet.useMutation({
+    onMutate: () => {
+      utils.tweet.getTweets.cancel();
+      const optimisticUpdate = utils.tweet.getTweets.getData();
+      if (optimisticUpdate) {
+        utils.tweet.getTweets.setData(optimisticUpdate);
+      }
+    },
+    onSettled: () => {
+      utils.tweet.getTweets.invalidate();
+    },
+  });
+  const { mutate: unlikeTweet } = trpc.like.unlikeTweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
       const optimisticUpdate = utils.tweet.getTweets.getData();
@@ -64,12 +76,11 @@ const TweetComponent = ({ tweet }: IProps) => {
   const { modal, setModal } = useReplyModal();
   const { setTweetId } = useTweetId();
 
-  const { data:alreadyLiked } = trpc.like.userLikeTweet.useQuery({
-    tweetId:tweet.id
+  const { data: alreadyLiked } = trpc.like.userLikeTweet.useQuery({
+    tweetId: tweet.id,
   });
 
-  console.log(alreadyLiked === null || !hasLiked)
-
+  console.log(alreadyLiked === null || !hasLiked);
 
   return (
     <div
@@ -134,12 +145,23 @@ const TweetComponent = ({ tweet }: IProps) => {
             className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50"
             onClick={(e) => {
               e.stopPropagation();
-              likeTweet({ tweetId: tweet.id });
-              toast.success("Tweet liked!")
+              toast.success( alreadyLiked !== null ? "Tweet unliked" : "Tweet liked");
+              alreadyLiked !== null
+                ? unlikeTweet({ tweetId: tweet.id })
+                : likeTweet({ tweetId: tweet.id });
             }}
           >
-            {(alreadyLiked !== null || hasLiked) ? <AiFillHeart onClick={()=>setHasLiked(false)} className="text-primary" /> : <AiOutlineHeart onClick={()=>setHasLiked(true)} className="group-hover:text-primary" />}
-            
+            {alreadyLiked !== null || hasLiked ? (
+              <AiFillHeart
+                onClick={() => setHasLiked(false)}
+                className="text-primary"
+              />
+            ) : (
+              <AiOutlineHeart
+                onClick={() => setHasLiked(true)}
+                className="group-hover:text-primary"
+              />
+            )}
           </div>
           <div className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50">
             <AiOutlineRetweet className="group-hover:text-primary" />

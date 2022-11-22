@@ -5,7 +5,11 @@ export const likeRouter = router({
     likeTweet:publicProcedure
         .input(z.object({ tweetId:z.string() }))
         .mutation(({ ctx,input })=>{
+            if(!ctx.session) {
+                throw new Error("You have to be logged in")
+            }
             const userId = ctx.session?.user?.id;
+
             return ctx.prisma.like.create({
                 data:{
                     tweet:{
@@ -26,6 +30,9 @@ export const likeRouter = router({
     unlikeTweet:publicProcedure
         .input(z.object({ tweetId:z.string() }))
         .mutation(({ ctx,input })=>{
+            if(!ctx.session) {
+                throw new Error("You have to be logged in")
+            }
             const userId = ctx.session?.user?.id;
             return ctx.prisma.like.delete({
                where:{
