@@ -36,7 +36,7 @@ type TweetWithUser = Prisma.TweetGetPayload<{
 }>;
 
 interface IProps {
-  tweet: TweetWithUser;
+  tweet: TweetWithUser | any;
 }
 
 const TweetComponent = ({ tweet }: IProps) => {
@@ -98,9 +98,7 @@ const TweetComponent = ({ tweet }: IProps) => {
     }
   };
 
-  let tweetText = tweet.text?.split(" ").filter((word) => word.startsWith("#"));
 
-  const convertToHashTag = (text: string) => {};
 
   return (
     <div
@@ -126,7 +124,7 @@ const TweetComponent = ({ tweet }: IProps) => {
           </p>
         </div>
         <p onClick={(e) => e.stopPropagation()}>
-          {tweet.text?.split(" ").map((word) =>
+          {tweet.text?.split(" ").map((word:string) =>
             word.startsWith("#") ? (
               <span
                 onClick={() =>
