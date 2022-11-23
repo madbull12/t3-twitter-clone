@@ -13,13 +13,19 @@ const config = {
     remotePatterns:[
       {
         protocol:"https",
-        hostname:"abs.twimg.com",
+        hostname:"**.twimg.com",
         port:"",
-        pathname:"/sticky/**"
+        // pathname:"/sticky/**"
+
+      },
+      {
+        protocol:"https",
+        hostname:"res.cloudinary.com",
+        port:"",
+        // pathname:"/sticky/**"
 
       }
     ],
-    domains:["res.cloudinary.com"]
   },
   i18n: {
     locales: ["en"],
