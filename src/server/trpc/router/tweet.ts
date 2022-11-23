@@ -8,6 +8,7 @@ export const tweetRouter = router({
       z.object({
         text: z.string(),
         mediaUrl: z.string().nullable(),
+        hashtags:z.string().array().nullable()
       })
     )
     .mutation(({ input, ctx }) => {
@@ -27,6 +28,11 @@ export const tweetRouter = router({
               id: userId,
             },
           },
+          hashtags: {
+            create: input?.hashtags?.map((name) => ({
+                name
+            })),
+        },
         },
       });
     }),

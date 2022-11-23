@@ -89,21 +89,30 @@ const TweetComponent = ({ tweet }: IProps) => {
 
     if (status === "authenticated") {
       toast.success(alreadyLiked !== null ? "Tweet unliked" : "Tweet liked");
-         alreadyLiked !== null
-          ? unlikeTweet({ tweetId: tweet.id })
-          : likeTweet({ tweetId: tweet.id })
+      alreadyLiked !== null
+        ? unlikeTweet({ tweetId: tweet.id })
+        : likeTweet({ tweetId: tweet.id });
     } else {
       setLoginModal(true);
     }
   };
 
+            
+  let tweetText = tweet.text?.split(" ").filter((word)=>word.startsWith("#"));
+
+  const convertToHashTag = (text:string) => {
+    
+  }
+
   return (
     <div
-      onClick={() =>
-        router.push(`/status/${tweet.id}`, undefined, {
-          shallow: true,
-        })
-      }
+      onClick={() => {
+        status === "authenticated"
+          ? router.push(`/status/${tweet.id}`, undefined, {
+              shallow: true,
+            })
+          : setLoginModal(true);
+      }}
       className="flex cursor-pointer items-start gap-x-4 p-4 transition-all duration-100 ease-in-out hover:bg-gray-100"
     >
       <Avatar image={tweet.user.image || ""} />
@@ -118,7 +127,9 @@ const TweetComponent = ({ tweet }: IProps) => {
             )}
           </p>
         </div>
-        <p>{tweet?.text}</p>
+        <p className={`${tweetText ? "text-primary": null}`}>
+          {tweet.text}
+        </p>
         {tweet?.originalTweet ? (
           <p className="text-gray-500">
             Replying to{" "}
@@ -160,7 +171,8 @@ const TweetComponent = ({ tweet }: IProps) => {
             className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50"
             onClick={handleLike}
           >
-            {(alreadyLiked !== null || hasLiked) && (status==="authenticated") ? (
+            {(alreadyLiked !== null || hasLiked) &&
+            status === "authenticated" ? (
               <AiFillHeart
                 onClick={() => setHasLiked(false)}
                 className="text-primary"
