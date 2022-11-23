@@ -9,8 +9,11 @@ export const userRouter = router({
             return ctx.prisma.user.findMany({
                 where:{
                     name:{
-                        contains:input.term
-                    }
+                        contains:input.term,
+                        mode:"insensitive"
+                        
+                    },
+                
                 }
             })
         })
