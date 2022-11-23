@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import { spawn } from "child_process";
 
 type TweetWithUser = Prisma.TweetGetPayload<{
   include: {
@@ -97,12 +98,9 @@ const TweetComponent = ({ tweet }: IProps) => {
     }
   };
 
-            
-  let tweetText = tweet.text?.split(" ").filter((word)=>word.startsWith("#"));
+  let tweetText = tweet.text?.split(" ").filter((word) => word.startsWith("#"));
 
-  const convertToHashTag = (text:string) => {
-    
-  }
+  const convertToHashTag = (text: string) => {};
 
   return (
     <div
@@ -127,8 +125,16 @@ const TweetComponent = ({ tweet }: IProps) => {
             )}
           </p>
         </div>
-        <p className={`${tweetText ? "text-primary": null}`}>
-          {tweet.text}
+        <p className="">
+          {tweet.text?.split(" ").map((word) =>
+            word.startsWith("#") ? (
+              <Link href="/" className="text-primary hover:underline">
+                {word + " "}
+              </Link>
+            ) : (
+              <span>{word + " "}</span>
+            )
+          )}
         </p>
         {tweet?.originalTweet ? (
           <p className="text-gray-500">
