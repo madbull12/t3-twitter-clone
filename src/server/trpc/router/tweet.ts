@@ -85,6 +85,7 @@ export const tweetRouter = router({
               user: true,
             },
           },
+          likes:true
         },
         orderBy: {
           createdAt: "desc",
@@ -120,9 +121,11 @@ export const tweetRouter = router({
           
           originalTweet:{
             include:{
-              user:true
+              user:true,
+              likes:true
             }
-          }
+          },
+          likes:true
         },
       });
     }),
@@ -134,6 +137,13 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              originalTweet:{
+                include:{
+                  user:true
+                }
+              },
+              likes:true
+
             },
             where: {
               text: {
@@ -147,6 +157,12 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              originalTweet:{
+                include:{
+                  user:true
+                }
+              },
+              likes:true
             },
             where: {
               text: {
@@ -163,6 +179,12 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              originalTweet:{
+                include:{
+                  user:true
+                }
+              },
+              likes:true
             },
             where: {
               text: {
@@ -178,6 +200,12 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              originalTweet:{
+                include:{
+                  user:true
+                }
+              },
+              likes:true
             },
             where: {
               text: {
@@ -195,6 +223,12 @@ export const tweetRouter = router({
       return ctx.prisma.tweet.findMany({
         include: {
           user: true,
+          originalTweet:{
+            include:{
+              user:true
+            }
+          },
+          likes:true
         },
         where: {
           text: {

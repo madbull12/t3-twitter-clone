@@ -31,7 +31,7 @@ type TweetWithUser = Prisma.TweetGetPayload<{
         user: true;
       };
     };
-    likes: true;
+    likes:true
   };
 }>;
 
@@ -125,12 +125,30 @@ const TweetComponent = ({ tweet }: IProps) => {
             )}
           </p>
         </div>
-        <p className="">
+        <p onClick={(e) => e.stopPropagation()}>
           {tweet.text?.split(" ").map((word) =>
             word.startsWith("#") ? (
-              <Link href="/" className="text-primary hover:underline">
+              <span
+                onClick={() =>
+                  router.replace(
+                    {
+                      pathname: "/search",
+                      query: {
+                        ...router.query, // list all the queries here
+                        f: router.query.q ? router.query.f : "top",
+                        q: word,
+                      },
+                    },
+                    undefined,
+                    {
+                      shallow: true,
+                    }
+                  )
+                }
+                className="text-primary hover:underline"
+              >
                 {word + " "}
-              </Link>
+              </span>
             ) : (
               <span>{word + " "}</span>
             )
