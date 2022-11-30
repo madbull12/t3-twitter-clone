@@ -27,6 +27,10 @@ export const useLoginModal = create<Modal>((set) => ({
   modal: false,
   setModal: (value: boolean) => set(() => ({ modal: value })),
 }));
+export const useCreateModal = create<Modal>((set) => ({
+  modal: false,
+  setModal: (value: boolean) => set(() => ({ modal: value })),
+}));
 
 export const useTweetId = create<TweetIdStore>((set)=>({
   tweetId:"",
