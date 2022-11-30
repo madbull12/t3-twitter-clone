@@ -15,7 +15,7 @@ import Loader from "../components/Loader";
 
 const Home: NextPage = () => {
   const { data: tweets, isLoading } = trpc.tweet.getTweets.useQuery();
-  // console.log(tweets);
+  console.log(tweets);
 
   const { data,status } = useSession();
   // console.log(data);

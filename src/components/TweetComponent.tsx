@@ -184,12 +184,13 @@ const TweetComponent = ({ tweet }: IProps) => {
               status === "authenticated" ? setModal(true) : setLoginModal(true);
               setTweetId(tweet.id);
             }}
-            className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50"
+            className="group cursor-pointer rounded-full flex gap-x-2 items-center p-2 hover:bg-blue-50"
           >
             <AiOutlineComment className="group-hover:text-primary" />
+            <p className="group-hover:text-primary">{tweet.replies.length}</p>
           </div>
           <div
-            className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50"
+            className="group flex cursor-pointer items-center gap-x-2 rounded-full  p-2 "
             onClick={handleLike}
           >
             {(alreadyLiked !== null || hasLiked) &&
@@ -204,6 +205,16 @@ const TweetComponent = ({ tweet }: IProps) => {
                 className="group-hover:text-primary"
               />
             )}
+            <p
+              className={`${
+                (alreadyLiked !== null || hasLiked) &&
+                status === "authenticated"
+                  ? "text-primary"
+                  : null
+              } group-hover:text-primary`}
+            >
+              {tweet.likes.length}
+            </p>
           </div>
           <div className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50">
             <AiOutlineRetweet className="group-hover:text-primary" />
