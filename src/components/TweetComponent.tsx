@@ -57,6 +57,7 @@ const TweetComponent = ({ tweet }: IProps) => {
       utils.tweet.getTweets.invalidate();
     },
   });
+  console.log(tweet)
   const { mutate: unlikeTweet } = trpc.like.unlikeTweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
@@ -187,7 +188,7 @@ const TweetComponent = ({ tweet }: IProps) => {
             className="group cursor-pointer rounded-full flex gap-x-2 items-center p-2 hover:bg-blue-50"
           >
             <AiOutlineComment className="group-hover:text-primary" />
-            <p className="group-hover:text-primary">{tweet.replies.length}</p>
+            <p className="group-hover:text-primary">{tweet?.replies?.length}</p>
           </div>
           <div
             className="group flex cursor-pointer items-center gap-x-2 rounded-full  p-2 "
