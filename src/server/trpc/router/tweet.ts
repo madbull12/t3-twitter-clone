@@ -29,8 +29,13 @@ export const tweetRouter = router({
             },
           },
           hashtags: {
-            create: input?.hashtags?.map((name) => ({
-                name
+            connectOrCreate: input?.hashtags?.map((name) => ({
+                where:{
+                  name
+                },
+                create:{
+                  name
+                }
             })),
         },
         },

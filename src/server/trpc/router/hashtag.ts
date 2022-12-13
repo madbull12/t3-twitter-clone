@@ -11,7 +11,7 @@ export const hashtagRouter = router({
         },
         orderBy: {
           tweets:{
-            _count:"asc"
+            _count:"desc"
           }
         },
       });
