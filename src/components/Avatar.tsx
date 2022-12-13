@@ -6,7 +6,7 @@ interface IProps {
 }
 const Avatar = ({ image }: IProps) => {
   return (
-    <div className="relative w-[30px] h-[30px] md:w-[50px] md:h-[50px]">
+    <div className="relative w-[25px] h-[25px]  md:w-[50px] md:h-[50px]">
       
       <Image
         alt="profile-image"
