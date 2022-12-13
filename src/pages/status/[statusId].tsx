@@ -32,7 +32,7 @@ const StatusPage = () => {
 
   return (
     <Body>
-      <div className="sticky top-0  z-50 flex items-center gap-x-8 bg-white/30 p-4 backdrop-blur-lg">
+      <div className="sticky top-0  z-50 flex items-center gap-x-8 bg-white/30  backdrop-blur-lg">
         <BsArrowLeft
           className="cursor-pointer text-xl"
           onClick={() => router.back()}
