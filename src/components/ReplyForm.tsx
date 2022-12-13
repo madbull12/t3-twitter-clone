@@ -119,9 +119,12 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
         </>
       )}
       <div className="mt-4 flex justify-between items-center gap-x-2  ">
+            
         <MediaTools onSelectFile={onSelectFile} />
+            <div className="flex-[0.5]">
+              <Button text="Reply" />
 
-        <Button text="Reply" />
+            </div>
       </div>
     </form>
   );
