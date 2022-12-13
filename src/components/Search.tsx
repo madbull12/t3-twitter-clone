@@ -25,14 +25,14 @@ const Search = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center gap-x-4 rounded-full bg-gray-100 px-4 py-2 text-gray-500"
+      className="flex items-center text-sm md:text-base gap-x-4 rounded-full bg-gray-100 md:px-4 px-2 py-1 md:py-2 text-gray-500"
     >
       <BiSearch />
       <input
         defaultValue={router.query.q}
         onChange={(e) => setTerm(e.target.value)}
         type="text"
-        className="bg-transparent outline-none"
+        className="bg-transparent w-full outline-none"
         placeholder="Search Twitter"
       />
     </form>

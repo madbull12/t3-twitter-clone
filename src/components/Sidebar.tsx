@@ -39,7 +39,7 @@ const Sidebar = () => {
     <div className="fixed left-0 top-0 flex min-h-screen w-14 flex-col items-center space-y-4 border border-gray-100 xs:w-20  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
       <div className="mb-2 grid h-12 w-12 cursor-pointer place-items-center  rounded-full transition-all duration-200 ease-in-out  hover:bg-blue-100">
         <Link href="/">
-          <BsTwitter className="text-3xl text-primary" />
+          <BsTwitter className="text-xl md:text-2xl lg:text-3xl text-primary" />
         </Link>
       </div>
       <ul className="flex flex-col items-center space-y-2 px-4 xl:items-start">

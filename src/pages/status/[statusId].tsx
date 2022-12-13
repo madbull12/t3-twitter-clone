@@ -32,7 +32,7 @@ const StatusPage = () => {
 
   return (
     <Body>
-      <div className="sticky top-0  z-50 flex items-center gap-x-8 bg-white/30  backdrop-blur-lg">
+      <div className="sticky top-0  z-50 flex items-center gap-x-2 md:gap-x-4  bg-white/30  backdrop-blur-lg">
         <BsArrowLeft
           className="cursor-pointer text-xl"
           onClick={() => router.back()}
@@ -43,7 +43,7 @@ const StatusPage = () => {
         <Loader />
       ) : (
         
-        <div className="space-y-4 p-4">
+        <div className="space-y-2 md:space-y-4">
           {tweetDetails?.originalTweet !== null ? <TweetComponent tweet={tweetDetails?.originalTweet} />:null}
           <div className="flex items-center gap-x-4">
             <Avatar image={tweetDetails?.user.image as string} />

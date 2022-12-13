@@ -11,7 +11,7 @@ const TrendComponent = ({ hashtag }: { hashtag:HashtagWithTweet }) => {
     <div className='p-2 space-y-1 hover:bg-gray-50 cursor-pointer'>
         <p className='text-xs md:text-base text-gray-500'>Trending</p>
         <p className='font-semibold text-lg'>{hashtag.name}</p>
-        <p className='text-gray-500'>{hashtag.tweets.length} Tweets</p>
+        <p className='text-gray-500 text-sm md:text-base'>{hashtag.tweets.length} Tweets</p>
     </div>
   )
 }

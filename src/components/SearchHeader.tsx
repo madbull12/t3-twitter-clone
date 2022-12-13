@@ -11,16 +11,16 @@ const SearchHeader = () => {
   const router = useRouter();
   return (
     <div className="sticky backdrop-blur-xl bg-white/30 top-0 z-50 border-b border-gray-100  ">
-      <div className="flex items-center justify-between p-2">
+      <div className="flex items-center gap-x-2 justify-between p-2">
         <BsArrowLeft
-          className="cursor-pointer text-xl"
+          className="cursor-pointer text-lg md:text-xl"
           onClick={() => router.back()}
         />
-        <div className="flex-[0.5]">
+        <div className="flex-[.75]">
           <Search />
         </div>
       </div>
-      <ul className=" flex items-center justify-between">
+      <ul className=" flex items-center justify-between flex-wrap">
         {links.map((link: string) => (
           <li
             key={v4()}
@@ -40,7 +40,7 @@ const SearchHeader = () => {
             }
             className={`${
               router.query.f === link ? "border-b-4    border-primary" : null
-            } cursor-pointer px-6 py-4 font-semibold capitalize text-gray-500 hover:bg-gray-100`}
+            } cursor-pointer px-2 py-1 md:px-6 md:py-2 font-semibold capitalize text-gray-500 text-sm md:text-base hover:bg-gray-100`}
           >
             {link}
           </li>
