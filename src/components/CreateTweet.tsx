@@ -100,7 +100,7 @@ const CreateTweet = () => {
           ref={textRef}
           onChange={(e) => setText(e.target.value)}
           placeholder="What's happening?"
-          className={`w-full  resize-none overflow-hidden text-xl outline-none placeholder:text-gray-600 `}
+          className={`w-full  resize-none overflow-hidden text-base md:text-xl outline-none placeholder:text-gray-600 `}
         />
         {selectedFile && (
           <>
@@ -122,7 +122,7 @@ const CreateTweet = () => {
           </>
         )}
 
-        <div className=" flex items-center gap-x-2 font-semibold text-primary">
+        <div className=" flex items-center gap-x-2 text-sm md:text-base font-semibold text-primary">
           <RiEarthFill className="text-xl" />
           <p>Everyone can reply</p>
         </div>

@@ -28,7 +28,7 @@ const Home: NextPage = () => {
       </Head>
       <Body>
         <div className="py-4">
-          <h1 className="text-xl font-semibold px-4">Home</h1>
+          <h1 className="md:text-xl text-base font-semibold px-4">Home</h1>
           {status==="authenticated" ? <CreateTweet /> : null}
           {isLoading ? (
             <Loader />

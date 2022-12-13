@@ -15,7 +15,7 @@ import { BiSearch } from "react-icons/bi";
 const Sidebar = () => {
   const { status } = useSession();
   const matches = useMediaQuery("(min-width: 1280px)");
-  const isNotTablet= useMediaQuery("(min-width:1024px)");
+  const isNotTablet = useMediaQuery("(min-width:1024px)");
   const links = [
     {
       name: "Home",
@@ -30,11 +30,13 @@ const Sidebar = () => {
       icon: <AiFillBell />,
     },
   ];
-  const { setModal } = useCreateModal()
+  const { setModal } = useCreateModal();
   return (
-    <div className="fixed left-0 top-0 flex min-h-screen w-14 xs:w-20 flex-col items-center space-y-4 border border-gray-100  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
+    <div className="fixed left-0 top-0 flex min-h-screen w-14 flex-col items-center space-y-4 border border-gray-100 xs:w-20  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
       <div className="mb-2 grid h-12 w-12 cursor-pointer place-items-center  rounded-full transition-all duration-200 ease-in-out  hover:bg-blue-100">
-        <BsTwitter className="text-3xl text-primary" />
+        <Link href="/">
+          <BsTwitter className="text-3xl text-primary" />
+        </Link>
       </div>
       <ul className="flex flex-col items-center space-y-2 px-4 xl:items-start">
         {links.map((link) => (
@@ -43,7 +45,7 @@ const Sidebar = () => {
             className="rounded-full  px-4  py-2 transition-all duration-200 ease-in-out  hover:bg-gray-100"
           >
             <Link href="/">
-              <div className="flex items-center text-sm xs:text-xl gap-x-4 md:text-2xl">
+              <div className="flex items-center gap-x-4 text-sm xs:text-xl md:text-2xl">
                 <span>{link.icon}</span>
                 <span className="hidden xl:block ">{link.name}</span>
               </div>
@@ -51,10 +53,19 @@ const Sidebar = () => {
           </li>
         ))}
 
-        {!matches ? <IoMdAddCircle onClick={()=>setModal(true)} className="text-4xl xs:text-6xl cursor-pointer text-primary" /> : null}
+        {!matches ? (
+          <IoMdAddCircle
+            onClick={() => setModal(true)}
+            className="cursor-pointer text-4xl text-primary xs:text-6xl"
+          />
+        ) : null}
       </ul>
       {status === "authenticated" ? (
-        <>{matches ? <Button text="Tweet" handleClick={()=>setModal(true)} /> : null}</>
+        <>
+          {matches ? (
+            <Button text="Tweet" handleClick={() => setModal(true)} />
+          ) : null}
+        </>
       ) : null}
 
       {status === "authenticated" ? (
