@@ -9,6 +9,7 @@ const Right = () => {
   return (
     <div className="absolute right-0 top-0  min-h-screen xl:w-96 w-72  py-3 px-8 ">
       {pathnames.includes(router.pathname) ? null : <Search />}
+      
     </div>
   );
 };

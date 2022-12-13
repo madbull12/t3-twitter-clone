@@ -43,9 +43,9 @@ const StatusPage = () => {
         <Loader />
       ) : (
         
-        <div className="space-y-2 md:space-y-4">
+        <div className="space-y-2 md:space-y-4 pt-4 ">
           {tweetDetails?.originalTweet !== null ? <TweetComponent tweet={tweetDetails?.originalTweet} />:null}
-          <div className="flex items-center gap-x-4">
+          <div className="flex items-center gap-x-4 ">
             <Avatar image={tweetDetails?.user.image as string} />
             <p className="font-semibold">{tweetDetails?.user.name}</p>
           </div>
