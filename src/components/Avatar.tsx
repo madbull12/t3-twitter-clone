@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import React from "react";
 
 interface IProps {
@@ -6,13 +6,15 @@ interface IProps {
 }
 const Avatar = ({ image }: IProps) => {
   return (
-    <Image
-      alt="profile-image"
-      className="rounded-full"
-      src={image}
-      width={50}
-      height={50}
-    />
+    <div className="relative w-[30px] h-[30px] md:w-[50px] md:h-[50px]">
+      
+      <Image
+        alt="profile-image"
+        className="rounded-full"
+        src={image}
+        layout="fill"
+      />
+    </div>
   );
 };
 

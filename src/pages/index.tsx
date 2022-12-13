@@ -6,12 +6,11 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 import { trpc } from "../utils/trpc";
 import CreateTweet from "../components/CreateTweet";
-import TweetComponent from "../components/TweetComponent";
-import { ITweet } from "../../interface";
 import { v4 } from "uuid";
 import Body from "../components/Body";
 import { Ring } from "@uiball/loaders";
 import Loader from "../components/Loader";
+import TweetList from "../components/TweetList";
 
 const Home: NextPage = () => {
   const { data: tweets, isLoading } = trpc.tweet.getTweets.useQuery();
@@ -35,9 +34,7 @@ const Home: NextPage = () => {
             <Loader />
           ) : (
             <>
-              {tweets?.map((tweet) => (
-                <TweetComponent tweet={tweet} key={v4()} />
-              ))}
+              <TweetList tweets={tweets as Tweet[]} />
             </>
           )}
         </div>

@@ -7,7 +7,7 @@ interface IProps {
 }
 const MediaTools = ({ onSelectFile }: IProps) => {
   return (
-    <div className="mx-auto flex flex-[0.6] items-center gap-x-4 text-lg text-primary">
+    <div className=" flex flex-[0.6] items-center gap-x-4 text-base md:text-lg text-primary">
       <div>
         <input
           className=""

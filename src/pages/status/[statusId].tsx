@@ -1,6 +1,6 @@
 import { Prisma, Tweet } from "@prisma/client";
 import moment from "moment";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { BsArrowLeft } from "react-icons/bs";
@@ -51,9 +51,9 @@ const StatusPage = () => {
           </div>
           {tweetDetails?.originalTweet ? <p className="text-gray-500">Replying to <span className="text-primary">{tweetDetails?.originalTweet?.user.name}</span></p> :null}
 
-          <p className="text-2xl">{tweetDetails?.text}</p>
+          <p className="md:text-2xl text-lg">{tweetDetails?.text}</p>
           {tweetDetails?.image ? (
-            <div className="relative  h-96 w-3/4">
+            <div className="relative  h-96 md:w-3/4 w-full">
               {tweetDetails?.image.includes("video") ? (
                 <video controls className="relative h-full w-full rounded-2xl">
                   <source src={tweetDetails?.image} type="video/mp4"></source>
@@ -69,7 +69,7 @@ const StatusPage = () => {
               )}
             </div>
           ) : null}
-          <div className="flex items-center gap-x-2 ">
+          <div className="flex items-center gap-x-2 text-sm md:text-base ">
             <p className=" text-gray-500">
               {moment(tweetDetails?.createdAt).format("LT")}
             </p>

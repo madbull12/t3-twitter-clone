@@ -111,10 +111,10 @@ const TweetComponent = ({ tweet }: IProps) => {
       className="flex cursor-pointer items-start gap-x-4 p-4 transition-all duration-100 ease-in-out hover:bg-gray-100"
     >
       <Avatar image={tweet.user.image || ""} />
-      <div className="flex w-full  flex-col">
+      <div className="flex flex-1  flex-col">
         <div className="flex items-center gap-x-2">
-          <h1 className="text-lg font-semibold">{tweet?.user.name}</h1>
-          <p className="text-sm text-gray-400">
+          <h1 className=" text-base md:text-lg font-semibold">{tweet?.user.name}</h1>
+          <p className="text-xs md:text-sm text-gray-400">
             {hoursBetweenDates > 24 ? (
               <span>{moment(tweet.createdAt as Date).format("ll")}</span>
             ) : (
@@ -122,7 +122,7 @@ const TweetComponent = ({ tweet }: IProps) => {
             )}
           </p>
         </div>
-        <p>
+        <p className="text-sm md:text-base">
           {tweet.text?.split(" ").map((word: string) =>
             word.startsWith("#") ? (
               <span
@@ -153,7 +153,7 @@ const TweetComponent = ({ tweet }: IProps) => {
           )}
         </p>
         {tweet?.originalTweet ? (
-          <p className="text-gray-500">
+          <p className="text-gray-500 text-sm md:text-base">
             Replying to{" "}
             <span className="text-primary">
               {tweet.originalTweet.user.name}
@@ -185,13 +185,13 @@ const TweetComponent = ({ tweet }: IProps) => {
               status === "authenticated" ? setModal(true) : setLoginModal(true);
               setTweetId(tweet.id);
             }}
-            className="group cursor-pointer rounded-full flex gap-x-2 items-center p-2 hover:bg-blue-50"
+            className="group cursor-pointer rounded-full flex gap-x-2 items-center p-2 text-xs md:text-basetext-xs md:text-base hover:bg-blue-50"
           >
             <AiOutlineComment className="group-hover:text-primary" />
-            <p className="group-hover:text-primary">{tweet?.replies?.length}</p>
+            <p className="group-hover:text-primary ">{tweet?.replies?.length}</p>
           </div>
           <div
-            className="group flex cursor-pointer items-center gap-x-2 rounded-full  p-2 "
+            className="group flex cursor-pointer items-center gap-x-2 rounded-full text-xs md:text-base  p-2 "
             onClick={handleLike}
           >
             {(alreadyLiked !== null || hasLiked) &&
@@ -217,13 +217,13 @@ const TweetComponent = ({ tweet }: IProps) => {
               {tweet.likes.length}
             </p>
           </div>
-          <div className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50">
+          <div className="group cursor-pointer rounded-full text-xs md:text-base  p-2 hover:bg-blue-50">
             <AiOutlineRetweet className="group-hover:text-primary" />
           </div>
-          <div className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50">
+          <div className="group cursor-pointer rounded-full text-xs md:text-base  p-2 hover:bg-blue-50">
             <AiOutlineShareAlt className="group-hover:text-primary" />
           </div>
-          <div className="group cursor-pointer rounded-full  p-2 hover:bg-blue-50">
+          <div className="group cursor-pointer rounded-full  text-xs md:text-base p-2 hover:bg-blue-50">
             <IoAnalyticsOutline className="group-hover:text-primary" />
           </div>
         </div>
