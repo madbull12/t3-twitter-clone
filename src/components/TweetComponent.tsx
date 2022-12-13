@@ -108,7 +108,7 @@ const TweetComponent = ({ tweet }: IProps) => {
             })
           : setLoginModal(true);
       }}
-      className="flex cursor-pointer items-start gap-x-4 p-4 transition-all duration-100 ease-in-out hover:bg-gray-100"
+      className="flex cursor-pointer items-start gap-x-4 md:p-4 p-2 transition-all duration-100 ease-in-out hover:bg-gray-100"
     >
       <Avatar image={tweet.user.image || ""} />
       <div className="flex flex-1  flex-col">

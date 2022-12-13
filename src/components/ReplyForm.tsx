@@ -95,7 +95,7 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
           cols={50}
           
           onChange={(e) => setText(e.target.value)}
-          className="w-full resize-none text-base md:text-xl outline-none"
+          className="flex-1 resize-none text-base md:text-xl outline-none"
           placeholder="Tweet your reply"
         />
       </div>
@@ -118,7 +118,7 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
           )}
         </>
       )}
-      <div className="mt-4 flex justify-between items-center  ">
+      <div className="mt-4 flex justify-between items-center gap-x-2  ">
         <MediaTools onSelectFile={onSelectFile} />
 
         <Button text="Reply" />

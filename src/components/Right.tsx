@@ -6,7 +6,7 @@ const Right = () => {
   const router = useRouter();
 
   return (
-    <div className="absolute right-0 top-0 hidden min-h-screen w-96  py-3 px-8 lg:block">
+    <div className="absolute right-0 top-0 hidden min-h-screen w-80  py-3 px-8 lg:block">
       {router.pathname === "/search" ? null : <Search />}
     </div>
   );

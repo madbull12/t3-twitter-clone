@@ -14,7 +14,7 @@ const CreateModal = () => {
   return (
     <Backdrop>
         
-      <div ref={modalRef} className="relative mx-auto max-h-[500px] max-w-lg overflow-y-scroll rounded-2xl  bg-white p-4 text-black">
+      <div ref={modalRef} className="relative mx-auto max-h-[500px] max-w-xs md:max-w-lg overflow-y-scroll rounded-2xl  bg-white p-4 text-black">
         <CreateTweet />
       </div>
     </Backdrop>

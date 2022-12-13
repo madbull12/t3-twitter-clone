@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import React, { FC, useEffect } from "react";
+import useMediaQuery from "../../hooks/useMediaQuery";
 import { useCreateModal, useLoginModal, useReplyModal } from "../../lib/zustand";
 import CreateModal from "./CreateModal";
 import Footer from "./Footer";
@@ -17,6 +18,8 @@ const Layout = ({ children }: IProps) => {
   const { modal:createModal } = useCreateModal()
 
   const { status } = useSession();
+  const isNotTablet= useMediaQuery("(min-width:1024px)");
+
   useEffect(() => {
     if (replyModal || loginModal || createModal) {
       window.scrollTo(0, 0);
@@ -27,15 +30,15 @@ const Layout = ({ children }: IProps) => {
   }, [replyModal,loginModal,createModal]);
 
   return (
-    <div>
+    <>
       {replyModal ? <ReplyModal /> : null}
       {loginModal ? <LoginModal /> : null}
       {createModal ? <CreateModal /> : null}
       <Sidebar />
       {children}
-      <Right />
+      {isNotTablet ? <Right /> : null}
       {status==="unauthenticated" ? <Footer /> : null }
-    </div>
+    </>
   );
 };
 

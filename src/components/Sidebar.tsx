@@ -10,26 +10,29 @@ import Profile from "./Profile";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { IoMdAddCircle, IoMdLogIn, IoMdLogOut } from "react-icons/io";
 import { useCreateModal } from "../../lib/zustand";
-const links = [
-  {
-    name: "Home",
-    icon: <AiFillHome />,
-  },
-  {
-    name: "Explore",
-    icon: <RiHashtag />,
-  },
-  {
-    name: "Notifications",
-    icon: <AiFillBell />,
-  },
-];
+import { BiSearch } from "react-icons/bi";
+
 const Sidebar = () => {
   const { status } = useSession();
   const matches = useMediaQuery("(min-width: 1280px)");
+  const isNotTablet= useMediaQuery("(min-width:1024px)");
+  const links = [
+    {
+      name: "Home",
+      icon: <AiFillHome />,
+    },
+    {
+      name: "Explore",
+      icon: isNotTablet ? <RiHashtag /> : <BiSearch />,
+    },
+    {
+      name: "Notifications",
+      icon: <AiFillBell />,
+    },
+  ];
   const { setModal } = useCreateModal()
   return (
-    <div className="fixed left-0 top-0 flex min-h-screen w-20 flex-col items-center space-y-4 border border-gray-100  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
+    <div className="fixed left-0 top-0 flex min-h-screen w-14 xs:w-20 flex-col items-center space-y-4 border border-gray-100  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
       <div className="mb-2 grid h-12 w-12 cursor-pointer place-items-center  rounded-full transition-all duration-200 ease-in-out  hover:bg-blue-100">
         <BsTwitter className="text-3xl text-primary" />
       </div>
@@ -40,7 +43,7 @@ const Sidebar = () => {
             className="rounded-full  px-4  py-2 transition-all duration-200 ease-in-out  hover:bg-gray-100"
           >
             <Link href="/">
-              <div className="flex items-center gap-x-4 text-2xl">
+              <div className="flex items-center text-sm xs:text-xl gap-x-4 md:text-2xl">
                 <span>{link.icon}</span>
                 <span className="hidden xl:block ">{link.name}</span>
               </div>
@@ -48,7 +51,7 @@ const Sidebar = () => {
           </li>
         ))}
 
-        {!matches ? <IoMdAddCircle onClick={()=>setModal(true)} className="text-6xl cursor-pointer text-primary" /> : null}
+        {!matches ? <IoMdAddCircle onClick={()=>setModal(true)} className="text-4xl xs:text-6xl cursor-pointer text-primary" /> : null}
       </ul>
       {status === "authenticated" ? (
         <>{matches ? <Button text="Tweet" handleClick={()=>setModal(true)} /> : null}</>
@@ -69,7 +72,7 @@ const Sidebar = () => {
               <span className="">Sign out</span>
             </>
           ) : (
-            <IoMdLogOut className="text-4xl" />
+            <IoMdLogOut className="text-2xl xs:text-4xl" />
           )}
         </button>
       ) : (
