@@ -32,6 +32,7 @@ type TweetWithUser = Prisma.TweetGetPayload<{
       };
     };
     likes: true;
+    replis:true
   };
 }>;
 

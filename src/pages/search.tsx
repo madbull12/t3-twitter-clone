@@ -5,10 +5,13 @@ import Loader from "../components/Loader";
 import SearchHeader from "../components/SearchHeader";
 import TweetComponent from "../components/TweetComponent";
 import { trpc } from "../utils/trpc";
-import { User } from "@prisma/client";
+import { Prisma, Tweet, User } from "@prisma/client";
 import PeopleComponent from "../components/PeopleComponent";
 import NoResults from "../components/NoResults";
 import { v4 } from "uuid";
+import TweetList from "../components/TweetList";
+
+
 
 const SearchPage = () => {
   const router = useRouter();
@@ -38,9 +41,8 @@ const SearchPage = () => {
             <NoResults />
           ) : (
             <>
-              {searchResults?.map((result) => (
-                <TweetComponent tweet={result} key={v4()} />
-              ))}
+            <TweetList key={v4()} tweets={searchResults as Tweet[]} />
+           
             </>
           )}
         </>

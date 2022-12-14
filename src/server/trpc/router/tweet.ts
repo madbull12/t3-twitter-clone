@@ -145,12 +145,14 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              replies:true,
               originalTweet:{
                 include:{
                   user:true
                 }
               },
-              likes:true
+              likes:true,
+              
 
             },
             where: {
@@ -165,6 +167,8 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              replies:true,
+
               originalTweet:{
                 include:{
                   user:true
@@ -187,6 +191,8 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              replies:true,
+
               originalTweet:{
                 include:{
                   user:true
@@ -208,6 +214,8 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
+              replies:true,
+
               originalTweet:{
                 include:{
                   user:true
