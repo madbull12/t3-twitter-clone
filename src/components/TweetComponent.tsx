@@ -113,7 +113,7 @@ const TweetComponent = ({ tweet }: IProps) => {
       className="flex cursor-pointer items-start gap-x-2 p-2 transition-all duration-100 ease-in-out hover:bg-gray-100 md:gap-x-4 md:p-4"
     >
       <div className="flex-[0.1] ">
-        <Avatar image={tweet.user.image || ""} />
+        <Avatar image={tweet.user.image || ""} width={40} height={40} />
       </div>
       <div className="flex flex-1  flex-col">
         <div className="flex items-center gap-x-2">

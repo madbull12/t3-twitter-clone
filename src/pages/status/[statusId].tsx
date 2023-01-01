@@ -8,13 +8,10 @@ import { v4 } from "uuid";
 import Avatar from "../../components/Avatar";
 import Body from "../../components/Body";
 import Loader from "../../components/Loader";
+import NavFeed from "../../components/NavFeed";
 import ReplyForm from "../../components/ReplyForm";
 import TweetComponent from "../../components/TweetComponent";
 import { trpc } from "../../utils/trpc";
-
-
-
-
 
 const StatusPage = () => {
   const router: any = useRouter();
@@ -26,34 +23,36 @@ const StatusPage = () => {
     }
   );
 
-  const { data:replies } = trpc?.tweet.getTweetReplies.useQuery({
-    tweetId:statusId
-  })
+  const { data: replies } = trpc?.tweet.getTweetReplies.useQuery({
+    tweetId: statusId,
+  });
 
   return (
     <Body>
-      <div className="sticky top-0  z-50 flex items-center gap-x-2 md:gap-x-4  bg-white/30  backdrop-blur-lg">
-        <BsArrowLeft
-          className="cursor-pointer text-xl"
-          onClick={() => router.back()}
-        />
-        <h1 className="px-4 text-xl font-semibold">Tweet</h1>
-      </div>
+      <NavFeed title="Tweet" />
       {isLoading ? (
         <Loader />
       ) : (
-        
-        <div className="space-y-2 md:space-y-4 pt-4 ">
-          {tweetDetails?.originalTweet !== null ? <TweetComponent tweet={tweetDetails?.originalTweet} />:null}
+        <div className="space-y-2 p-4  md:space-y-4 ">
+          {tweetDetails?.originalTweet !== null ? (
+            <TweetComponent tweet={tweetDetails?.originalTweet} />
+          ) : null}
           <div className="flex items-center gap-x-4 ">
-            <Avatar image={tweetDetails?.user.image as string} />
+            <Avatar image={tweetDetails?.user.image as string} width={40} height={40} />
             <p className="font-semibold">{tweetDetails?.user.name}</p>
           </div>
-          {tweetDetails?.originalTweet ? <p className="text-gray-500">Replying to <span className="text-primary">{tweetDetails?.originalTweet?.user.name}</span></p> :null}
+          {tweetDetails?.originalTweet ? (
+            <p className="text-gray-500">
+              Replying to{" "}
+              <span className="text-primary">
+                {tweetDetails?.originalTweet?.user.name}
+              </span>
+            </p>
+          ) : null}
 
-          <p className="md:text-2xl text-lg">{tweetDetails?.text}</p>
+          <p className="text-lg md:text-2xl">{tweetDetails?.text}</p>
           {tweetDetails?.image ? (
-            <div className="relative  h-96 md:w-3/4 w-full">
+            <div className="relative  h-96 w-full md:w-3/4">
               {tweetDetails?.image.includes("video") ? (
                 <video controls className="relative h-full w-full rounded-2xl">
                   <source src={tweetDetails?.image} type="video/mp4"></source>
@@ -80,8 +79,8 @@ const StatusPage = () => {
           <div></div>
           <ReplyForm tweetId={tweetDetails?.id || ""} />
           <div>
-            {replies?.map((reply)=>(
-              <TweetComponent tweet={reply} key={v4()}/>
+            {replies?.map((reply) => (
+              <TweetComponent tweet={reply} key={v4()} />
             ))}
           </div>
         </div>

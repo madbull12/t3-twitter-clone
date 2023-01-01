@@ -7,7 +7,7 @@ const Profile = () => {
   const { data: session } = useSession();
   return (
     <div className="mt-4 flex  items-center gap-x-2">
-      <Avatar image={session?.user?.image || ""} />
+      <Avatar image={session?.user?.image || ""} width={40} height={40} />
       <p className="hidden font-semibold xl:block">{session?.user?.name}</p>
     </div>
   );

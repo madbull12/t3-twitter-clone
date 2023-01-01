@@ -62,6 +62,7 @@ model User {
   followers     Follows[] @relation("follower")
   followings    Follows[] @relation("following")
   likes         Like[]
+  profile       Profile?
 }
 
 model VerificationToken {
@@ -80,7 +81,7 @@ model Like {
   userId    String
   createdAt DateTime @default(now())
 
-  @@unique([userId,tweetId])
+  @@unique([userId, tweetId])
 }
 
 model Follows {
@@ -112,6 +113,16 @@ model Tweet {
   replies         Tweet[]   @relation("replies")
   hashtags        Hashtag[]
   likes           Like[]
+}
+
+model Profile {
+  id     String  @id @default(uuid())
+  bio    String?
+  user   User    @relation(fields: [userId], references: [id])
+  userId String  @unique
+  location String?
+  website String?
+  coverPhoto String?
 }
 
 // model Reply {

@@ -8,7 +8,7 @@ export const tweetRouter = router({
       z.object({
         text: z.string(),
         mediaUrl: z.string().nullable(),
-        hashtags:z.string().array().nullable()
+        hashtags: z.string().array().nullable(),
       })
     )
     .mutation(({ input, ctx }) => {
@@ -30,14 +30,14 @@ export const tweetRouter = router({
           },
           hashtags: {
             connectOrCreate: input?.hashtags?.map((name) => ({
-                where:{
-                  name
-                },
-                create:{
-                  name
-                }
+              where: {
+                name,
+              },
+              create: {
+                name,
+              },
             })),
-        },
+          },
         },
       });
     }),
@@ -90,8 +90,8 @@ export const tweetRouter = router({
               user: true,
             },
           },
-          likes:true,
-          replies:true
+          likes: true,
+          replies: true,
         },
         orderBy: {
           createdAt: "desc",
@@ -108,14 +108,23 @@ export const tweetRouter = router({
             user: true,
           },
         },
-        likes:true,
-        replies:true
-        
+        likes: true,
+        replies: true,
       },
       orderBy: {
         createdAt: "desc",
       },
     });
+  }),
+  getUserTweets:publicProcedure
+  .input(z.object({ userId:z.string() }))  
+  .query(({ ctx,input })=>{
+
+    return ctx.prisma.tweet.findMany({
+      where:{
+        userId:input.userId
+      }
+    })
   }),
   getSingleTweet: publicProcedure
     .input(z.object({ tweetId: z.string() }))
@@ -126,14 +135,14 @@ export const tweetRouter = router({
         },
         include: {
           user: true,
-          
-          originalTweet:{
-            include:{
-              user:true,
-              likes:true
-            }
+
+          originalTweet: {
+            include: {
+              user: true,
+              likes: true,
+            },
           },
-          likes:true
+          likes: true,
         },
       });
     }),
@@ -145,15 +154,13 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
-              replies:true,
-              originalTweet:{
-                include:{
-                  user:true
-                }
+              replies: true,
+              originalTweet: {
+                include: {
+                  user: true,
+                },
               },
-              likes:true,
-              
-
+              likes: true,
             },
             where: {
               text: {
@@ -167,14 +174,14 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
-              replies:true,
+              replies: true,
 
-              originalTweet:{
-                include:{
-                  user:true
-                }
+              originalTweet: {
+                include: {
+                  user: true,
+                },
               },
-              likes:true
+              likes: true,
             },
             where: {
               text: {
@@ -191,14 +198,14 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
-              replies:true,
+              replies: true,
 
-              originalTweet:{
-                include:{
-                  user:true
-                }
+              originalTweet: {
+                include: {
+                  user: true,
+                },
               },
-              likes:true
+              likes: true,
             },
             where: {
               text: {
@@ -214,14 +221,14 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             include: {
               user: true,
-              replies:true,
+              replies: true,
 
-              originalTweet:{
-                include:{
-                  user:true
-                }
+              originalTweet: {
+                include: {
+                  user: true,
+                },
               },
-              likes:true
+              likes: true,
             },
             where: {
               text: {
@@ -239,12 +246,12 @@ export const tweetRouter = router({
       return ctx.prisma.tweet.findMany({
         include: {
           user: true,
-          originalTweet:{
-            include:{
-              user:true
-            }
+          originalTweet: {
+            include: {
+              user: true,
+            },
           },
-          likes:true
+          likes: true,
         },
         where: {
           text: {
@@ -253,4 +260,5 @@ export const tweetRouter = router({
         },
       });
     }),
+
 });
