@@ -21,6 +21,7 @@ import { trpc } from "../utils/trpc";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { spawn } from "child_process";
+import { v4 } from "uuid";
 
 type TweetWithUser = Prisma.TweetGetPayload<{
   include: {
@@ -131,6 +132,7 @@ const TweetComponent = ({ tweet }: IProps) => {
           {tweet.text?.split(" ").map((word: string) =>
             word.startsWith("#") ? (
               <span
+                key={v4()}
                 onClick={(e) => {
                   e.stopPropagation();
                   router.replace(

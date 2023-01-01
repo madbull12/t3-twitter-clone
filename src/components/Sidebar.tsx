@@ -10,28 +10,36 @@ import Profile from "./Profile";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { IoMdAddCircle, IoMdLogIn, IoMdLogOut } from "react-icons/io";
 import { useCreateModal } from "../../lib/zustand";
-import { BiSearch } from "react-icons/bi";
+import { BiSearch, BiUser } from "react-icons/bi";
 
 const Sidebar = () => {
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const matches = useMediaQuery("(min-width: 1280px)");
   const isNotTablet = useMediaQuery("(min-width:1024px)");
   const links = [
     {
       name: "Home",
-      link:"/",
+      link: "/",
+      hidden: false,
       icon: <AiFillHome />,
     },
     {
       name: "Explore",
-      link:"/explore",
+      link: "/explore",
+      hidden: false,
       icon: isNotTablet ? <RiHashtag /> : <BiSearch />,
     },
     {
       name: "Notifications",
-      link:"/",
-
+      link: "/",
+      hidden: true,
       icon: <AiFillBell />,
+    },
+    {
+      name: "Profile",
+      link: `/${session?.user?.id}/${session?.user?.name}`,
+      hidden: true,
+      icon: <BiUser />,
     },
   ];
   const { setModal } = useCreateModal();
@@ -39,22 +47,42 @@ const Sidebar = () => {
     <div className="fixed left-0 top-0 flex min-h-screen w-14 flex-col items-center space-y-4 border border-gray-100 xs:w-20  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
       <div className="mb-2 grid h-12 w-12 cursor-pointer place-items-center  rounded-full transition-all duration-200 ease-in-out  hover:bg-blue-100">
         <Link href="/">
-          <BsTwitter className="text-xl md:text-2xl lg:text-3xl text-primary" />
+          <BsTwitter className="text-xl text-primary md:text-2xl lg:text-3xl" />
         </Link>
       </div>
       <ul className="flex flex-col items-center space-y-2 px-4 xl:items-start">
         {links.map((link) => (
-          <li
-            key={v4()}
-            className="rounded-full  px-4  py-2 transition-all duration-200 ease-in-out  hover:bg-gray-100"
-          >
-            <Link href={link?.link}>
-              <div className="flex items-center gap-x-4 text-sm xs:text-xl md:text-2xl">
-                <span>{link.icon}</span>
-                <span className="hidden xl:block ">{link.name}</span>
-              </div>
-            </Link>
-          </li>
+          <>
+            {link.hidden ? (
+              <>
+                {status === "authenticated" ? (
+                  <li
+                    key={v4()}
+                    className="rounded-full  px-4  py-2 transition-all duration-200 ease-in-out  hover:bg-gray-100"
+                  >
+                    <Link href={link?.link}>
+                      <div className="flex items-center gap-x-4 text-sm xs:text-xl md:text-2xl">
+                        <span>{link.icon}</span>
+                        <span className="hidden xl:block ">{link.name}</span>
+                      </div>
+                    </Link>
+                  </li>
+                ) : null}
+              </>
+            ) : (
+              <li
+                key={v4()}
+                className="rounded-full  px-4  py-2 transition-all duration-200 ease-in-out  hover:bg-gray-100"
+              >
+                <Link href={link?.link}>
+                  <div className="flex items-center gap-x-4 text-sm xs:text-xl md:text-2xl">
+                    <span>{link.icon}</span>
+                    <span className="hidden xl:block ">{link.name}</span>
+                  </div>
+                </Link>
+              </li>
+            )}
+          </>
         ))}
 
         {!matches ? (
