@@ -16,6 +16,7 @@ const Avatar = ({ image,height,width }: IProps) => {
         src={image}
         width={width}
         height={height}
+        objectFit="cover"
       />
     // {/* </div> */}
   );

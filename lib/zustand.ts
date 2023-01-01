@@ -36,3 +36,8 @@ export const useTweetId = create<TweetIdStore>((set)=>({
   tweetId:"",
   setTweetId:(value:string)=>set(()=>({ tweetId:value }))
 }))
+
+export const useEditProfileModal = create<Modal>((set)=>({
+  modal:false,
+  setModal:(value:boolean)=>set(()=>({ modal:value }))
+}));

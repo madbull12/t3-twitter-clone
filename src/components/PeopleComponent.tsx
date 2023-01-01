@@ -10,7 +10,7 @@ interface IProps {
 const PeopleComponent = ({ user }: IProps) => {
   return (
     <div className="flex items-start justify-between gap-x-4 p-2">
-      <Avatar image={user.image || ""} />
+      <Avatar image={user.image || ""} width={40} height={40} />
       <div>
         <h1 className="text-lg font-semibold">{user.name}</h1>
       </div>

@@ -93,7 +93,7 @@ const CreateTweet = () => {
   };
   return (
     <div className="mt-4 flex items-start gap-x-4 border-b p-2  ">
-      <Avatar image={session?.user?.image || ""} />
+      <Avatar image={session?.user?.image || ""} width={40} height={40} />
       <form className="flex-1 space-y-3" onSubmit={handleSubmit}>
         <textarea
           cols={50}

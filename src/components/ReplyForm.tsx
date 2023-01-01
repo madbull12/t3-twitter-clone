@@ -89,7 +89,7 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
       <div className="flex items-start gap-x-4">
-        <Avatar image={session?.user?.image || ""} />
+        <Avatar image={session?.user?.image || ""} width={40} height={40} />
         <textarea
           ref={textRef}
           cols={50}
