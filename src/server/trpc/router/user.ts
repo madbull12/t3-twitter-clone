@@ -23,7 +23,9 @@ export const userRouter = router({
           id: input?.userId,
         },
         include:{
-            profile:true
+            profile:true,
+            followers:true,
+            followings:true,
         }
       });
     }),
