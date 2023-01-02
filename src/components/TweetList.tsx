@@ -4,6 +4,7 @@ import { trpc } from "../utils/trpc";
 import Loader from "./Loader";
 import TweetComponent from "../components/TweetComponent";
 import { Tweet } from "@prisma/client";
+import { TweetWithUser } from "../../interface";
 
 const TweetList = ({ tweets }: { tweets: Tweet[] }) => {
   const [itemCount, setItemCount] = useState(5);
@@ -11,7 +12,7 @@ const TweetList = ({ tweets }: { tweets: Tweet[] }) => {
     <div>
       <>
         {tweets?.slice(0, itemCount).map((tweet) => (
-          <TweetComponent tweet={tweet} key={v4()} />
+          <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
         ))}
       </>
       {tweets?.length > 5 ? (
