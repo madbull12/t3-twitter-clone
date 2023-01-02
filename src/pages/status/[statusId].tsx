@@ -1,10 +1,12 @@
 import { Prisma, Tweet } from "@prisma/client";
 import moment from "moment";
 import Image from "next/legacy/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { v4 } from "uuid";
+import { TweetWithUser } from "../../../interface";
 import Avatar from "../../components/Avatar";
 import Body from "../../components/Body";
 import Loader from "../../components/Loader";
@@ -35,11 +37,11 @@ const StatusPage = () => {
       ) : (
         <div className="space-y-2 p-4  md:space-y-4 ">
           {tweetDetails?.originalTweet !== null ? (
-            <TweetComponent tweet={tweetDetails?.originalTweet} />
+            <TweetComponent tweet={tweetDetails?.originalTweet as TweetWithUser} />
           ) : null}
           <div className="flex items-center gap-x-4 ">
             <Avatar image={tweetDetails?.user.image as string} width={40} height={40} />
-            <p className="font-semibold">{tweetDetails?.user.name}</p>
+            <Link href={`/${tweetDetails?.user.id}/${tweetDetails?.user.name}`} className="hover:underline font-semibold">{tweetDetails?.user.name}</Link>
           </div>
           {tweetDetails?.originalTweet ? (
             <p className="text-gray-500">

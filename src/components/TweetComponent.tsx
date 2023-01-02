@@ -1,7 +1,7 @@
 import { Tweet, User } from "@prisma/client";
 import Image from "next/legacy/image";
 import React, { useState } from "react";
-import { ITweet } from "../../interface";
+import { ITweet, TweetWithUser } from "../../interface";
 import moment from "moment";
 import ReactTimeAgo from "react-time-ago";
 import { IoAnalyticsOutline } from "react-icons/io5";
@@ -23,22 +23,8 @@ import { useSession } from "next-auth/react";
 import { spawn } from "child_process";
 import { v4 } from "uuid";
 
-type TweetWithUser = Prisma.TweetGetPayload<{
-  include: {
-    user: true;
-
-    originalTweet: {
-      include: {
-        user: true;
-      };
-    };
-    likes: true;
-    replis:true
-  };
-}>;
-
 interface IProps {
-  tweet: TweetWithUser | any;
+  tweet:TweetWithUser
 }
 
 const TweetComponent = ({ tweet }: IProps) => {
@@ -117,9 +103,9 @@ const TweetComponent = ({ tweet }: IProps) => {
       </div>
       <div className="flex flex-1  flex-col">
         <div className="flex items-center gap-x-2">
-          <h1 className=" text-sm font-semibold  xs:text-base md:text-lg">
+          <Link href={`/${tweet?.user.id}/${tweet?.user.name}`} className="hover:underline text-sm font-semibold  xs:text-base md:text-lg">
             {tweet?.user.name}
-          </h1>
+          </Link>
           <p className="text-xs text-gray-400 md:text-sm">
             {hoursBetweenDates > 24 ? (
               <span>{moment(tweet.createdAt as Date).format("ll")}</span>

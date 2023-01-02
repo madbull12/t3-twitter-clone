@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import useOnClickOutside from "../../hooks/useOutsideClick";
 import Backdrop from "./Backdrop";
@@ -16,7 +16,7 @@ import { toast } from "react-hot-toast";
 type Profile = {
   name: string;
   coverPhoto: string | null;
-  image: string 
+  image: string;
   bio: string;
   location: string;
   website: string;
@@ -26,8 +26,8 @@ const EditProfileModal = () => {
   const modalRef = useRef<HTMLFormElement>(null);
   const { data: session } = useSession();
   const utils = trpc.useContext();
-  let imageUrl:string;
-  let coverPhotoUrl:string;
+  let imageUrl: string;
+  let coverPhotoUrl: string;
   const {
     // upload: imageUpload,
     onSelectFile: onSelectFileImage,
@@ -45,7 +45,7 @@ const EditProfileModal = () => {
     // mediaUrl:coverPhotoUrl
   } = useMediaUpload();
   const { mutateAsync: editProfile } = trpc.profile.upsertProfile.useMutation({
-    onMutate:()=>{
+    onMutate: () => {
       utils.user.getUserProfile.cancel();
       const optimisticUpdate = utils.user.getUserProfile.getData();
       if (optimisticUpdate) {
@@ -60,8 +60,6 @@ const EditProfileModal = () => {
     userId: session?.user?.id as string,
   });
 
-
-
   const { setModal } = useEditProfileModal();
   useOnClickOutside(modalRef, () => {
     setModal(false);
@@ -73,8 +71,7 @@ const EditProfileModal = () => {
     formState: { errors },
   } = useForm<Profile>();
 
-
-  const imageUpload = async() => {
+  const imageUpload = async () => {
     const formData = new FormData();
     formData.append("file", imageSelectedFile);
     formData.append("upload_preset", "xap2a5k4");
@@ -91,10 +88,10 @@ const EditProfileModal = () => {
     ).then((res) => res.json());
 
     imageUrl = res.secure_url;
-    console.log(imageUrl)
-  }
+    console.log(imageUrl);
+  };
 
-  const coverPhotoUpload = async() => {
+  const coverPhotoUpload = async () => {
     const formData = new FormData();
     formData.append("file", coverPhotoSelectedFile);
     formData.append("upload_preset", "xap2a5k4");
@@ -111,26 +108,22 @@ const EditProfileModal = () => {
     ).then((res) => res.json());
 
     coverPhotoUrl = res.secure_url;
-  }
+  };
 
   const onSubmit: SubmitHandler<Profile> = async (data) => {
-
-    if(imageSelectedFile) {
-      await imageUpload()
+    if (imageSelectedFile) {
+      await imageUpload();
     }
-    if(coverPhotoSelectedFile) {
-     await coverPhotoUpload();
-
+    if (coverPhotoSelectedFile) {
+      await coverPhotoUpload();
     }
 
-    const mutatedData:Profile = {
+    const mutatedData: Profile = {
       ...data,
-      image:imageUrl  ?? userProfile?.image as string,
-      coverPhoto:coverPhotoUrl ?? userProfile?.profile?.coverPhoto as string ?? null
-
-    } 
-
-
+      image: imageUrl ?? (userProfile?.image as string),
+      coverPhoto:
+        coverPhotoUrl ?? (userProfile?.profile?.coverPhoto as string) ?? null,
+    };
 
     toast.promise(editProfile(mutatedData), {
       success: "Profile saved",
@@ -138,12 +131,10 @@ const EditProfileModal = () => {
       error: (err) => "Oops.. something went wrong " + err,
     });
 
-    setModal(false)
-
-
+    setModal(false);
   };
 
-  console.log(imagePreview)
+  console.log(imagePreview);
 
   return (
     <Backdrop>
@@ -153,16 +144,21 @@ const EditProfileModal = () => {
         className="mx-auto h-[500px] w-1/2 overflow-y-scroll  rounded-2xl bg-white"
       >
         <header className="flex items-center justify-between gap-x-4 p-4">
-          <IoMdClose className="text-xl" />
+          <IoMdClose className="text-xl cursor-pointer" onClick={()=>setModal(false)} />
           <p className="mr-auto text-xl font-semibold">Edit profile</p>
           <button className="rounded-full bg-black px-3 py-1 text-xs font-semibold text-white sm:text-sm">
             Save
           </button>
         </header>
-        <div className="grid h-48 relative w-full place-items-center bg-gray-200 ">
-          {coverPhotoPreview ? (
-            <Image layout="fill" src={coverPhotoPreview} objectFit="cover" />
+        <div className="relative grid h-48 w-full place-items-center bg-gray-200 ">
+          {(coverPhotoPreview || userProfile?.profile?.coverPhoto) ? (
+            <Image
+              layout="fill"
+              src={coverPhotoPreview ?? userProfile?.profile?.coverPhoto as string}
+              objectFit="cover"
+            />
           ) : null}
+
           <input
             className=""
             id="coverSelect"
@@ -175,7 +171,7 @@ const EditProfileModal = () => {
           />
           <label
             htmlFor="coverSelect"
-            className="grid h-12 w-12 cursor-pointer place-items-center rounded-full bg-gray-500 text-3xl text-white transition-all ease-in-out hover:bg-gray-600"
+            className="grid z-50 h-12 w-12 cursor-pointer place-items-center rounded-full bg-gray-500 text-3xl text-white transition-all ease-in-out hover:bg-gray-600"
           >
             <AiFillCamera />
           </label>
@@ -202,7 +198,7 @@ const EditProfileModal = () => {
             alt="profile"
             layout="fill"
             objectFit="cover"
-            src={imagePreview ?? userProfile?.image as string}
+            src={imagePreview ?? (userProfile?.image as string)}
           />
 
           {/* <label htmlFor="imageSelect" className="cursor-pointer">
