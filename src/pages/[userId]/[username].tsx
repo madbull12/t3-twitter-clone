@@ -125,7 +125,15 @@ const ProfilePage = () => {
         ))}
       </nav>
       {!isLoadingUserTweets ? (
-        <TweetList tweets={userTweets as TweetWithUser[]} />
+        <>
+        {userTweets?.length !== 0 ?(
+          <TweetList tweets={userTweets as TweetWithUser[]} />
+
+        ):(
+          <h1 className="flex justify-center items-center font-bold  text-2xl py-16">No tweets</h1>
+        )}
+        
+        </>
       ) : (
         <Loader />
       )}
