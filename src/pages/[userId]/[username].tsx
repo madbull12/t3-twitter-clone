@@ -82,7 +82,7 @@ const ProfilePage = () => {
         {session?.user?.id === userId ? (
           <button
             onClick={() => setModal(true)}
-            className="mt-4 rounded-full border border-gray-300 bg-transparent px-4 py-2 font-semibold hover:bg-gray-200"
+            className="mt-4 rounded-full border border-gray-300 bg-transparent px-2 py-1 whitespace-nowrap text-xs sm:text-base sm:px-4 sm:py-2 font-semibold hover:bg-gray-200"
           >
             Edit profile
           </button>
@@ -95,7 +95,7 @@ const ProfilePage = () => {
           {userProfile?.profile?.bio || "No bio added"}
         </p>
 
-        <div className="mt-4 flex items-center gap-x-4 text-gray-500">
+        <div className="mt-4 flex text-sm md:text-base flex-col sm:flex-row items-start sm:items-center gap-x-4 text-gray-500">
           <div className="flex items-center gap-x-2">
             <IoLocation />
             <p>{userProfile?.profile?.location}</p>
@@ -119,7 +119,7 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <nav className="mt-4 flex list-none items-center justify-between gap-x-4 px-2 text-sm font-semibold md:px-4 md:text-base">
+      <nav className="mt-4 whitespace-nowrap flex list-none items-center justify-between sm:gap-x-4 gap-x-2 px-2 text-xs xs:text-sm font-semibold md:px-4 md:text-base">
         {tweetLinks.map((link) => (
           <li className={`cursor-pointer text-gray-500 ${link.slug === _link ? "border-b-2 border-blue-500" : null}`} onClick={()=>setLink(link.slug)}>{link.name}</li>
         ))}
