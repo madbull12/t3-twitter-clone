@@ -123,12 +123,12 @@ const EditProfileModal = () => {
 
     }
 
-    const mutatedData = {
+    const mutatedData:Profile = {
       ...data,
       image:imageUrl  ?? userProfile?.image as string,
       coverPhoto:coverPhotoUrl ?? userProfile?.profile?.coverPhoto as string ?? null
 
-    } satisfies Profile
+    } 
 
 
 
