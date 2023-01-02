@@ -116,16 +116,96 @@ export const tweetRouter = router({
       },
     });
   }),
-  getUserTweets:publicProcedure
-  .input(z.object({ userId:z.string() }))  
-  .query(({ ctx,input })=>{
+  getUserTweets: publicProcedure
+    .input(z.object({ userId: z.string(), link: z.string() }))
+    .query(({ ctx, input }) => {
+      switch (input.link) {
+        case "":
+          return ctx.prisma.tweet.findMany({
+            where: {
+              userId: input.userId,
+              NOT: {
+                originalTweet: {
+                  isNot: null,
+                },
+              },
+            },
+            include: {
+              user: true,
+              originalTweet: {
+                include: {
+                  user: true,
+                },
+              },
+              likes: true,
+              replies: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          });
 
-    return ctx.prisma.tweet.findMany({
-      where:{
-        userId:input.userId
+        case "tweets&replies":
+          return ctx.prisma.tweet.findMany({
+            where: {
+              userId: input.userId,
+            },
+            include: {
+              user: true,
+              originalTweet: {
+                include: {
+                  user: true,
+                },
+              },
+              likes: true,
+              replies: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          });
+        case "media":
+          return ctx.prisma.tweet.findMany({
+            where: {
+              userId: input.userId,
+            },
+            include: {
+              user: true,
+              originalTweet: {
+                include: {
+                  user: true,
+                },
+              },
+              likes: true,
+              replies: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          });
+        case "likes":
+          return ctx.prisma.tweet.findMany({
+            where: {
+              userId: input.userId,
+            },
+            include: {
+              user: true,
+              originalTweet: {
+                include: {
+                  user: true,
+                },
+              },
+              likes: true,
+              replies: true,
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          });
+        default:
+          break;
       }
-    })
-  }),
+    }),
   getSingleTweet: publicProcedure
     .input(z.object({ tweetId: z.string() }))
     .query(({ ctx, input }) => {
@@ -260,5 +340,4 @@ export const tweetRouter = router({
         },
       });
     }),
-
 });

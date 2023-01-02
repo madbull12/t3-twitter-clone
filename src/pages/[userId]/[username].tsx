@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useEditProfileModal } from "../../../lib/zustand";
 import Avatar from "../../components/Avatar";
 import Body from "../../components/Body";
@@ -12,20 +12,48 @@ import { IoIosCalendar } from "react-icons/io";
 import moment from "moment";
 import { AiOutlineLink } from "react-icons/ai";
 import Link from "next/link";
+import TweetList from "../../components/TweetList";
+import { TweetWithUser } from "../../../interface";
+import Loader from "../../components/Loader";
 
 const ProfilePage = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const { setModal } = useEditProfileModal();
+  const [_link, setLink] = useState<string>("");
+
+  const tweetLinks = [
+    {
+      name: "Tweets",
+      slug: "",
+    },
+    {
+      name: "Tweets & replies",
+      slug: "tweets&replies",
+    },
+    {
+      name: "Media",
+      slug: "media",
+    },
+    {
+      name: "Likes",
+      slug: "likes",
+    },
+  ];
 
   const { username, userId } = router.query;
 
-  const { data: userTweets } = trpc.tweet.getUserTweets.useQuery({
-    userId: userId as string,
-  });
-  const { data: userProfile } = trpc.user.getUserProfile.useQuery({
-    userId: userId as string,
-  });
+  const { data: userTweets, isLoading: isLoadingUserTweets } =
+    trpc.tweet.getUserTweets.useQuery({
+      userId: userId as string,
+      link:_link,
+    });
+  const { data: userProfile, isLoading: isLoadingUserProfile } =
+    trpc.user.getUserProfile.useQuery({
+      userId: userId as string,
+    });
+
+  if (isLoadingUserProfile) return <Loader />;
 
   console.log(userProfile);
 
@@ -91,6 +119,16 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+      <nav className="mt-4 flex list-none items-center justify-between gap-x-4 px-2 text-sm font-semibold md:px-4 md:text-base">
+        {tweetLinks.map((link) => (
+          <li className={`cursor-pointer text-gray-500 ${link.slug === _link ? "border-b-2 border-blue-500" : null}`} onClick={()=>setLink(link.slug)}>{link.name}</li>
+        ))}
+      </nav>
+      {!isLoadingUserTweets ? (
+        <TweetList tweets={userTweets as TweetWithUser[]} />
+      ) : (
+        <Loader />
+      )}
     </Body>
   );
 };
