@@ -119,7 +119,6 @@ export const tweetRouter = router({
   getUserTweets: publicProcedure
     .input(z.object({ userId: z.string(), link: z.string() }))
     .query(({ ctx, input }) => {
-      const userId = ctx.session?.user?.id;
       switch (input.link) {
         case "":
           return ctx.prisma.tweet.findMany({
@@ -193,7 +192,7 @@ export const tweetRouter = router({
               userId: input.userId,
               likes:{
                 some:{
-                  userId
+                  userId:input.userId
                 }
               }
             },
