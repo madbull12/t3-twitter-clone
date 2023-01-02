@@ -58,6 +58,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   tweets        Tweet[]
+  createdAt     DateTime  @default(now())
   // replies       Reply[]
   followers     Follows[] @relation("follower")
   followings    Follows[] @relation("following")
@@ -116,12 +117,12 @@ model Tweet {
 }
 
 model Profile {
-  id     String  @id @default(uuid())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId String  @unique
-  location String?
-  website String?
+  id         String  @id @default(uuid())
+  bio        String?
+  user       User    @relation(fields: [userId], references: [id])
+  userId     String  @unique
+  location   String?
+  website    String?
   coverPhoto String?
 }
 

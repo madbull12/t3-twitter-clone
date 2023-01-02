@@ -8,7 +8,7 @@ export const profileRouter = router({
       z.object({
         bio: z.string().max(160,"Bio can't be too long").nullable(),
         location: z.string().max(30,"Location can't be too long").nullable(),
-        website: z.string().max(30,"Website can't be too long").nullable(),
+        website: z.string().max(100,"Website can't be too long").nullable(),
         coverPhoto: z.string().nullable(),
         name:z.string().max(50,"Name can't be too long").nullable(),
         image:z.string().nullable()
