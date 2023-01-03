@@ -4,12 +4,11 @@ import Search from "./Search";
 
 const Right = () => {
   const router = useRouter();
-  const pathnames = ["/search","/explore"]
+  const pathnames = ["/search", "/explore"];
 
   return (
-    <div className="absolute right-0 top-0  min-h-screen xl:w-80 w-72  py-3 px-8 ">
+    <div className="absolute right-0 top-0  min-h-screen w-72 py-3  px-8 xl:w-80 ">
       {pathnames.includes(router.pathname) ? null : <Search />}
-      
     </div>
   );
 };

@@ -33,7 +33,7 @@ const Layout = ({ children }: IProps) => {
   }, [replyModal,loginModal,createModal,profileModal]);
 
   return (
-    <>
+    <main className="max-w-screen-2xl mx-auto relative">
       {replyModal ? <ReplyModal /> : null}
       {loginModal ? <LoginModal /> : null}
       {createModal ? <CreateModal /> : null}
@@ -42,7 +42,7 @@ const Layout = ({ children }: IProps) => {
       {children}
       {isNotTablet ? <Right /> : null}
       {status==="unauthenticated" ? <Footer /> : null }
-    </>
+    </main>
   );
 };
 
