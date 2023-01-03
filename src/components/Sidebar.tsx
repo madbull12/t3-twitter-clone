@@ -86,10 +86,14 @@ const Sidebar = () => {
         ))}
 
         {!matches ? (
-          <IoMdAddCircle
-            onClick={() => setModal(true)}
-            className="cursor-pointer text-4xl text-primary xs:text-6xl"
-          />
+          <>
+            {status === "authenticated" ? (
+              <IoMdAddCircle
+                onClick={() => setModal(true)}
+                className="cursor-pointer text-4xl text-primary xs:text-6xl"
+              />
+            ) : null}
+          </>
         ) : null}
       </ul>
       {status === "authenticated" ? (

@@ -23,9 +23,12 @@ import { useSession } from "next-auth/react";
 import { spawn } from "child_process";
 import { v4 } from "uuid";
 import MenuDropdown from "./MenuDropdown";
+import useMediaQuery from "../../hooks/useMediaQuery";
+import { BiDotsHorizontal } from "react-icons/bi";
+import BottomMenuModal from "./BottomMenuModal";
 
 interface IProps {
-  tweet:TweetWithUser
+  tweet: TweetWithUser;
 }
 
 const TweetComponent = ({ tweet }: IProps) => {
@@ -88,7 +91,7 @@ const TweetComponent = ({ tweet }: IProps) => {
     }
   };
 
-  
+  const tablet = useMediaQuery("(min-width:1024px)");
 
   return (
     <div
@@ -99,17 +102,18 @@ const TweetComponent = ({ tweet }: IProps) => {
             })
           : setLoginModal(true);
       }}
-      className="flex relative cursor-pointer items-start gap-x-2 p-2 transition-all duration-100 ease-in-out hover:bg-gray-100 md:gap-x-4 md:p-4"
+      className="relative flex cursor-pointer items-start gap-x-2 p-2 transition-all duration-100 ease-in-out hover:bg-gray-100 md:gap-x-4 md:p-4"
     >
-      <div className="absolute top-2 right-2" onClick={(e)=>e.stopPropagation()}>
-        <MenuDropdown tweetId={tweet.id} />
-      </div>
       <div className="flex-[0.1] ">
         <Avatar image={tweet.user.image || ""} width={40} height={40} />
       </div>
+
       <div className="flex flex-1  flex-col">
         <div className="flex items-center gap-x-2">
-          <Link href={`/${tweet?.user.id}/${tweet?.user.name}`} className="hover:underline text-sm font-semibold  xs:text-base md:text-lg">
+          <Link
+            href={`/${tweet?.user.id}/${tweet?.user.name}`}
+            className="text-sm font-semibold hover:underline  xs:text-base md:text-lg"
+          >
             {tweet?.user.name}
           </Link>
           <p className="text-xs text-gray-400 md:text-sm">
@@ -161,19 +165,19 @@ const TweetComponent = ({ tweet }: IProps) => {
         ) : null}
 
         {tweet?.image ? (
-          <div className="relative  h-96 md:w-3/4 w-full">
+          <div className="relative  h-96 w-full md:w-3/4">
             {tweet?.image.includes("video") ? (
               <video controls className="relative h-full w-full rounded-2xl">
                 <source src={tweet?.image} type="video/mp4"></source>
               </video>
             ) : (
-                <Image
-                  objectFit="cover"
-                  alt={tweet?.text ?? ""}
-                  src={tweet?.image}
-                  className="rounded-2xl"
-                  layout="fill"
-                />
+              <Image
+                objectFit="cover"
+                alt={tweet?.text ?? ""}
+                src={tweet?.image}
+                className="rounded-2xl"
+                layout="fill"
+              />
             )}
           </div>
         ) : null}
@@ -229,6 +233,22 @@ const TweetComponent = ({ tweet }: IProps) => {
           </div>
         </div>
       </div>
+
+      {tablet ? (
+        <div onClick={(e) => e.stopPropagation()}>
+          <MenuDropdown tweetId={tweet.id} />
+        </div>
+      ) : (
+        <div onClick={(e) => e.stopPropagation()}>
+          <label htmlFor="my-modal-6">
+            <BiDotsHorizontal className="text-xl text-gray-400" />
+
+          </label>
+          <input type="checkbox" id="my-modal-6" className="modal-toggle" />
+          <BottomMenuModal tweetId={tweet.id} />
+          
+        </div>
+      )}
     </div>
   );
 };

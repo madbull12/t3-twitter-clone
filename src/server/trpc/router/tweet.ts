@@ -41,6 +41,26 @@ export const tweetRouter = router({
         },
       });
     }),
+  deleteTweet: publicProcedure
+
+    .input(
+      z.object({
+        tweetId: z.string(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
+
+      return ctx.prisma.tweet.delete({
+        where: {
+          id: input.tweetId,
+        },
+      });
+    }),
   createReply: publicProcedure
     .input(
       z.object({
