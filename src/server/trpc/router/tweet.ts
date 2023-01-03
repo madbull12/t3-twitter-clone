@@ -49,11 +49,18 @@ export const tweetRouter = router({
       })
     )
     .mutation(({ input, ctx }) => {
+      const userId = ctx.session?.user?.id;
       if (!ctx.session) {
         throw new Error(
           "You have to be logged in in order to perform this action!"
         );
       }
+
+      // if(userId !== input?.userId) {
+      //   throw new Error(
+      //     "Can't preform this action"
+      //   );
+      // }
 
       return ctx.prisma.tweet.delete({
         where: {
@@ -94,6 +101,26 @@ export const tweetRouter = router({
           },
         },
       });
+    }),
+
+  getUniqueTweet: publicProcedure
+    .input(z.object({
+      tweetId:z.string()
+    }))
+    .query(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      
+      return ctx.prisma.tweet.findFirst({
+        where:{
+          AND:[
+            {
+              userId
+            },{
+              id:input.tweetId
+            }
+          ]
+        }
+      })
     }),
 
   getTweetReplies: publicProcedure

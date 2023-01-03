@@ -2,6 +2,8 @@ import { useSession } from "next-auth/react";
 import React from "react";
 import { toast } from "react-hot-toast";
 import { BiDotsHorizontal } from "react-icons/bi";
+import { IoMdClose } from "react-icons/io";
+import useMediaQuery from "../../hooks/useMediaQuery";
 import { trpc } from "../utils/trpc";
 
 const MenuDropdown = ({ tweetId }: { tweetId: string }) => {
@@ -34,32 +36,67 @@ const MenuDropdown = ({ tweetId }: { tweetId: string }) => {
       error: (err) => "Oops.. something went wrong " + err,
     });
   };
+  const tablet = useMediaQuery("(min-width:768px)");
 
   return (
     <div className="dropdown ">
-      <label tabIndex={0} className=" cursor-pointer  relative ">
-        <BiDotsHorizontal className="text-xl text-gray-400" />
-      </label>
-      {isYourTweet ? (
-        <ul
-          tabIndex={0}
-          className="dropdown-content menu absolute top-0  rounded-box w-52 bg-base-100 p-2 shadow"
-        >
-          <li onClick={handleDeleteTweet}>
-            <a className="text-red-500">Delete</a>
-          </li>
-    
-        </ul>
+      {tablet ? (
+        <label tabIndex={0} className=" relative  cursor-pointer ">
+          <BiDotsHorizontal className="text-xl text-gray-400" />
+        </label>
       ) : (
-        <ul
-          tabIndex={0}
-          className="dropdown-content absolute top-0 menu rounded-box w-52 bg-base-100 p-2 shadow"
-        >
-          <li>
-            <a>Bookmark</a>
-          </li>
-  
-        </ul>
+        <label htmlFor="my-modal-6">
+          <BiDotsHorizontal className="text-xl text-gray-400" />
+        </label>
+      )}
+
+      {tablet ? (
+        <>
+          {isYourTweet ? (
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu rounded-box absolute  top-0 w-52 bg-base-100 p-2 shadow"
+            >
+              <li onClick={handleDeleteTweet}>
+                <a className="text-red-500">Delete</a>
+              </li>
+            </ul>
+          ) : (
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu rounded-box absolute top-0 w-52 bg-base-100 p-2 shadow"
+            >
+              <li>
+                <a>Bookmark</a>
+              </li>
+            </ul>
+          )}{" "}
+        </>
+      ) : (
+        <>
+          <input type="checkbox" id="my-modal-6" className="modal-toggle" />
+
+          <div className="modal modal-bottom md:modal-middle">
+            <div className="modal-box flex flex-col items-center">
+              {isYourTweet ? (
+                <h3
+                  className="text-lg font-bold text-red-500"
+                  onClick={handleDeleteTweet}
+                >
+                  Delete
+                </h3>
+              ) : (
+                <h3 className="text-lg font-bold ">Bookmark</h3>
+              )}
+
+              <div className="modal-action self-end">
+                <label htmlFor="my-modal-6">
+                  <IoMdClose className="text-xl" />
+                </label>
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

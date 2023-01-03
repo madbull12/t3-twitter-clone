@@ -106,7 +106,7 @@ model Tweet {
   id              String    @id @default(uuid())
   createdAt       DateTime  @default(now())
   text            String?
-  userId          String
+  userId          String    
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   image           String?
   originalTweet   Tweet?    @relation("replies", fields: [originalTweetId], references: [id], onDelete: Cascade)

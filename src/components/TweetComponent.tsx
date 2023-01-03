@@ -91,7 +91,7 @@ const TweetComponent = ({ tweet }: IProps) => {
     }
   };
 
-  const tablet = useMediaQuery("(min-width:1024px)");
+  const tablet = useMediaQuery("(min-width:768px)");
 
   return (
     <div
@@ -234,21 +234,9 @@ const TweetComponent = ({ tweet }: IProps) => {
         </div>
       </div>
 
-      {tablet ? (
         <div onClick={(e) => e.stopPropagation()}>
           <MenuDropdown tweetId={tweet.id} />
         </div>
-      ) : (
-        <div onClick={(e) => e.stopPropagation()}>
-          <label htmlFor="my-modal-6">
-            <BiDotsHorizontal className="text-xl text-gray-400" />
-
-          </label>
-          <input type="checkbox" id="my-modal-6" className="modal-toggle" />
-          <BottomMenuModal tweetId={tweet.id} />
-          
-        </div>
-      )}
     </div>
   );
 };
