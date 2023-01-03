@@ -143,14 +143,14 @@ const EditProfileModal = () => {
         ref={modalRef}
         className="mx-auto h-[500px] w-1/2 overflow-y-scroll  rounded-2xl bg-white"
       >
-        <header className="flex items-center justify-between gap-x-4 p-4">
-          <IoMdClose className="text-xl cursor-pointer" onClick={()=>setModal(false)} />
-          <p className="mr-auto text-xl font-semibold">Edit profile</p>
-          <button className="rounded-full bg-black px-3 py-1 text-xs font-semibold text-white sm:text-sm">
+        <header className="flex items-center justify-between gap-x-1 xs:gap-x-2 sm:gap-x-4 p-4">
+          <IoMdClose className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer" onClick={()=>setModal(false)} />
+          <p className="mr-auto text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-semibold whitespace-nowrap">Edit profile</p>
+          <button className="rounded-full bg-black px-2 md:px-3 py-1 text-xs font-semibold text-white sm:text-sm">
             Save
           </button>
         </header>
-        <div className="relative grid h-48 w-full place-items-center bg-gray-200 ">
+        <div className="relative grid h-32 xs:h-36 sm:h-44 lg:h-48 w-full place-items-center bg-gray-200 ">
           {(coverPhotoPreview || userProfile?.profile?.coverPhoto) ? (
             <Image
               layout="fill"
@@ -171,12 +171,12 @@ const EditProfileModal = () => {
           />
           <label
             htmlFor="coverSelect"
-            className="grid z-50 h-12 w-12 cursor-pointer place-items-center rounded-full bg-gray-500 text-3xl text-white transition-all ease-in-out hover:bg-gray-600"
+            className="grid z-50 xs:h-12 h-8 w-8 xs:w-12 cursor-pointer place-items-center rounded-full bg-gray-500 text-xl xs:text-3xl text-white transition-all ease-in-out hover:bg-gray-600"
           >
             <AiFillCamera />
           </label>
         </div>
-        <div className="relative mx-4 -mt-12 grid h-[100px]  w-[100px]  place-items-center">
+        <div className="relative mx-4 -mt-12 grid h-[60px] w-[60px] xs:h-[80px] md:w-[100px] md:h-[100px]  xs:w-[80px]  place-items-center">
           <input
             className=""
             id="imageSelect"
@@ -189,7 +189,7 @@ const EditProfileModal = () => {
           />
           <label
             htmlFor="imageSelect"
-            className="z-50 grid h-8 w-8 cursor-pointer place-items-center rounded-full bg-gray-700 text-xl text-white transition-all ease-in-out hover:bg-gray-800"
+            className="z-50 grid h-6 w-6  xs:h-8 xs:w-8 cursor-pointer place-items-center rounded-full bg-gray-700 text-base  xs:text-xl text-white transition-all ease-in-out hover:bg-gray-800"
           >
             <AiFillCamera />
           </label>
@@ -207,25 +207,25 @@ const EditProfileModal = () => {
         </div>
         <div className="flex flex-col gap-y-6 p-2 md:p-4">
           <input
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Name"
             defaultValue={userProfile?.name as string}
             {...register("name")}
           />
           <input
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Bio"
             defaultValue={userProfile?.profile?.bio as string}
             {...register("bio")}
           />
           <input
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Location"
             defaultValue={userProfile?.profile?.location as string}
             {...register("location")}
           />
           <input
-            className="w-full rounded-lg border border-gray-300 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Website"
             defaultValue={userProfile?.profile?.website as string}
             {...register("website")}

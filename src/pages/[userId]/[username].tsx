@@ -46,12 +46,16 @@ const ProfilePage = () => {
   const { data: userTweets, isLoading: isLoadingUserTweets } =
     trpc.tweet.getUserTweets.useQuery({
       userId: userId as string,
-      link:_link,
+      link: _link,
     });
   const { data: userProfile, isLoading: isLoadingUserProfile } =
     trpc.user.getUserProfile.useQuery({
       userId: userId as string,
     });
+  const { data: userTweetsCount } = trpc.tweet.getUserTweets.useQuery({
+    userId: userId as string,
+    link: "tweets&replies",
+  });
 
   if (isLoadingUserProfile) return <Loader />;
 
@@ -59,7 +63,7 @@ const ProfilePage = () => {
 
   return (
     <Body>
-      <NavFeed tweets={userTweets?.length} title={username as string} />
+      <NavFeed tweets={userTweetsCount?.length} title={username as string} />
       <div className="relative h-48 w-full">
         <div className="relative h-full w-full bg-gray-200">
           {userProfile?.profile?.coverPhoto ? (
@@ -82,7 +86,7 @@ const ProfilePage = () => {
         {session?.user?.id === userId ? (
           <button
             onClick={() => setModal(true)}
-            className="mt-4 rounded-full border border-gray-300 bg-transparent px-2 py-1 whitespace-nowrap text-xs sm:text-base sm:px-4 sm:py-2 font-semibold hover:bg-gray-200"
+            className="mt-4 whitespace-nowrap rounded-full border border-gray-300 bg-transparent px-2 py-1 text-xs font-semibold hover:bg-gray-200 sm:px-4 sm:py-2 sm:text-base"
           >
             Edit profile
           </button>
@@ -95,7 +99,7 @@ const ProfilePage = () => {
           {userProfile?.profile?.bio || "No bio added"}
         </p>
 
-        <div className="mt-4 flex text-sm md:text-base flex-col sm:flex-row items-start sm:items-center gap-x-4 text-gray-500">
+        <div className="mt-4 flex flex-col items-start gap-x-4 text-sm text-gray-500 sm:flex-row sm:items-center md:text-base">
           <div className="flex items-center gap-x-2">
             <IoLocation />
             <p>{userProfile?.profile?.location}</p>
@@ -119,20 +123,27 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <nav className="mt-4 whitespace-nowrap flex list-none items-center justify-between sm:gap-x-4 gap-x-2 px-2 text-xs xs:text-sm font-semibold md:px-4 md:text-base">
+      <nav className="mt-4 flex list-none items-center justify-between gap-x-2 whitespace-nowrap px-2 text-xs font-semibold xs:text-sm sm:gap-x-4 md:px-4 md:text-base">
         {tweetLinks.map((link) => (
-          <li className={`cursor-pointer text-gray-500 ${link.slug === _link ? "border-b-2 border-blue-500" : null}`} onClick={()=>setLink(link.slug)}>{link.name}</li>
+          <li
+            className={`cursor-pointer text-gray-500 ${
+              link.slug === _link ? "border-b-2 border-blue-500" : null
+            }`}
+            onClick={() => setLink(link.slug)}
+          >
+            {link.name}
+          </li>
         ))}
       </nav>
       {!isLoadingUserTweets ? (
         <>
-        {userTweets?.length !== 0 ?(
-          <TweetList tweets={userTweets as TweetWithUser[]} />
-
-        ):(
-          <h1 className="flex justify-center items-center font-bold  text-2xl py-16">No tweets</h1>
-        )}
-        
+          {userTweets?.length !== 0 ? (
+            <TweetList tweets={userTweets as TweetWithUser[]} />
+          ) : (
+            <h1 className="flex items-center justify-center py-16  text-2xl font-bold">
+              No tweets
+            </h1>
+          )}
         </>
       ) : (
         <Loader />

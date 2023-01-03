@@ -116,6 +116,7 @@ export const tweetRouter = router({
       },
     });
   }),
+
   getUserTweets: publicProcedure
     .input(z.object({ userId: z.string(), link: z.string() }))
     .query(({ ctx, input }) => {
@@ -168,9 +169,9 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             where: {
               userId: input.userId,
-              NOT:{
-                image:null
-              }
+              NOT: {
+                image: null,
+              },
             },
             include: {
               user: true,
@@ -190,11 +191,11 @@ export const tweetRouter = router({
           return ctx.prisma.tweet.findMany({
             where: {
               userId: input.userId,
-              likes:{
-                some:{
-                  userId:input.userId
-                }
-              }
+              likes: {
+                some: {
+                  userId: input.userId,
+                },
+              },
             },
             include: {
               user: true,
