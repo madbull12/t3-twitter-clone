@@ -22,6 +22,7 @@ import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 import { spawn } from "child_process";
 import { v4 } from "uuid";
+import MenuDropdown from "./MenuDropdown";
 
 interface IProps {
   tweet:TweetWithUser
@@ -96,8 +97,11 @@ const TweetComponent = ({ tweet }: IProps) => {
             })
           : setLoginModal(true);
       }}
-      className="flex cursor-pointer items-start gap-x-2 p-2 transition-all duration-100 ease-in-out hover:bg-gray-100 md:gap-x-4 md:p-4"
+      className="flex relative cursor-pointer items-start gap-x-2 p-2 transition-all duration-100 ease-in-out hover:bg-gray-100 md:gap-x-4 md:p-4"
     >
+      <div className="absolute top-2 right-2" onClick={(e)=>e.stopPropagation()}>
+        <MenuDropdown />
+      </div>
       <div className="flex-[0.1] ">
         <Avatar image={tweet.user.image || ""} width={40} height={40} />
       </div>

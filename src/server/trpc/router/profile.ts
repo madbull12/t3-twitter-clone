@@ -4,6 +4,7 @@ import { router, publicProcedure } from "../trpc";
 
 export const profileRouter = router({
   upsertProfile: publicProcedure
+  
     .input(
       z.object({
         bio: z.string().max(160,"Bio can't be too long").nullable(),
@@ -16,6 +17,11 @@ export const profileRouter = router({
     )
     .mutation(({ input:{ bio,location,website,coverPhoto,image,name }, ctx }) => {
         const userId = ctx.session?.user?.id
+        if (!ctx.session) {
+            throw new Error(
+              "You have to be logged in in order to perform this action!"
+            );
+          }
         return ctx.prisma.profile.upsert({
             where:{
                 userId

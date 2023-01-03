@@ -141,7 +141,7 @@ const EditProfileModal = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         ref={modalRef}
-        className="mx-auto h-[500px] w-1/2 overflow-y-scroll  rounded-2xl bg-white"
+        className="mx-auto h-[500px] sm:w-1/2 w-3/4 overflow-y-scroll  rounded-2xl bg-white"
       >
         <header className="flex items-center justify-between gap-x-1 xs:gap-x-2 sm:gap-x-4 p-4">
           <IoMdClose className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer" onClick={()=>setModal(false)} />
