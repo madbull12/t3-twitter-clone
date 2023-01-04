@@ -13,7 +13,9 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
   const { data: session } = trpc.auth.getSession.useQuery();
 
   const { handleDeleteTweet } = useDeleteTweet(tweet);
-  const { handleCreateBookmark } = useBookmark();
+  const { handleCreateBookmark, isAdded, bookmarkAddedState,handleDeleteBookmark } = useBookmark(
+    tweet.id
+  );
 
   const isYourTweet = tweet.userId === session?.user?.id;
   //   console.log(isYourTweet);
@@ -42,9 +44,16 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
               tabIndex={0}
               className="dropdown-content menu rounded-box absolute top-0 w-52 bg-base-100 p-2 shadow"
             >
-              <li onClick={()=>handleCreateBookmark(tweet.id)}>
-                <a>Bookmark</a>
-              </li>
+              {isAdded || bookmarkAddedState ? (
+                <li onClick={()=>handleDeleteBookmark()}>
+                  <a>Delete Bookmark</a>
+                  
+                </li>
+              ) : (
+                <li onClick={() => handleCreateBookmark(tweet.id)}>
+                  <a>Bookmark</a>
+                </li>
+              )}
             </ul>
           )}
         </div>
@@ -95,7 +104,12 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
                 />
                 <div className="modal modal-bottom md:modal-middle">
                   <div className="modal-box flex flex-col items-center">
-                    <h3 className="text-lg font-bold " onClick={()=>handleCreateBookmark(tweet.id)}>Bookmark </h3>
+                    <h3
+                      className="text-lg font-bold "
+                      onClick={() => handleCreateBookmark(tweet.id)}
+                    >
+                      Bookmark{" "}
+                    </h3>
 
                     <div className="modal-action self-end">
                       <label htmlFor="my-modal-6">

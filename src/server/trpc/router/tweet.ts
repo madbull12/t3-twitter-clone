@@ -64,7 +64,7 @@ export const tweetRouter = router({
 
       return ctx.prisma.tweet.delete({
         where: {
-          id: input.tweetId,
+          id:input.tweetId,
         },
       });
     }),

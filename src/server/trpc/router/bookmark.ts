@@ -45,4 +45,15 @@ export const bookmarkRouter = router({
         },
       });
     }),
+  deleteBookmark: publicProcedure
+    .input(z.object({ bookmarkId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+
+      return ctx.prisma.bookmark.delete({
+        where:{
+          id:input.bookmarkId,        
+        }
+      });
+    }),
 });
