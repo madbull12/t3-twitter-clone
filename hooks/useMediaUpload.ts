@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 const useMediaUpload = () => {
   const [selectedFile, setSelectedFile] = useState<any>();
   const [preview, setPreview] = useState<string>();
-  let mediaUrl: any;
+  let mediaUrl : any=null;
 
   const upload = async () => {
     const formData = new FormData();

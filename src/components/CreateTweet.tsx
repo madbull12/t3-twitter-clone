@@ -10,10 +10,15 @@ import { trpc } from "../utils/trpc";
 import { toast } from "react-hot-toast";
 import MediaTools from "./MediaTools";
 import Avatar from "./Avatar";
+// import { useForm } from "react-hook-form";
+// import useCreateTweet from "../../hooks/useCreateTweet";
+// import useMediaUpload from "../../hooks/useMediaUpload";
+
+
 const CreateTweet = () => {
   const { data: session, status } = useSession();
-  useEffect(() => {}, []);
   const utils = trpc.useContext();
+
   const { mutateAsync: createTweet } = trpc.tweet.createTweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
@@ -91,6 +96,17 @@ const CreateTweet = () => {
     // I've kept this example simple by using the first image instead of multiple
     setSelectedFile(e.target.files[0]);
   };
+
+  // const {
+  //   // upload: imageUpload,
+  //   onSelectFile,
+  //   preview,
+  //   selectedFile,
+  //   setSelectedFile,
+  //   // mediaUrl:imageUrl
+  // } = useMediaUpload();
+  // const { handleSubmit,textRef,setText } = useCreateTweet()
+
   return (
     <div className="mt-4 flex items-start gap-x-4 border-b p-2  ">
       <Avatar image={session?.user?.image || ""} width={40} height={40} />

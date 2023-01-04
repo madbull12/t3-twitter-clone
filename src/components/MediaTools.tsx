@@ -6,6 +6,7 @@ interface IProps {
   onSelectFile: (e: any) => void;
 }
 const MediaTools = ({ onSelectFile }: IProps) => {
+  
   return (
     <div className=" flex flex-[0.5] items-center gap-x-4 text-base md:text-lg text-primary">
       <div>
