@@ -10,7 +10,7 @@ import Profile from "./Profile";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { IoMdAddCircle, IoMdLogIn, IoMdLogOut } from "react-icons/io";
 import { useCreateModal } from "../../lib/zustand";
-import { BiSearch, BiUser } from "react-icons/bi";
+import { BiBookmark, BiSearch, BiUser } from "react-icons/bi";
 
 const Sidebar = () => {
   const { status, data: session } = useSession();
@@ -40,11 +40,16 @@ const Sidebar = () => {
       link: `/${session?.user?.id}/${session?.user?.name}`,
       hidden: true,
       icon: <BiUser />,
-    },
+    },{
+      name:"Bookmarks",
+      link:`/bookmarks`,
+      hidden:true,
+      icon:<BiBookmark />
+    }
   ];
   const { setModal } = useCreateModal();
   return (
-    <div className="fixed top-0 flex  w-14 flex-col items-center space-y-4 border border-gray-100 xs:w-20  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
+    <div className="fixed top-0 flex  w-14 flex-col items-center space-y-4 border border-gray-100 xs:w-20 min-h-screen  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
       <div className="mb-2 grid h-12 w-12 cursor-pointer place-items-center  rounded-full transition-all duration-200 ease-in-out  hover:bg-blue-100">
         <Link href="/">
           <BsTwitter className="text-xl text-primary md:text-2xl lg:text-3xl" />

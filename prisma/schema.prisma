@@ -50,20 +50,21 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   tweets        Tweet[]
-  createdAt     DateTime  @default(now())
+  createdAt     DateTime   @default(now())
   // replies       Reply[]
-  followers     Follows[] @relation("follower")
-  followings    Follows[] @relation("following")
+  followers     Follows[]  @relation("follower")
+  followings    Follows[]  @relation("following")
   likes         Like[]
   profile       Profile?
+  bookmarks     Bookmark[]
 }
 
 model VerificationToken {
@@ -106,7 +107,7 @@ model Tweet {
   id              String    @id @default(uuid())
   createdAt       DateTime  @default(now())
   text            String?
-  userId          String    
+  userId          String
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   image           String?
   originalTweet   Tweet?    @relation("replies", fields: [originalTweetId], references: [id], onDelete: Cascade)
@@ -114,6 +115,7 @@ model Tweet {
   replies         Tweet[]   @relation("replies")
   hashtags        Hashtag[]
   likes           Like[]
+  bookmarks       Bookmark[]
 }
 
 model Profile {
@@ -124,6 +126,14 @@ model Profile {
   location   String?
   website    String?
   coverPhoto String?
+}
+
+model Bookmark {
+  id      String @id @default(uuid())
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  tweetId String 
+  tweet   Tweet  @relation(fields: [tweetId], references: [id])
 }
 
 // model Reply {
