@@ -134,6 +134,8 @@ model Bookmark {
   userId  String
   tweetId String 
   tweet   Tweet  @relation(fields: [tweetId], references: [id])
+
+  @@unique([userId,tweetId])
 }
 
 // model Reply {
