@@ -233,10 +233,11 @@ const TweetComponent = ({ tweet }: IProps) => {
           </div>
         </div>
       </div>
-
+      {status === "authenticated" ? (
         <div onClick={(e) => e.stopPropagation()}>
-          <MenuDropdown tweetId={tweet.id} />
+          <MenuDropdown tweet={tweet} />
         </div>
+      ) : null}
     </div>
   );
 };
