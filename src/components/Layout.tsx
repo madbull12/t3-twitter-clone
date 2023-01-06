@@ -33,16 +33,16 @@ const Layout = ({ children }: IProps) => {
   const isNotTablet = useMediaQuery("(min-width:1024px)");
 
   useEffect(() => {
-    if (replyModal || loginModal || createModal || profileModal) {
+    if (replyModal || loginModal || createModal || profileModal || displayModal) {
       window.scrollTo(0, 0);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-  }, [replyModal, loginModal, createModal, profileModal]);
+  }, [replyModal, loginModal, createModal, profileModal,displayModal]);
 
   return (
-    <main className="text-neutral relative bg-base-100 mx-auto max-w-screen-2xl">
+    <main className="text-neutral relative bg-base-100 mx-auto min-h-screen max-w-screen-2xl">
       {replyModal ? <ReplyModal /> : null}
       {loginModal ? <LoginModal /> : null}
       {createModal ? <CreateModal /> : null}

@@ -10,7 +10,7 @@ const links = ["top", "latest", "people", "photos", "videos"];
 const SearchHeader = () => {
   const router = useRouter();
   return (
-    <div className="sticky backdrop-blur-xl bg-white/30 top-0 z-50 border-b border-gray-100  ">
+    <div className="sticky backdrop-blur-xl bg-base-100/30 top-0 z-50 border-b border-base-300  ">
       <div className="flex items-center gap-x-2 justify-between p-2">
         <BsArrowLeft
           className="cursor-pointer text-lg md:text-xl"
@@ -40,7 +40,7 @@ const SearchHeader = () => {
             }
             className={`${
               router.query.f === link ? "border-b-4    border-primary" : null
-            } cursor-pointer px-2 py-1 md:px-6 md:py-2 font-semibold capitalize text-gray-500 text-sm md:text-base hover:bg-gray-100`}
+            } cursor-pointer px-2 py-1 md:px-6 md:py-2 font-semibold capitalize text-gray-500 text-sm md:text-base hover:bg-base-300`}
           >
             {link}
           </li>

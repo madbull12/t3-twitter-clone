@@ -11,6 +11,7 @@ import Body from "../components/Body";
 import { Ring } from "@uiball/loaders";
 import Loader from "../components/Loader";
 import TweetList from "../components/TweetList";
+import NavFeed from "../components/NavFeed";
 
 const Home: NextPage = () => {
   const { data: tweets, isLoading } = trpc.tweet.getTweets.useQuery();
@@ -28,7 +29,7 @@ const Home: NextPage = () => {
       </Head>
       <Body>
         <div >
-          <h1 className="md:text-xl text-base font-semibold px-2">Home</h1>
+          <NavFeed title="Home" />
           {status==="authenticated" ? <CreateTweet /> : null}
           {isLoading ? (
             <Loader />

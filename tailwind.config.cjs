@@ -13,6 +13,8 @@ module.exports = {
         accent: "#37cdbe",
         neutral: "#000",
         "base-100": "#ffffff",
+        "base-200": "#f8fafc",
+        "base-300":"#f3f4f6"
       },
       dim:{
         primary: "#1D9BF0",
@@ -22,6 +24,15 @@ module.exports = {
         "base-100":"#15202B",
         'base-200':"#1E2732",
         "base-300":"#374151",
+      },
+      dark:{
+        primary: "#1D9BF0",
+        neutral:"#fff",
+        secondary:"#8692A0",
+        accent: "#37cdbe",
+        "base-100":"#000",
+        'base-200':"#000",
+        "base-300":"#18181b",
       }
     },
       

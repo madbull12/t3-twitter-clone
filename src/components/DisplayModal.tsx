@@ -14,7 +14,7 @@ const DisplayModal = () => {
     <Backdrop>
       <div
         ref={modalRef}
-        className="mx-auto flex h-[500px] w-3/4 flex-col items-center overflow-y-scroll rounded-2xl bg-white  p-4 sm:w-1/2"
+        className="mx-auto flex h-[500px] w-3/4 flex-col items-center overflow-y-scroll rounded-2xl bg-base-100  p-4 sm:w-1/2"
       >
         <h1 className="text-2xl font-bold">Customize your view</h1>
         <p className="text-gray-500">
