@@ -9,12 +9,15 @@ import Layout from "../components/Layout";
 import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import AuthWrapper from "../components/AuthWrapper";
+import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
 
 TimeAgo.addDefaultLocale(en);
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+
+  const theme = useReadLocalStorage('theme')
   const [showChild, setShowChild] = useState(false);
   useEffect(() => {
     setShowChild(true);
@@ -25,7 +28,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   }
 
   return (
-    <div data-theme="dark">
+    <div data-theme={theme}>
       <SessionProvider session={session}>
         <AuthWrapper>
           <Layout>
