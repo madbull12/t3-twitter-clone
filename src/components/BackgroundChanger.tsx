@@ -11,7 +11,7 @@ const BackgroundChanger = () => {
       <p className="text-start text-xs font-semibold text-gray-400">
         Background
       </p>
-      <div className="flex h-20 items-center justify-between gap-x-4 rounded-3xl bg-base-300 px-4 py-2">
+      <div className="flex flex-col md:flex-row md:h-20 items-center justify-between gap-x-4 rounded-3xl bg-base-300 px-4 py-2">
         <button className="flex h-full flex-1 items-center justify-center rounded-md bg-white px-2 py-1 text-black">
           <div className="flex items-center gap-x-8">
             <input

@@ -42,7 +42,7 @@ const Layout = ({ children }: IProps) => {
   }, [replyModal, loginModal, createModal, profileModal,displayModal]);
 
   return (
-    <main className="text-neutral relative bg-base-100 mx-auto min-h-screen max-w-screen-2xl">
+    <main className="text-neutral relative bg-base-100 mx-auto  min-h-screen max-w-screen-2xl">
       {replyModal ? <ReplyModal /> : null}
       {loginModal ? <LoginModal /> : null}
       {createModal ? <CreateModal /> : null}
@@ -51,6 +51,7 @@ const Layout = ({ children }: IProps) => {
       <Sidebar />
       {children}
       {isNotTablet ? <Right /> : null}
+      
       {status === "unauthenticated" ? <Footer /> : null}
     </main>
   );

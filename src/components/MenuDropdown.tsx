@@ -20,7 +20,7 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
   const isYourTweet = tweet.userId === session?.user?.id;
   //   console.log(isYourTweet);
 
-  const tablet = useMediaQuery("(min-width:768px)");
+  const tablet = useMediaQuery("(min-width:1110px)");
 
   return (
     <>
@@ -46,7 +46,7 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
             >
               {isAdded || bookmarkAddedState ? (
                 <li onClick={()=>handleDeleteBookmark()}>
-                  <a>Delete Bookmark</a>
+                  <a className="text-red-500">Delete Bookmark</a>
                   
                 </li>
               ) : (

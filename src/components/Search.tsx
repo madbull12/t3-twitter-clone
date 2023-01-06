@@ -4,7 +4,7 @@ import { BiSearch } from "react-icons/bi";
 
 const Search = () => {
   const [term, setTerm] = useState("");
-  const [isFocused,setIsFocused] = useState<boolean>(false)
+  const [isFocused, setIsFocused] = useState<boolean>(false);
   const router = useRouter();
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -26,16 +26,18 @@ const Search = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      onFocus={()=>setIsFocused(true)}
-      onBlur={()=>setIsFocused(false)}
-      className={`${isFocused ? "border-2 border-primary" : null} flex  items-center text-sm md:text-base gap-x-4 rounded-full bg-base-200 md:px-4 px-2 py-1 md:py-2 text-gray-500`}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      className={`${
+        isFocused ? "border-2 border-primary" : null
+      } flex  items-center gap-x-4 rounded-full bg-base-200 px-2 py-1 text-sm text-gray-500 md:px-4 md:py-2 md:text-base`}
     >
       <BiSearch />
       <input
         defaultValue={router.query.q}
         onChange={(e) => setTerm(e.target.value)}
         type="text"
-        className="bg-transparent w-full outline-none"
+        className="w-full bg-transparent outline-none"
         placeholder="Search Twitter"
       />
     </form>
