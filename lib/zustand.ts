@@ -41,3 +41,8 @@ export const useEditProfileModal = create<Modal>((set)=>({
   modal:false,
   setModal:(value:boolean)=>set(()=>({ modal:value }))
 }));
+
+export const useDisplayModal = create<Modal>((set)=>({
+  modal:false,
+  setModal:(value:boolean)=>set(()=>({ modal:value }))
+}))

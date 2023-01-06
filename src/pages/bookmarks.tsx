@@ -1,5 +1,6 @@
 import Head from "next/head";
 import React from "react";
+import { v4 } from "uuid";
 import useBookmark from "../../hooks/useBookmark";
 import Body from "../components/Body";
 import NavFeed from "../components/NavFeed";
@@ -16,7 +17,7 @@ const BookmarkPage = () => {
       </Head>
       <NavFeed title="Bookmarks" />
       {bookmarks?.map((bookmark) => (
-        <TweetComponent tweet={bookmark.tweet} />
+        <TweetComponent key={v4()} tweet={bookmark.tweet} />
       ))}
     </Body>
   );

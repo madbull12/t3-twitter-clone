@@ -25,7 +25,7 @@ const Search = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center text-sm md:text-base gap-x-4 rounded-full bg-gray-100 md:px-4 px-2 py-1 md:py-2 text-gray-500"
+      className="flex  items-center text-sm md:text-base gap-x-4 rounded-full bg-base-200 md:px-4 px-2 py-1 md:py-2 text-gray-500"
     >
       <BiSearch />
       <input

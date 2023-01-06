@@ -6,7 +6,7 @@ import { BsArrowLeft } from "react-icons/bs";
 const NavFeed = ({ title, tweets }: { title: string; tweets?: number }) => {
   const router = useRouter();
   return (
-    <nav className="sticky top-0 p-2  w-full z-50 flex items-center gap-x-4 bg-white/30  backdrop-blur-lg  md:gap-x-4">
+    <nav className="sticky top-0 p-2  w-full z-50 flex items-center gap-x-4 bg-base-100/30  backdrop-blur-lg  md:gap-x-4">
       <BsArrowLeft
         className="cursor-pointer text-xl"
         onClick={() => router.back()}

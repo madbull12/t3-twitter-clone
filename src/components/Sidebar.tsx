@@ -11,6 +11,8 @@ import useMediaQuery from "../../hooks/useMediaQuery";
 import { IoMdAddCircle, IoMdLogIn, IoMdLogOut } from "react-icons/io";
 import { useCreateModal } from "../../lib/zustand";
 import { BiBookmark, BiSearch, BiUser } from "react-icons/bi";
+import { IoEllipsisHorizontalCircleOutline } from "react-icons/io5";
+import MoreDropdownSidebar from "./MoreDropdownSidebar";
 
 const Sidebar = () => {
   const { status, data: session } = useSession();
@@ -40,17 +42,18 @@ const Sidebar = () => {
       link: `/${session?.user?.id}/${session?.user?.name}`,
       hidden: true,
       icon: <BiUser />,
-    },{
-      name:"Bookmarks",
-      link:`/bookmarks`,
-      hidden:true,
-      icon:<BiBookmark />
-    }
+    },
+    {
+      name: "Bookmarks",
+      link: `/bookmarks`,
+      hidden: true,
+      icon: <BiBookmark />,
+    },
   ];
   const { setModal } = useCreateModal();
   return (
-    <div className="fixed top-0 flex  w-14 flex-col items-center space-y-4 border border-gray-100 xs:w-20 min-h-screen  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
-      <div className="mb-2 grid h-12 w-12 cursor-pointer place-items-center  rounded-full transition-all duration-200 ease-in-out  hover:bg-blue-100">
+    <div className="fixed top-0 flex  min-h-screen w-14 flex-col items-center space-y-4 border-r border-base-300 xs:w-20  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
+      <div className="mb-2 grid h-12 w-12 cursor-pointer place-items-center  rounded-full transition-all duration-200 ease-in-out  hover:bg-base-300">
         <Link href="/">
           <BsTwitter className="text-xl text-primary md:text-2xl lg:text-3xl" />
         </Link>
@@ -63,7 +66,7 @@ const Sidebar = () => {
                 {status === "authenticated" ? (
                   <li
                     key={v4()}
-                    className="rounded-full  px-4  py-2 transition-all duration-200 ease-in-out  hover:bg-gray-100"
+                    className="rounded-full  px-4  py-2 transition-all duration-300 ease-in-out  hover:bg-base-300"
                   >
                     <Link href={link?.link}>
                       <div className="flex items-center gap-x-4 text-sm xs:text-xl md:text-2xl">
@@ -77,7 +80,7 @@ const Sidebar = () => {
             ) : (
               <li
                 key={v4()}
-                className="rounded-full  px-4  py-2 transition-all duration-200 ease-in-out  hover:bg-gray-100"
+                className="rounded-full  px-4  py-2 transition-all duration-200 ease-in-out  hover:bg-base-300"
               >
                 <Link href={link?.link}>
                   <div className="flex items-center gap-x-4 text-sm xs:text-xl md:text-2xl">
@@ -89,6 +92,9 @@ const Sidebar = () => {
             )}
           </>
         ))}
+        {status === "authenticated" ? (
+          <MoreDropdownSidebar />
+        ) : null}
 
         {!matches ? (
           <>
@@ -114,7 +120,7 @@ const Sidebar = () => {
           onClick={() => signOut()}
           className={`${
             matches
-              ? "px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  text-black"
+              ? "px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  "
               : null
           }`}
         >
@@ -132,7 +138,7 @@ const Sidebar = () => {
           onClick={() => signIn("twitter")}
           className={`${
             matches
-              ? "px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  text-black"
+              ? "px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  "
               : null
           }`}
         >

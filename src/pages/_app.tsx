@@ -25,15 +25,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
   }
 
   return (
-    <SessionProvider session={session}>
-      <AuthWrapper>
-        <Layout>
-          <Toaster />
+    <div data-theme="dim">
+      <SessionProvider session={session}>
+        <AuthWrapper>
+          <Layout>
+            <Toaster />
 
-          <Component {...pageProps} />
-        </Layout>
-      </AuthWrapper>
-    </SessionProvider>
+            <Component {...pageProps} />
+          </Layout>
+        </AuthWrapper>
+      </SessionProvider>
+    </div>
   );
 };
 

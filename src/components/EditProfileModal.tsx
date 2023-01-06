@@ -141,12 +141,12 @@ const EditProfileModal = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         ref={modalRef}
-        className="mx-auto h-[500px] sm:w-1/2 w-3/4 overflow-y-scroll  rounded-2xl bg-white"
+        className="mx-auto h-[500px] sm:w-1/2 w-3/4 overflow-y-scroll  rounded-2xl bg-base-100"
       >
         <header className="flex items-center justify-between gap-x-1 xs:gap-x-2 sm:gap-x-4 p-4">
           <IoMdClose className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer" onClick={()=>setModal(false)} />
           <p className="mr-auto text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-semibold whitespace-nowrap">Edit profile</p>
-          <button className="rounded-full bg-black px-2 md:px-3 py-1 text-xs font-semibold text-white sm:text-sm">
+          <button className="rounded-full bg-base-200 px-2 md:px-3 py-1 text-xs font-semibold text-white sm:text-sm">
             Save
           </button>
         </header>
@@ -207,25 +207,25 @@ const EditProfileModal = () => {
         </div>
         <div className="flex flex-col gap-y-6 p-2 md:p-4">
           <input
-            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 bg-transparent focus:ring-blue-500"
             placeholder="Name"
             defaultValue={userProfile?.name as string}
             {...register("name")}
           />
           <input
-            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 bg-transparent focus:ring-blue-500"
             placeholder="Bio"
             defaultValue={userProfile?.profile?.bio as string}
             {...register("bio")}
           />
           <input
-            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 bg-transparent focus:ring-blue-500"
             placeholder="Location"
             defaultValue={userProfile?.profile?.location as string}
             {...register("location")}
           />
           <input
-            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 bg-transparent focus:ring-blue-500"
             placeholder="Website"
             defaultValue={userProfile?.profile?.website as string}
             {...register("website")}

@@ -92,7 +92,7 @@ const ProfilePage = () => {
         {session?.user?.id === userId ? (
           <button
             onClick={() => setModal(true)}
-            className="mt-4 whitespace-nowrap rounded-full border border-gray-300 bg-transparent px-2 py-1 text-xs font-semibold hover:bg-gray-200 sm:px-4 sm:py-2 sm:text-base"
+            className="mt-4 whitespace-nowrap rounded-full border border-gray-300 bg-transparent px-2 py-1 text-xs font-semibold hover:bg-base-300 sm:px-4 sm:py-2 sm:text-base"
           >
             Edit profile
           </button>
@@ -113,7 +113,7 @@ const ProfilePage = () => {
           <div className="flex items-center gap-x-2">
             <AiOutlineLink />
             <Link
-              className="text-blue-500 hover:underline"
+              className="text-primary hover:underline"
               target="_blank"
               href={(userProfile?.profile?.website as string) ?? ""}
             >

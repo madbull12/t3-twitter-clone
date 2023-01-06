@@ -108,7 +108,7 @@ const CreateTweet = () => {
   // const { handleSubmit,textRef,setText } = useCreateTweet()
 
   return (
-    <div className="mt-4 flex items-start gap-x-4 border-b p-2  ">
+    <div className="mt-4 flex items-start gap-x-4 border-b border-base-300 p-2  ">
       <Avatar image={session?.user?.image || ""} width={40} height={40} />
       <form className="flex-1 space-y-3" onSubmit={handleSubmit}>
         <textarea
@@ -116,7 +116,7 @@ const CreateTweet = () => {
           ref={textRef}
           onChange={(e) => setText(e.target.value)}
           placeholder="What's happening?"
-          className={`w-full  resize-none overflow-hidden text-base md:text-xl outline-none placeholder:text-gray-600 `}
+          className={`w-full bg-transparent resize-none overflow-hidden text-base md:text-xl outline-none placeholder:text-gray-600 `}
         />
         {selectedFile && (
           <>
@@ -142,7 +142,7 @@ const CreateTweet = () => {
           <RiEarthFill className="text-xl" />
           <p>Everyone can reply</p>
         </div>
-        <div className="flex w-full items-center justify-between border-t py-2">
+        <div className="flex w-full items-center justify-between border-t border-base-300 py-2">
           {/* <div className="mx-auto flex flex-[0.6] items-center gap-x-4 text-lg text-primary">
             <div>
               <input

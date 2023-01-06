@@ -95,7 +95,7 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
           cols={50}
           
           onChange={(e) => setText(e.target.value)}
-          className="flex-1 resize-none text-base md:text-xl outline-none"
+          className="flex-1 resize-none bg-transparent text-base md:text-xl outline-none"
           placeholder="Tweet your reply"
         />
       </div>
