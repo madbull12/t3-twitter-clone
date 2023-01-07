@@ -142,7 +142,7 @@ const CreateTweet = () => {
           <RiEarthFill className="text-xl" />
           <p>Everyone can reply</p>
         </div>
-        <div className="flex w-full items-center justify-between border-t border-base-300 py-2">
+        <div className="flex w-full items-center border-t border-base-300 py-2">
           {/* <div className="mx-auto flex flex-[0.6] items-center gap-x-4 text-lg text-primary">
             <div>
               <input

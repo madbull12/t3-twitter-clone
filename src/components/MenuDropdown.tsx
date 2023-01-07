@@ -75,7 +75,7 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
                   className="modal-toggle"
                 />
 
-                <div className="modal modal-bottom md:modal-middle">
+                <div className="modal modal-middle  ">
                   <div className="modal-box flex flex-col items-center">
                     <h3
                       className="text-lg font-bold text-red-500"
@@ -102,7 +102,7 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
                   id="my-modal-6"
                   className="modal-toggle"
                 />
-                <div className="modal modal-bottom md:modal-middle">
+                <div className="modal modal-middle">
                   <div className="modal-box flex flex-col items-center">
                     <h3
                       className="text-lg font-bold "

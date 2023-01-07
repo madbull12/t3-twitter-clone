@@ -30,7 +30,7 @@ const Search = () => {
       onBlur={() => setIsFocused(false)}
       className={`${
         isFocused ? "border-2 border-primary" : null
-      } flex  items-center gap-x-4 rounded-full bg-base-200 px-2 py-1 text-sm text-gray-500 md:px-4 md:py-2 md:text-base`}
+      } flex w-full items-center gap-x-4 rounded-full bg-base-200 px-2 py-1 text-sm text-gray-500 md:px-4 md:py-2 md:text-base`}
     >
       <BiSearch />
       <input

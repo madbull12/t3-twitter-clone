@@ -28,7 +28,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   }
 
   return (
-    <div data-theme={theme}>
+    <div data-theme={theme} >
       <SessionProvider session={session}>
         <AuthWrapper>
           <Layout>

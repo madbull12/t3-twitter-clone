@@ -15,6 +15,7 @@ import DisplayModal from "./DisplayModal";
 import EditProfileModal from "./EditProfileModal";
 import Footer from "./Footer";
 import LoginModal from "./LoginModal";
+import MobileNav from "./MobileNav";
 import ReplyModal from "./ReplyModal";
 import Right from "./Right";
 import Sidebar from "./Sidebar";
@@ -33,25 +34,32 @@ const Layout = ({ children }: IProps) => {
   const isNotTablet = useMediaQuery("(min-width:1024px)");
 
   useEffect(() => {
-    if (replyModal || loginModal || createModal || profileModal || displayModal) {
+    if (
+      replyModal ||
+      loginModal ||
+      createModal ||
+      profileModal ||
+      displayModal
+    ) {
       window.scrollTo(0, 0);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
     }
-  }, [replyModal, loginModal, createModal, profileModal,displayModal]);
+  }, [replyModal, loginModal, createModal, profileModal, displayModal]);
+  const phone = useMediaQuery("(min-width:768px)");
 
   return (
-    <main className="text-neutral relative bg-base-100 mx-auto  min-h-screen max-w-screen-2xl">
+    <main className="relative mx-auto  min-h-screen max-w-screen-2xl overflow-hidden  bg-base-100 text-neutral">
       {replyModal ? <ReplyModal /> : null}
       {loginModal ? <LoginModal /> : null}
       {createModal ? <CreateModal /> : null}
       {profileModal ? <EditProfileModal /> : null}
       {displayModal ? <DisplayModal /> : null}
-      <Sidebar />
+      {phone ? <Sidebar /> : <MobileNav />}
       {children}
       {isNotTablet ? <Right /> : null}
-      
+
       {status === "unauthenticated" ? <Footer /> : null}
     </main>
   );

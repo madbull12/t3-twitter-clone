@@ -28,7 +28,6 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Body>
-        <div >
           <NavFeed title="Home" />
           {status==="authenticated" ? <CreateTweet /> : null}
           {isLoading ? (
@@ -38,7 +37,6 @@ const Home: NextPage = () => {
               <TweetList tweets={tweets as Tweet[]} />
             </>
           )}
-        </div>
         
       </Body>
     </>

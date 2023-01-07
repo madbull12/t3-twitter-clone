@@ -7,7 +7,7 @@ const Right = () => {
   const pathnames = ["/search", "/explore"];
 
   return (
-    <div className="absolute pl-[9%] pr-8 right-0 top-0 min-h-screen w-72 py-3  xl:w-80 ">
+    <div className="absolute z-[888] pl-[11%] bg-base-100 pr-4 right-0 top-0 min-h-[120vh] w-72 py-3  xl:w-80 ">
       {pathnames.includes(router.pathname) ? null : <Search />}
     </div>
   );
