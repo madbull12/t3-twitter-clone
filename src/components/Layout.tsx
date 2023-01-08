@@ -16,6 +16,7 @@ import DisplayModal from "./DisplayModal";
 import EditProfileModal from "./EditProfileModal";
 import Footer from "./Footer";
 import LoginModal from "./LoginModal";
+import MobileCreate from "./MobileCreate";
 import MobileDrawer from "./MobileDrawer";
 import MobileNav from "./MobileNav";
 import ReplyModal from "./ReplyModal";
@@ -71,7 +72,7 @@ const Layout = ({ children }: IProps) => {
       {phone ? <Sidebar /> : status === "authenticated" ? <MobileNav /> : null}
       {children}
       {isNotTablet ? <Right /> : null}
-
+      {!phone ?<MobileCreate /> : null }
       {status === "unauthenticated" ? <Footer /> : null}
     </main>
   );

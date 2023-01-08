@@ -38,7 +38,7 @@ const MobileDrawer = () => {
         ref={drawerRef}
         className={`fixed top-0 left-0 space-y-4 p-4 transition-transform duration-150 ease-in-out ${
           drawer ? "translate-x-0" : "-translate-x-full"
-        } bottom-0 z-[999999] min-h-screen min-w-[75vw] bg-base-300`}
+        } bottom-0 z-[999999] min-h-screen min-w-[75vw] bg-base-100`}
       >
         {/* Drawer content goes here */}
         <header className="flex items-center justify-between">

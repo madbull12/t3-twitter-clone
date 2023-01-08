@@ -10,10 +10,10 @@ import { trpc } from "../utils/trpc";
 import { toast } from "react-hot-toast";
 import MediaTools from "./MediaTools";
 import Avatar from "./Avatar";
+import Link from "next/link";
 // import { useForm } from "react-hook-form";
 // import useCreateTweet from "../../hooks/useCreateTweet";
 // import useMediaUpload from "../../hooks/useMediaUpload";
-
 
 const CreateTweet = () => {
   const { data: session, status } = useSession();
@@ -109,14 +109,16 @@ const CreateTweet = () => {
 
   return (
     <div className="mt-4 flex items-start gap-x-4 border-b border-base-300 p-2  ">
-      <Avatar image={session?.user?.image || ""} width={40} height={40} />
+      <Link href={`/${session?.user?.id}/${session?.user?.name}`} className="cursor-pointer">
+        <Avatar image={session?.user?.image || ""} width={40} height={40} />
+      </Link>
       <form className="flex-1 space-y-3" onSubmit={handleSubmit}>
         <textarea
           cols={50}
           ref={textRef}
           onChange={(e) => setText(e.target.value)}
           placeholder="What's happening?"
-          className={`w-full bg-transparent resize-none overflow-hidden text-base md:text-xl outline-none placeholder:text-gray-600 `}
+          className={`w-full resize-none overflow-hidden bg-transparent text-base outline-none placeholder:text-gray-600 md:text-xl `}
         />
         {selectedFile && (
           <>
@@ -138,7 +140,7 @@ const CreateTweet = () => {
           </>
         )}
 
-        <div className=" flex items-center gap-x-2 text-sm md:text-base font-semibold text-primary">
+        <div className=" flex items-center gap-x-2 text-sm font-semibold text-primary md:text-base">
           <RiEarthFill className="text-xl" />
           <p>Everyone can reply</p>
         </div>

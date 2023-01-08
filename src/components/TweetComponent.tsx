@@ -188,7 +188,7 @@ const TweetComponent = ({ tweet }: IProps) => {
               status === "authenticated" ? setModal(true) : setLoginModal(true);
               setTweetId(tweet.id);
             }}
-            className="md:text-basetext-xs group flex cursor-pointer items-center gap-x-2 rounded-full p-2 text-xs hover:bg-blue-50 md:text-base"
+            className="md:text-basetext-xs group flex cursor-pointer items-center gap-x-2 rounded-full p-2 text-xs hover:bg-base-300 md:text-base"
           >
             <AiOutlineComment className="group-hover:text-primary" />
             <p className="group-hover:text-primary ">
@@ -196,7 +196,7 @@ const TweetComponent = ({ tweet }: IProps) => {
             </p>
           </div>
           <div
-            className="group flex cursor-pointer items-center gap-x-2 rounded-full p-2 text-xs  md:text-base "
+            className="group flex cursor-pointer items-center gap-x-2 rounded-full p-2 text-xs   hover:bg-base-300 md:text-base "
             onClick={handleLike}
           >
             {(alreadyLiked !== null || hasLiked) &&
@@ -222,13 +222,13 @@ const TweetComponent = ({ tweet }: IProps) => {
               {tweet.likes.length}
             </p>
           </div>
-          <div className="group cursor-pointer rounded-full p-2 text-xs  hover:bg-blue-50 md:text-base">
+          <div className="group cursor-pointer rounded-full p-2 text-xs   hover:bg-base-300 md:text-base">
             <AiOutlineRetweet className="group-hover:text-primary" />
           </div>
-          <div className="group cursor-pointer rounded-full p-2 text-xs  hover:bg-blue-50 md:text-base">
+          <div className="group cursor-pointer rounded-full p-2 text-xs   hover:bg-base-300 md:text-base">
             <AiOutlineShareAlt className="group-hover:text-primary" />
           </div>
-          <div className="group cursor-pointer rounded-full  p-2 text-xs hover:bg-blue-50 md:text-base">
+          <div className="group cursor-pointer rounded-full  p-2 text-xs  hover:bg-base-300 md:text-base">
             <IoAnalyticsOutline className="group-hover:text-primary" />
           </div>
         </div>

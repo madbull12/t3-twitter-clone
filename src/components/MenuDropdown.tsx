@@ -69,7 +69,7 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
             {isYourTweet ? (
               <>
                 <label htmlFor="my-modal-7">
-                  <BiDotsHorizontal className="text-xl text-gray-400" />
+                  <BiDotsHorizontal className="text-xl cursor-pointer text-gray-400" />
                 </label>
                 <input
                   type="checkbox"
