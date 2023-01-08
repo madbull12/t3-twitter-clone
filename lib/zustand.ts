@@ -14,6 +14,12 @@ interface TweetIdStore {
   tweetId:string;
   setTweetId:(value:string) => void;
 }
+
+interface Drawer {
+  drawer: boolean;
+  setDrawer: (value: boolean) => void;
+}
+
 export const usePreviewStore = create<Preview>((set) => ({
   preview: "",
   setPreview: (objectUrl: string) => set(() => ({ preview: objectUrl })),
@@ -45,4 +51,9 @@ export const useEditProfileModal = create<Modal>((set)=>({
 export const useDisplayModal = create<Modal>((set)=>({
   modal:false,
   setModal:(value:boolean)=>set(()=>({ modal:value }))
+}))
+
+export const useMobileDrawer = create<Drawer>((set)=>({
+  drawer:false,
+  setDrawer:(value:boolean)=>set(()=>({ drawer:value }))
 }))

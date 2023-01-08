@@ -13,9 +13,12 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
   const { data: session } = trpc.auth.getSession.useQuery();
 
   const { handleDeleteTweet } = useDeleteTweet(tweet);
-  const { handleCreateBookmark, isAdded, bookmarkAddedState,handleDeleteBookmark } = useBookmark(
-    tweet.id
-  );
+  const {
+    handleCreateBookmark,
+    isAdded,
+    bookmarkAddedState,
+    handleDeleteBookmark,
+  } = useBookmark(tweet.id);
 
   const isYourTweet = tweet.userId === session?.user?.id;
   //   console.log(isYourTweet);
@@ -45,9 +48,8 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
               className="dropdown-content menu rounded-box absolute top-0 w-52 bg-base-100 p-2 shadow"
             >
               {isAdded || bookmarkAddedState ? (
-                <li onClick={()=>handleDeleteBookmark()}>
+                <li onClick={() => handleDeleteBookmark()}>
                   <a className="text-red-500">Delete Bookmark</a>
-                  
                 </li>
               ) : (
                 <li onClick={() => handleCreateBookmark(tweet.id)}>
@@ -103,14 +105,17 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
                   className="modal-toggle"
                 />
                 <div className="modal modal-middle">
-                  <div className="modal-box flex flex-col items-center">
-                    <h3
-                      className="text-lg font-bold "
-                      onClick={() => handleCreateBookmark(tweet.id)}
-                    >
-                      Bookmark{" "}
-                    </h3>
-
+                  <div className="modal-box flex flex-col items-center list-none">
+ 
+                    {isAdded || bookmarkAddedState ? (
+                      <li onClick={() => handleDeleteBookmark()}>
+                        <a className="text-lg font-bold text-red-500">Delete Bookmark</a>
+                      </li>
+                    ) : (
+                      <li onClick={() => handleCreateBookmark(tweet.id)}>
+                        <a>Bookmark</a>
+                      </li>
+                    )}
                     <div className="modal-action self-end">
                       <label htmlFor="my-modal-6">
                         <IoMdClose className="text-xl" />

@@ -12,9 +12,9 @@ const BackgroundChanger = () => {
         Background
       </p>
       <div className=" rounded-3xl bg-base-300 px-4 py-2 md:h-20 ">
-        <div className="flex flex-col items-center justify-between md:justify-center gap-y-4 gap-x-4 md:flex-row w-1/2 mx-auto ">
+        <div className="flex flex-col items-center justify-between md:justify-center gap-y-4 gap-x-4 w-full md:flex-row md:w-1/2 mx-auto ">
           <button className="flex h-full w-full whitespace-nowrap flex-1 items-center  rounded-md bg-white px-2 py-1 text-black">
-            <div className="flex items-center gap-x-8">
+            <div className="flex items-center gap-x-4">
               <input
                 type="radio"
                 name="background"
@@ -27,7 +27,7 @@ const BackgroundChanger = () => {
             </div>
           </button>
           <button className="flex h-full w-full whitespace-nowrap flex-1 items-center  rounded-md bg-[#15202B] px-2 py-1 text-white">
-            <div className="flex items-center  gap-x-8">
+            <div className="flex items-center  gap-x-4">
               <input
                 type="radio"
                 name="background"
@@ -40,7 +40,7 @@ const BackgroundChanger = () => {
             </div>
           </button>
           <button className="flex h-full w-full whitespace-nowrap flex-1 items-center  rounded-md bg-black px-2 py-1 text-white">
-            <div className="flex items-center gap-x-8">
+            <div className="flex items-center gap-x-4">
               <input
                 type="radio"
                 name="background"
