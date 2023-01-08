@@ -61,7 +61,7 @@ const MobileDrawer = () => {
           {links.map((link) => (
             <li
               key={v4()}
-              className="rounded-full font-semibold transition-all duration-300 ease-in-out  hover:bg-base-300"
+              className="rounded-full px-4 py-2 font-semibold transition-all duration-300 ease-in-out  hover:bg-base-300"
             >
               <Link href={link?.link}>
                 <div className="flex items-center gap-x-4 text-sm xs:text-xl md:text-2xl">

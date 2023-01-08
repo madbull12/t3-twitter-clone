@@ -93,10 +93,8 @@ const Sidebar = () => {
           </>
         ))}
         {status === "authenticated" ? (
-          <li className="px-4 py-2">
           <MoreDropdownSidebar />
 
-          </li>
         ) : null}
 
         {!matches ? (

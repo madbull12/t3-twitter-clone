@@ -26,6 +26,7 @@ import MenuDropdown from "./MenuDropdown";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { BiDotsHorizontal } from "react-icons/bi";
 import BottomMenuModal from "./BottomMenuModal";
+import useLikeTweet from "../../hooks/useLikeTweet";
 
 interface IProps {
   tweet: TweetWithUser;
@@ -36,62 +37,20 @@ const TweetComponent = ({ tweet }: IProps) => {
   const { data: session, status } = useSession();
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
   const router = useRouter();
-  const utils = trpc.useContext();
-  const { mutate: likeTweet } = trpc.like.likeTweet.useMutation({
-    onMutate: () => {
-      utils.tweet.getTweets.cancel();
-      const optimisticUpdate = utils.tweet.getTweets.getData();
-      if (optimisticUpdate) {
-        utils.tweet.getTweets.setData(optimisticUpdate);
-      }
-    },
-    onSettled: () => {
-      utils.tweet.getTweets.invalidate();
-    },
-  });
-  console.log(tweet);
-  const { mutate: unlikeTweet } = trpc.like.unlikeTweet.useMutation({
-    onMutate: () => {
-      utils.tweet.getTweets.cancel();
-      const optimisticUpdate = utils.tweet.getTweets.getData();
-      if (optimisticUpdate) {
-        utils.tweet.getTweets.setData(optimisticUpdate);
-      }
-    },
-    onSettled: () => {
-      utils.tweet.getTweets.invalidate();
-    },
-  });
-  const [hasLiked, setHasLiked] = useState(false);
 
-  // 👇️ convert ms to hours                  min  sec   ms
+
+
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
-
-  // console.log(hoursBetweenDates);
 
   const { modal, setModal } = useReplyModal();
   const { setModal: setLoginModal } = useLoginModal();
 
   const { setTweetId } = useTweetId();
 
-  const { data: alreadyLiked } = trpc.like.userLikeTweet.useQuery({
-    tweetId: tweet.id,
-  });
+  const { handleLike,alreadyLiked,setHasLiked,hasLiked } = useLikeTweet(tweet.id);
 
-  const handleLike = (e: React.SyntheticEvent) => {
-    e.stopPropagation();
 
-    if (status === "authenticated") {
-      toast.success(alreadyLiked !== null ? "Tweet unliked" : "Tweet liked");
-      alreadyLiked !== null
-        ? unlikeTweet({ tweetId: tweet.id })
-        : likeTweet({ tweetId: tweet.id });
-    } else {
-      setLoginModal(true);
-    }
-  };
 
-  const tablet = useMediaQuery("(min-width:768px)");
 
   return (
     <div
@@ -104,7 +63,7 @@ const TweetComponent = ({ tweet }: IProps) => {
       }}
       className="relative flex cursor-pointer items-start gap-x-2 p-2 transition-all duration-100 ease-in-out hover:bg-base-200 md:gap-x-4 md:p-4"
     >
-      <div >
+      <div>
         <Avatar image={tweet.user.image || ""} width={40} height={40} />
       </div>
 

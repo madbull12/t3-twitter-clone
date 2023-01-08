@@ -7,7 +7,7 @@ const MoreDropdownSidebar = ({ mobile }:{ mobile?:boolean }) => {
 
   return (
     <div className="dropdown ">
-      <li tabIndex={0} className="cursor-pointer rounded-full transition-all duration-200 ease-in-out  hover:bg-base-300">
+      <li tabIndex={0} className="px-4 py-2 cursor-pointer rounded-full transition-all duration-200 ease-in-out  hover:bg-base-300">
         <div className="flex items-center gap-x-4 text-sm xs:text-xl md:text-2xl">
           <IoEllipsisHorizontalCircleOutline />
           <span className={`${mobile ? null : "hidden xl:block"}  `}>More</span>
@@ -17,7 +17,7 @@ const MoreDropdownSidebar = ({ mobile }:{ mobile?:boolean }) => {
         tabIndex={0}
         className="dropdown-content   menu rounded-box w-52 bg-base-100 p-2 shadow"
       >
-        <li onClick={()=>setModal(true)}>
+        <li onClick={()=>setModal(true)} >
           <a>
             <FaPaintBrush />
             Display

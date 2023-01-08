@@ -65,6 +65,7 @@ model User {
   likes         Like[]
   profile       Profile?
   bookmarks     Bookmark[]
+  retweets      Retweet[]
 }
 
 model VerificationToken {
@@ -116,6 +117,7 @@ model Tweet {
   hashtags        Hashtag[]
   likes           Like[]
   bookmarks       Bookmark[]
+  retweets        Retweet[]
 }
 
 model Profile {
@@ -128,7 +130,18 @@ model Profile {
   coverPhoto String?
 }
 
+
+
 model Bookmark {
+  id      String @id @default(uuid())
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  tweetId String 
+  tweet   Tweet  @relation(fields: [tweetId], references: [id])
+
+  @@unique([userId,tweetId])
+}
+model Retweet {
   id      String @id @default(uuid())
   user    User   @relation(fields: [userId], references: [id])
   userId  String

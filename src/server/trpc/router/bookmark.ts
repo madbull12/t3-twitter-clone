@@ -46,13 +46,16 @@ export const bookmarkRouter = router({
       });
     }),
   deleteBookmark: publicProcedure
-    .input(z.object({ bookmarkId: z.string() }))
+    .input(z.object({ tweetId: z.string() }))
     .mutation(({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
 
       return ctx.prisma.bookmark.delete({
         where:{
-          id:input.bookmarkId,        
+          userId_tweetId:{
+            tweetId:input?.tweetId,
+            userId:userId as string
+          }        
         }
       });
     }),

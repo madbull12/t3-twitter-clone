@@ -50,7 +50,7 @@ const useBookmark = (tweetId?:string) => {
   };
   const handleDeleteBookmark = async () => {
     setAddBookmark(false);
-    await toast.promise(deleteBookmark({ bookmarkId:isAdded?.id as string }), {
+    await toast.promise(deleteBookmark({ tweetId:tweetId as string }), {
       success: "Bookmark deleted",
       loading: "Deleting bookmark",
       error: (err) => "Oops something went wrong " + err,
