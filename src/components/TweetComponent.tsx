@@ -41,7 +41,8 @@ const TweetComponent = ({ tweet, isRetweet }: IProps) => {
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
   const router = useRouter();
   const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet } =
-    useRetweet(tweet.id);
+    useRetweet(tweet);
+    console.log(alreadyRetweeted);
 
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
 
@@ -213,7 +214,7 @@ const TweetComponent = ({ tweet, isRetweet }: IProps) => {
                   onClick={(e) => e.stopPropagation()}
                   className="group flex cursor-pointer items-center gap-x-2  rounded-full p-2 text-xs hover:bg-base-300 md:text-base"
                 >
-                  {(alreadyRetweeted !== undefined || hasRetweeted) &&
+                  {(alreadyRetweeted !== null || hasRetweeted) &&
                   status === "authenticated" ? (
                     <AiOutlineRetweet
                       onClick={handleUndoRetweet}

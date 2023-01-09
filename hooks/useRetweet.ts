@@ -6,7 +6,7 @@ import { TweetWithUser } from "../interface";
 import { useLoginModal } from "../lib/zustand";
 import { useSession } from "next-auth/react";
 
-const useRetweet = (tweetId?: string) => {
+const useRetweet = (tweet?: TweetWithUser) => {
   const router = useRouter();
   const { status, data: session } = useSession();
   const { data: bookmarks } = trpc.bookmark.getUserBookmarks.useQuery();
@@ -36,18 +36,18 @@ const useRetweet = (tweetId?: string) => {
     },
   });
 
-  const { data: userRetweets } = trpc.tweet.getUserRetweets.useQuery();
-  const alreadyRetweeted = userRetweets?.find((tweet) =>
-    tweet.retweets.find((retweet) => retweet.id === tweetId)
-  );
+  const { data: alreadyRetweeted } = trpc.tweet.userAlreadyRetweet.useQuery({ tweetId:tweet?.id as string});
+  console.log(alreadyRetweeted)
 
+  // const retweetsMapped = userRetweets?.map((retweet)=>retweet.retweets);
+  // const alreadyRetweeted = retweetsMapped?.find((retweet)=>retweet.id)
 
   const [hasRetweeted, setHasRetweeted] = useState(false);
 
   const handleRetweet = async () => {
     setHasRetweeted(true);
     await toast.promise(
-      retweet({ tweetId: tweetId as string, text: null, mediaUrl: null }),
+      retweet({ tweetId: tweet?.id as string, text: null, mediaUrl: null }),
       {
         success: "Retweeted",
         loading: "Retweeting tweet",
@@ -58,7 +58,7 @@ const useRetweet = (tweetId?: string) => {
   };
   const handleUndoRetweet = async () => {
     setHasRetweeted(false);
-    await toast.promise(undoRetweet({ tweetId: tweetId as string }), {
+    await toast.promise(undoRetweet({ tweetId: tweet?.id as string }), {
       success: "Retweed removed",
       loading: "Removing retweet",
       error: (err) => "Oops something went wrong " + err,

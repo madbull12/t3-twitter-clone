@@ -122,6 +122,7 @@ model Tweet {
 
 
   @@unique([id,userId])
+  @@unique([retweetId,userId])
 
 }
 
