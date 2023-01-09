@@ -99,7 +99,7 @@ const StatusPage = () => {
           <ReplyForm tweetId={tweetDetails?.id || ""} />
           <div>
             {replies?.map((reply) => (
-              <TweetComponent tweet={reply} key={v4()} />
+              <TweetComponent tweet={reply as TweetWithUser} key={v4()} />
             ))}
           </div>
         </div>
