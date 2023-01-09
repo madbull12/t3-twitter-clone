@@ -4,7 +4,6 @@ import { bookmarkRouter } from "./bookmark";
 import { hashtagRouter } from "./hashtag";
 import { likeRouter } from "./like";
 import { profileRouter } from "./profile";
-import { retweetRouter } from "./retweet";
 import { searchRouter } from "./search";
 import { tweetRouter } from "./tweet";
 import { userRouter } from "./user";
