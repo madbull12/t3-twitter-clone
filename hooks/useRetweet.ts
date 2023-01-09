@@ -8,10 +8,10 @@ import { useSession } from "next-auth/react";
 
 const useRetweet = (tweetId?: string) => {
   const router = useRouter();
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   const { data: bookmarks } = trpc.bookmark.getUserBookmarks.useQuery();
   const utils = trpc.useContext();
-  const { mutateAsync: retweet } = trpc.retweet.retweet.useMutation({
+  const { mutateAsync: retweet } = trpc.tweet.createRetweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
       const optimisticUpdate = utils.tweet.getTweets.getData();
@@ -23,7 +23,7 @@ const useRetweet = (tweetId?: string) => {
       utils.tweet.getTweets.invalidate();
     },
   });
-  const { mutateAsync: undoRetweet } = trpc.retweet.undoRetweet.useMutation({
+  const { mutateAsync: undoRetweet } = trpc.tweet.undoRetweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
       const optimisticUpdate = utils.tweet.getTweets.getData();
@@ -35,23 +35,26 @@ const useRetweet = (tweetId?: string) => {
       utils.tweet.getTweets.invalidate();
     },
   });
+
+  const { data: userRetweets } = trpc.tweet.getUserRetweets.useQuery();
+  const alreadyRetweeted = userRetweets?.find((tweet) =>
+    tweet.retweets.find((retweet) => retweet.id === tweetId)
+  );
+
 
   const [hasRetweeted, setHasRetweeted] = useState(false);
 
-
-  const { data: alreadyRetweeted } = trpc.retweet.uniqueRetweet.useQuery({
-    tweetId: tweetId as string,
-  });
-
   const handleRetweet = async () => {
     setHasRetweeted(true);
-    await toast.promise(retweet({ tweetId: tweetId as string }), {
-      success: "Retweeted",
-      loading: "Retweeting tweet",
-      error: (err) => "Oops something went wrong " + err,
-    });
+    await toast.promise(
+      retweet({ tweetId: tweetId as string, text: null, mediaUrl: null }),
+      {
+        success: "Retweeted",
+        loading: "Retweeting tweet",
+        error: (err) => "Oops something went wrong " + err,
+      }
+    );
 
-    router.push(`/bookmarks`);
   };
   const handleUndoRetweet = async () => {
     setHasRetweeted(false);
@@ -60,14 +63,14 @@ const useRetweet = (tweetId?: string) => {
       loading: "Removing retweet",
       error: (err) => "Oops something went wrong " + err,
     });
+  };
 
-    return {
-      bookmarks,
-      handleRetweet,
-      hasRetweeted,
-      alreadyRetweeted,
-      handleUndoRetweet,
-    };
+  return {
+    bookmarks,
+    handleRetweet,
+    hasRetweeted,
+    alreadyRetweeted,
+    handleUndoRetweet,
   };
 };
 

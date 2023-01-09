@@ -18,8 +18,14 @@ export type TweetWithUser = Prisma.TweetGetPayload<{
           user: true;
         };
       };
+      retweet: {
+        include: {
+          user: true;
+        };
+      };
       likes: true;
-      replies:true
+      replies:true;
+      retweets:true
     };
   }>;
   

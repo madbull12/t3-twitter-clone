@@ -19,7 +19,7 @@ export const appRouter = router({
   profile:profileRouter,
   hashtag:hashtagRouter,
   bookmark:bookmarkRouter,
-  retweet:retweetRouter
+  // retweet:retweetRouter
   // reply:replyRouter
 });
 

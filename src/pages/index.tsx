@@ -12,13 +12,13 @@ import { Ring } from "@uiball/loaders";
 import Loader from "../components/Loader";
 import TweetList from "../components/TweetList";
 import NavFeed from "../components/NavFeed";
+import useRetweet from "../../hooks/useRetweet";
 
 const Home: NextPage = () => {
   const { data: tweets, isLoading } = trpc.tweet.getTweets.useQuery();
-  console.log(tweets);
+
 
   const { data,status } = useSession();
-  // console.log(data);
 
   return (
     <>

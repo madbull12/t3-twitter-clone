@@ -65,7 +65,6 @@ model User {
   likes         Like[]
   profile       Profile?
   bookmarks     Bookmark[]
-  retweets      Retweet[]
 }
 
 model VerificationToken {
@@ -105,19 +104,25 @@ model Hashtag {
 }
 
 model Tweet {
-  id              String    @id @default(uuid())
-  createdAt       DateTime  @default(now())
+  id              String     @id @default(uuid())
+  createdAt       DateTime   @default(now())
   text            String?
-  userId          String
-  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String     
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   image           String?
-  originalTweet   Tweet?    @relation("replies", fields: [originalTweetId], references: [id], onDelete: Cascade)
+  originalTweet   Tweet?     @relation("replies", fields: [originalTweetId], references: [id], onDelete: Cascade)
   originalTweetId String?
-  replies         Tweet[]   @relation("replies")
+  replies         Tweet[]    @relation("replies")
   hashtags        Hashtag[]
   likes           Like[]
   bookmarks       Bookmark[]
-  retweets        Retweet[]
+  retweet         Tweet?     @relation("retweets", fields: [retweetId], references: [id], onDelete: Cascade)
+  retweetId       String?
+  retweets        Tweet[]    @relation("retweets")
+
+
+  @@unique([id,userId])
+
 }
 
 model Profile {
@@ -130,26 +135,25 @@ model Profile {
   coverPhoto String?
 }
 
-
-
 model Bookmark {
   id      String @id @default(uuid())
   user    User   @relation(fields: [userId], references: [id])
   userId  String
-  tweetId String 
+  tweetId String
   tweet   Tweet  @relation(fields: [tweetId], references: [id])
 
-  @@unique([userId,tweetId])
+  @@unique([userId, tweetId])
 }
-model Retweet {
-  id      String @id @default(uuid())
-  user    User   @relation(fields: [userId], references: [id])
-  userId  String
-  tweetId String 
-  tweet   Tweet  @relation(fields: [tweetId], references: [id])
 
-  @@unique([userId,tweetId])
-}
+// model Retweet {
+//   id      String @id @default(uuid())
+//   user    User   @relation(fields: [userId], references: [id])
+//   userId  String
+//   tweetId String 
+//   tweet   Tweet  @relation(fields: [tweetId], references: [id])
+
+//   @@unique([userId,tweetId])
+// }
 
 // model Reply {
 //   id        String   @id @default(uuid())

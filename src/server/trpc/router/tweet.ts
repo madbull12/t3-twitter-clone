@@ -64,7 +64,10 @@ export const tweetRouter = router({
 
       return ctx.prisma.tweet.delete({
         where: {
-          id:input.tweetId,
+          id_userId: {
+            id: input?.tweetId,
+            userId: userId as string,
+          },
         },
       });
     }),
@@ -103,24 +106,81 @@ export const tweetRouter = router({
       });
     }),
 
+  createRetweet: publicProcedure
+    .input(
+      z.object({
+        text: z.string().nullable(),
+        mediaUrl: z.string().nullable(),
+        tweetId: z.string().nullable(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+      const userId = ctx?.session?.user?.id;
+
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
+
+      return ctx.prisma.tweet.create({
+        data: {
+          text: input?.text,
+          image: input?.mediaUrl,
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          retweet: {
+            connect: {
+              id: input?.tweetId as string,
+            },
+          },
+        },
+      });
+    }),
+  undoRetweet: publicProcedure
+    .input(
+      z.object({
+        tweetId: z.string(),
+      })
+    )
+    .mutation(({ input, ctx }) => {
+
+      return ctx.prisma.tweet.update({
+        where: {
+          id: input?.tweetId,
+        },
+        data: {
+          retweet: {
+            disconnect: true,
+          },
+        },
+      });
+    }),
+
   getUniqueTweet: publicProcedure
-    .input(z.object({
-      tweetId:z.string()
-    }))
+    .input(
+      z.object({
+        tweetId: z.string(),
+      })
+    )
     .query(({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
-      
+
       return ctx.prisma.tweet.findFirst({
-        where:{
-          AND:[
+        where: {
+          AND: [
             {
-              userId
-            },{
-              id:input.tweetId
-            }
-          ]
-        }
-      })
+              userId,
+            },
+            {
+              id: input.tweetId,
+            },
+          ],
+        },
+      });
     }),
 
   getTweetReplies: publicProcedure
@@ -148,6 +208,11 @@ export const tweetRouter = router({
 
   getTweets: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.tweet.findMany({
+      where:{
+        retweet:{
+          is:null
+        }
+      },
       include: {
         user: true,
         originalTweet: {
@@ -157,6 +222,7 @@ export const tweetRouter = router({
         },
         likes: true,
         replies: true,
+        retweets:true
       },
       orderBy: {
         createdAt: "desc",
@@ -184,9 +250,19 @@ export const tweetRouter = router({
                 include: {
                   user: true,
                 },
+                
+              },
+              retweet: {
+                include: {
+                  user: true,
+                  likes: true,
+                  replies: true,
+                  retweets: true,
+                },
               },
               likes: true,
               replies: true,
+              retweets:true
             },
             orderBy: {
               createdAt: "desc",
@@ -205,8 +281,17 @@ export const tweetRouter = router({
                   user: true,
                 },
               },
+              retweet: {
+                include: {
+                  user: true,
+                  likes: true,
+                  replies: true,
+                  retweets: true,
+                },
+              },
               likes: true,
               replies: true,
+              retweets: true,
             },
             orderBy: {
               createdAt: "desc",
@@ -227,8 +312,17 @@ export const tweetRouter = router({
                   user: true,
                 },
               },
+              retweet: {
+                include: {
+                  user: true,
+                  likes: true,
+                  replies: true,
+                  retweets: true,
+                },
+              },
               likes: true,
               replies: true,
+              retweets:true
             },
             orderBy: {
               createdAt: "desc",
@@ -244,15 +338,25 @@ export const tweetRouter = router({
                 },
               },
             },
+          
             include: {
               user: true,
               originalTweet: {
+                include: {
+                  user: true,
+                  likes: true,
+                  replies: true,
+                  retweets: true,
+                },
+              },
+              retweet: {
                 include: {
                   user: true,
                 },
               },
               likes: true,
               replies: true,
+              retweets:true
             },
             orderBy: {
               createdAt: "desc",
@@ -262,6 +366,18 @@ export const tweetRouter = router({
           break;
       }
     }),
+    getUserRetweets:publicProcedure
+      .query(({ ctx,input })=>{
+          const userId = ctx.session?.user?.id;
+          return ctx.prisma.tweet.findMany({
+            where:{
+              userId
+            },
+            select:{
+              retweets:true
+            }
+          })
+      }),
   getSingleTweet: publicProcedure
     .input(z.object({ tweetId: z.string() }))
     .query(({ ctx, input }) => {
@@ -278,7 +394,14 @@ export const tweetRouter = router({
               likes: true,
             },
           },
+          retweet: {
+            include: {
+              user: true,
+              likes: true,
+            },
+          },
           likes: true,
+          retweets:true
         },
       });
     }),
