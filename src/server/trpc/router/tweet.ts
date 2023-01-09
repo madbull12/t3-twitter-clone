@@ -253,9 +253,9 @@ export const tweetRouter = router({
               retweet: {
                 include: {
                   user: true,
-                  likes:true,
-                  replies:true,
-                  retweets:true
+                  // likes:true,
+                  // replies:true,
+                  // retweets:true
                 },
               },
               likes: true,
@@ -282,9 +282,9 @@ export const tweetRouter = router({
               retweet: {
                 include: {
                   user: true,
-                  likes: true,
-                  replies: true,
-                  retweets: true,
+                  // likes: true,
+                  // replies: true,
+                  // retweets: true,
                 },
               },
               likes: true,
@@ -313,9 +313,9 @@ export const tweetRouter = router({
               retweet: {
                 include: {
                   user: true,
-                  likes: true,
-                  replies: true,
-                  retweets: true,
+                  // likes: true,
+                  // replies: true,
+                  // retweets: true,
                 },
               },
               likes: true,
@@ -342,9 +342,9 @@ export const tweetRouter = router({
               originalTweet: {
                 include: {
                   user: true,
-                  likes: true,
-                  replies: true,
-                  retweets: true,
+                  // likes: true,
+                  // replies: true,
+                  // retweets: true,
                 },
               },
               retweet: {
