@@ -1,12 +1,12 @@
 import { Prisma } from "@prisma/client";
+import { User } from "@prisma/client";
 
-export interface ITweet {
-    id:string;
-    text:string;
-    userId:string;
-    user:any;
-    image:string;
-}
+
+export type UserWithPayloads = Prisma.UserGetPayload<{
+  include:{
+    profile:true
+  }
+}>
 
 
 export type TweetWithUser = Prisma.TweetGetPayload<{

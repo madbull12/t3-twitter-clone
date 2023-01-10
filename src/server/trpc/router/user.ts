@@ -12,7 +12,11 @@ export const userRouter = router({
             contains: input.term,
             mode: "insensitive",
           },
+          
         },
+        include:{
+          profile:true
+        }
       });
     }),
   getUserProfile: publicProcedure

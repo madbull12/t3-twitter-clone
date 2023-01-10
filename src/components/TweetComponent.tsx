@@ -1,7 +1,7 @@
 import { Tweet, User } from "@prisma/client";
 import Image from "next/legacy/image";
 import React, { useState } from "react";
-import { ITweet, TweetWithUser } from "../../interface";
+import {  TweetWithUser } from "../../interface";
 import moment from "moment";
 import ReactTimeAgo from "react-time-ago";
 import { IoAnalyticsOutline } from "react-icons/io5";

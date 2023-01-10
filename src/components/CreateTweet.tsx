@@ -118,7 +118,7 @@ const CreateTweet = () => {
           ref={textRef}
           onChange={(e) => setText(e.target.value)}
           placeholder="What's happening?"
-          className={`w-full resize-none overflow-hidden bg-transparent text-base outline-none placeholder:text-gray-600 md:text-xl `}
+          className={`w-full resize-none overflow-hidden bg-transparent text-neutral outline-none placeholder:text-gray-600 md:text-xl `}
         />
         {selectedFile && (
           <>

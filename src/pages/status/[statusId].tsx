@@ -5,6 +5,7 @@ import Image from "next/legacy/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import { AiOutlineComment, AiOutlineHeart, AiOutlineRetweet } from "react-icons/ai";
 import { BsArrowLeft } from "react-icons/bs";
 import { v4 } from "uuid";
 import { TweetWithUser } from "../../../interface";
@@ -95,7 +96,22 @@ const StatusPage = () => {
               {moment(tweetDetails?.createdAt).format("ll")}
             </p>
           </div>
-          <div></div>
+          <div className="flex px-2 items-center py-4 gap-x-4 border-y border-base-200">
+                <div className="gap-x-2 flex text-gray-400 cursor-pointer items-center">
+                  <span className="flex items-center gap-x-2"><span className="text-xl text-neutral font-semibold"> {tweetDetails?.retweets.length}</span> Retweets</span>
+
+                </div>
+          
+                <div className="gap-x-2 flex text-gray-400  items-center cursor-pointer ">
+                  <span className="flex items-center gap-x-2"><span className="text-xl text-neutral font-semibold"> {tweetDetails?.likes.length}</span> Likes</span>
+                  
+                </div>
+          </div>
+          <div className="flex justify-evenly text-xl text-gray-400 px-2 items-center  pb-4 gap-x-4 border-b border-base-200">
+                  <AiOutlineComment className="cursor-pointer" />
+                  <AiOutlineRetweet className="cursor-pointer" />
+                  <AiOutlineHeart className="cursor-pointer" />
+          </div>
           <ReplyForm tweetId={tweetDetails?.id || ""} />
           <div>
             {replies?.map((reply) => (
