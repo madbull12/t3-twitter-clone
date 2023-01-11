@@ -428,7 +428,15 @@ export const tweetRouter = router({
               }
             }
           },
-          retweets: true,
+          retweets: {
+            include:{
+              user:{
+                include:{
+                  profile:true
+                }
+              }
+            }
+          },
         },
       });
     }),

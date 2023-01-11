@@ -5,11 +5,20 @@ import Image from "next/legacy/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import { AiOutlineComment, AiOutlineHeart, AiOutlineRetweet } from "react-icons/ai";
+import {
+  AiOutlineComment,
+  AiOutlineHeart,
+  AiOutlineRetweet,
+} from "react-icons/ai";
 import { BsArrowLeft } from "react-icons/bs";
 import { v4 } from "uuid";
-import { LikesWithPayloads, TweetWithUser } from "../../../interface";
-import { useLikesModal, useUserLikes } from "../../../lib/zustand";
+import { LikesWithPayloads, RetweetsWithPayloads, TweetWithUser } from "../../../interface";
+import {
+  useLikesModal,
+  useRetweetsModal,
+  useUserLikes,
+  useUserRetweets,
+} from "../../../lib/zustand";
 import Avatar from "../../components/Avatar";
 import Body from "../../components/Body";
 import Loader from "../../components/Loader";
@@ -28,15 +37,16 @@ const StatusPage = () => {
     }
   );
 
-  console.log(tweetDetails?.likes)
+  console.log(tweetDetails?.retweets);
 
   const { data: replies } = trpc?.tweet.getTweetReplies.useQuery({
     tweetId: statusId,
   });
 
-  const { setModal } = useLikesModal();
+  const { setModal: setLikesModal } = useLikesModal();
+  const { setModal: setRetweetsModal } = useRetweetsModal();
   const { setLikes } = useUserLikes();
-
+  const { setRetweets } = useUserRetweets();
   return (
     <Body>
       <Head>
@@ -102,27 +112,43 @@ const StatusPage = () => {
               {moment(tweetDetails?.createdAt).format("ll")}
             </p>
           </div>
-          <div className="flex px-2 items-center py-4 gap-x-4 border-y border-base-200">
-                <div className="gap-x-2 flex text-gray-400 cursor-pointer items-center">
-                  <span className="flex items-center gap-x-2"><span className="text-xl text-neutral font-semibold"> {tweetDetails?.retweets.length}</span> Retweets</span>
+          <div className="flex items-center gap-x-4 border-y border-base-200 px-2 py-4">
+            <div
+              onClick={() => {
+                setRetweetsModal(true);
+                setRetweets(tweetDetails?.retweets as unknown as  RetweetsWithPayloads[]);
+              }}
+              className="flex cursor-pointer items-center gap-x-2 text-gray-400"
+            >
+              <span className="flex items-center gap-x-2">
+                <span className="text-xl font-semibold text-neutral">
+                  {" "}
+                  {tweetDetails?.retweets.length}
+                </span>{" "}
+                Retweets
+              </span>
+            </div>
 
-                </div>
-          
-                <div onClick={()=>{
-                  setModal(true)
-                  setLikes(tweetDetails?.likes as LikesWithPayloads[])
-                }
-           
-
-                  } className="gap-x-2 flex text-gray-400  items-center cursor-pointer ">
-                  <span className="flex items-center gap-x-2"><span className="text-xl text-neutral font-semibold"> {tweetDetails?.likes.length}</span> Likes</span>
-                  
-                </div>
+            <div
+              onClick={() => {
+                setLikesModal(true);
+                setLikes(tweetDetails?.likes as LikesWithPayloads[]);
+              }}
+              className="flex cursor-pointer items-center  gap-x-2 text-gray-400 "
+            >
+              <span className="flex items-center gap-x-2">
+                <span className="text-xl font-semibold text-neutral">
+                  {" "}
+                  {tweetDetails?.likes.length}
+                </span>{" "}
+                Likes
+              </span>
+            </div>
           </div>
-          <div className="flex justify-evenly text-xl text-gray-400 px-2 items-center  pb-4 gap-x-4 border-b border-base-200">
-                  <AiOutlineComment className="cursor-pointer" />
-                  <AiOutlineRetweet className="cursor-pointer" />
-                  <AiOutlineHeart className="cursor-pointer" />
+          <div className="flex items-center justify-evenly gap-x-4 border-b border-base-200  px-2 pb-4 text-xl text-gray-400">
+            <AiOutlineComment className="cursor-pointer" />
+            <AiOutlineRetweet className="cursor-pointer" />
+            <AiOutlineHeart className="cursor-pointer" />
           </div>
           <ReplyForm tweetId={tweetDetails?.id || ""} />
           <div>

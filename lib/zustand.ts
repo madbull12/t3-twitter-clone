@@ -1,5 +1,5 @@
 import create from "zustand";
-import { LikesWithPayloads, UserWithPayloads } from "../interface";
+import { LikesWithPayloads, RetweetsWithPayloads, TweetWithUser, UserWithPayloads } from "../interface";
 
 interface Preview {
   preview: string;
@@ -24,6 +24,10 @@ interface Drawer {
 interface UserLikes {
   likes:LikesWithPayloads[] | null;
   setLikes:(value:LikesWithPayloads[]) => void
+}
+interface UserRetweets {
+  retweets:RetweetsWithPayloads[] | null;
+  setRetweets:(value:RetweetsWithPayloads[]) => void
 }
 
 export const usePreviewStore = create<Preview>((set) => ({
@@ -62,10 +66,18 @@ export const useLikesModal = create<Modal>((set)=>({
   modal:false,
   setModal:(value:boolean)=>set(()=>({ modal:value }))
 }))
+export const useRetweetsModal = create<Modal>((set)=>({
+  modal:false,
+  setModal:(value:boolean)=>set(()=>({ modal:value }))
+}))
 
 export const useUserLikes = create<UserLikes>((set)=>({
   likes:null,
   setLikes:(value:LikesWithPayloads[])=>set(()=>({ likes:value }))
+}))
+export const useUserRetweets = create<UserRetweets>((set)=>({
+  retweets:null,
+  setRetweets:(value:RetweetsWithPayloads[])=>set(()=>({ retweets:value }))
 }))
 
 export const useMobileDrawer = create<Drawer>((set)=>({

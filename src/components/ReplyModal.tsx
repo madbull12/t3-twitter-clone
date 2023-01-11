@@ -44,7 +44,7 @@ const ReplyModal = () => {
     <Backdrop>
       <div
         ref={modalRef}
-        className="relative mx-auto max-w-lg rounded-2xl overflow-y-scroll max-h-[500px]  bg-white p-4 text-black"
+        className="relative mx-auto max-w-lg rounded-2xl overflow-y-scroll max-h-[500px]  bg-base-100 p-4 text-neutral"
       >
         {isLoading ? (
           <Loader />

@@ -11,6 +11,7 @@ import {
   useLoginModal,
   useMobileDrawer,
   useReplyModal,
+  useRetweetsModal,
 } from "../../lib/zustand";
 import CreateModal from "./CreateModal";
 import DisplayModal from "./DisplayModal";
@@ -22,6 +23,7 @@ import MobileCreate from "./MobileCreate";
 import MobileDrawer from "./MobileDrawer";
 import MobileNav from "./MobileNav";
 import ReplyModal from "./ReplyModal";
+import RetweetsListModal from "./RetweetsListModal";
 import Right from "./Right";
 import Sidebar from "./Sidebar";
 
@@ -35,6 +37,7 @@ const Layout = ({ children }: IProps) => {
   const { modal: profileModal } = useEditProfileModal();
   const { modal: displayModal } = useDisplayModal();
   const { modal: likesModal } = useLikesModal();
+  const { modal: retweetsModal } = useRetweetsModal();
   const { drawer: mobileDrawer } = useMobileDrawer();
 
   const { status } = useSession();
@@ -48,7 +51,8 @@ const Layout = ({ children }: IProps) => {
       profileModal ||
       displayModal ||
       mobileDrawer ||
-      likesModal
+      likesModal ||
+      retweetsModal
     ) {
       window.scrollTo(0, 0);
       document.body.style.overflow = "hidden";
@@ -62,7 +66,8 @@ const Layout = ({ children }: IProps) => {
     profileModal,
     displayModal,
     mobileDrawer,
-    likesModal
+    likesModal,
+    retweetsModal
   ]);
   const phone = useMediaQuery("(min-width:768px)");
 
@@ -70,7 +75,7 @@ const Layout = ({ children }: IProps) => {
     <main className="relative mx-auto  min-h-screen max-w-screen-2xl overflow-hidden  bg-base-100 text-neutral">
       {!phone ? <>{mobileDrawer ? <MobileDrawer /> : null}</> : null}
       {replyModal ? <ReplyModal /> : null}
-      {}
+      {retweetsModal ? <RetweetsListModal /> : null}
       {loginModal ? <LoginModal /> : null}
       {createModal ? <CreateModal /> : null}
       {profileModal ? <EditProfileModal /> : null}

@@ -17,6 +17,21 @@ export type LikesWithPayloads = Prisma.LikeGetPayload<{
     }
   }
 }>
+export type RetweetsWithPayloads = Prisma.TweetGetPayload<{
+  include:{
+    retweets:{
+      include:{
+        user:{
+          include:{
+            profile:true
+          }
+        },
+        
+      }
+    }
+  }
+}>
+
 
 export type TweetWithUser = Prisma.TweetGetPayload<{
     include: {
@@ -34,7 +49,15 @@ export type TweetWithUser = Prisma.TweetGetPayload<{
       };
       likes: true;
       replies:true;
-      retweets:true
+      retweets:{
+        include:{
+          user:{
+            include:{
+              profile:true
+            }
+          },
+        }
+      }
     };
   }>;
   
