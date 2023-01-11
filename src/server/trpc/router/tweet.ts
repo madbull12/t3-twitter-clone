@@ -419,7 +419,15 @@ export const tweetRouter = router({
               replies:true
             },
           },
-          likes: true,
+          likes: {
+            include:{
+              user:{
+                include:{
+                  profile:true
+                }
+              }
+            }
+          },
           retweets: true,
         },
       });

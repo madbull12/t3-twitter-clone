@@ -1,4 +1,5 @@
 import create from "zustand";
+import { LikesWithPayloads, UserWithPayloads } from "../interface";
 
 interface Preview {
   preview: string;
@@ -18,6 +19,11 @@ interface TweetIdStore {
 interface Drawer {
   drawer: boolean;
   setDrawer: (value: boolean) => void;
+}
+
+interface UserLikes {
+  likes:LikesWithPayloads[] | null;
+  setLikes:(value:LikesWithPayloads[]) => void
 }
 
 export const usePreviewStore = create<Preview>((set) => ({
@@ -51,6 +57,15 @@ export const useEditProfileModal = create<Modal>((set)=>({
 export const useDisplayModal = create<Modal>((set)=>({
   modal:false,
   setModal:(value:boolean)=>set(()=>({ modal:value }))
+}))
+export const useLikesModal = create<Modal>((set)=>({
+  modal:false,
+  setModal:(value:boolean)=>set(()=>({ modal:value }))
+}))
+
+export const useUserLikes = create<UserLikes>((set)=>({
+  likes:null,
+  setLikes:(value:LikesWithPayloads[])=>set(()=>({ likes:value }))
 }))
 
 export const useMobileDrawer = create<Drawer>((set)=>({

@@ -33,9 +33,11 @@ import { FaRetweet } from "react-icons/fa";
 interface IProps {
   tweet: TweetWithUser;
   isRetweet?: boolean;
+  isYourRetweet?:boolean;
+  retweetUsername?:string;
 }
 
-const TweetComponent = ({ tweet, isRetweet }: IProps) => {
+const TweetComponent = ({ tweet, isRetweet,isYourRetweet,retweetUsername }: IProps) => {
   const now = new Date();
   const { data: session, status } = useSession();
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
@@ -55,13 +57,17 @@ const TweetComponent = ({ tweet, isRetweet }: IProps) => {
     tweet.id
   );
 
+  const _isYourRetweet = tweet.userId as string === session?.user?.id;
+  const _retweetUsername = tweet.user.name;
   return (
     <>
-      {tweet.retweet ? (
+      {tweet.retweet  ? (
         <>
           <TweetComponent
             isRetweet={true}
             tweet={tweet.retweet as TweetWithUser}
+            isYourRetweet={_isYourRetweet}
+            retweetUsername={_retweetUsername as string}
           />
         </>
       ) : (
@@ -78,7 +84,7 @@ const TweetComponent = ({ tweet, isRetweet }: IProps) => {
           {isRetweet ? (
             <p className="mb-2 flex items-center gap-x-2 font-semibold text-gray-400">
              <FaRetweet />
-             You retweeted
+             {isYourRetweet ? "You retweeted" : `${retweetUsername} retweeted`}
             </p>
           ) : null}
           <div className="flex items-start gap-x-2">

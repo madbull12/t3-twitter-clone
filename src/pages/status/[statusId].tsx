@@ -8,7 +8,8 @@ import React from "react";
 import { AiOutlineComment, AiOutlineHeart, AiOutlineRetweet } from "react-icons/ai";
 import { BsArrowLeft } from "react-icons/bs";
 import { v4 } from "uuid";
-import { TweetWithUser } from "../../../interface";
+import { LikesWithPayloads, TweetWithUser } from "../../../interface";
+import { useLikesModal, useUserLikes } from "../../../lib/zustand";
 import Avatar from "../../components/Avatar";
 import Body from "../../components/Body";
 import Loader from "../../components/Loader";
@@ -27,9 +28,14 @@ const StatusPage = () => {
     }
   );
 
+  console.log(tweetDetails?.likes)
+
   const { data: replies } = trpc?.tweet.getTweetReplies.useQuery({
     tweetId: statusId,
   });
+
+  const { setModal } = useLikesModal();
+  const { setLikes } = useUserLikes();
 
   return (
     <Body>
@@ -102,7 +108,13 @@ const StatusPage = () => {
 
                 </div>
           
-                <div className="gap-x-2 flex text-gray-400  items-center cursor-pointer ">
+                <div onClick={()=>{
+                  setModal(true)
+                  setLikes(tweetDetails?.likes as LikesWithPayloads[])
+                }
+           
+
+                  } className="gap-x-2 flex text-gray-400  items-center cursor-pointer ">
                   <span className="flex items-center gap-x-2"><span className="text-xl text-neutral font-semibold"> {tweetDetails?.likes.length}</span> Likes</span>
                   
                 </div>

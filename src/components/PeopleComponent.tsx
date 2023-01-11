@@ -12,7 +12,9 @@ interface IProps {
 const PeopleComponent = ({ user }: IProps) => {
   const { data: session } = useSession();
   return (
-    <div className="flex items-start justify-between gap-x-4 p-2">
+ 
+    <Link href={`/${user.id}/${user.name}`}>
+        <div className="flex cursor-pointer items-start justify-between gap-x-4 p-2 transition-all duration-100 ease-in-out hover:bg-base-200">
       <Avatar image={user.image || ""} width={40} height={40} />
       <div className="mr-auto">
         <Link
@@ -29,6 +31,8 @@ const PeopleComponent = ({ user }: IProps) => {
         </div>
       ) : null}
     </div>
+    </Link>
+
   );
 };
 

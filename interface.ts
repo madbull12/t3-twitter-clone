@@ -8,6 +8,15 @@ export type UserWithPayloads = Prisma.UserGetPayload<{
   }
 }>
 
+export type LikesWithPayloads = Prisma.LikeGetPayload<{
+  include:{
+    user:{
+      include:{
+        profile:true
+      }
+    }
+  }
+}>
 
 export type TweetWithUser = Prisma.TweetGetPayload<{
     include: {
