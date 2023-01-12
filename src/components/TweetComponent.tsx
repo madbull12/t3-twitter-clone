@@ -43,7 +43,7 @@ const TweetComponent = ({ tweet, isRetweet,isYourRetweet,retweetUsername }: IPro
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
   const router = useRouter();
   const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet } =
-    useRetweet(tweet);
+    useRetweet(tweet.id);
     console.log(alreadyRetweeted);
 
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
@@ -53,7 +53,7 @@ const TweetComponent = ({ tweet, isRetweet,isYourRetweet,retweetUsername }: IPro
 
   const { setTweetId } = useTweetId();
 
-  const { handleLike, alreadyLiked, setHasLiked, hasLiked } = useLikeTweet(
+  const { handleLike,handleUnlike, alreadyLiked, setHasLiked, hasLiked } = useLikeTweet(
     tweet.id
   );
 
@@ -191,17 +191,17 @@ const TweetComponent = ({ tweet, isRetweet,isYourRetweet,retweetUsername }: IPro
                 </div>
                 <div
                   className="group flex cursor-pointer items-center gap-x-2 rounded-full p-2 text-xs   hover:bg-base-300 md:text-base "
-                  onClick={handleLike}
+                  onClick={(e)=>e.stopPropagation()}
                 >
                   {(alreadyLiked !== null || hasLiked) &&
                   status === "authenticated" ? (
                     <AiFillHeart
-                      onClick={() => setHasLiked(false)}
+                      onClick={ handleUnlike}
                       className="text-primary"
                     />
                   ) : (
                     <AiOutlineHeart
-                      onClick={() => setHasLiked(true)}
+                      onClick={handleLike}
                       className="group-hover:text-primary"
                     />
                   )}

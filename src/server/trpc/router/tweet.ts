@@ -196,6 +196,7 @@ export const tweetRouter = router({
               user: true,
             },
           },
+          retweets:true,
           likes: true,
           replies: true,
         },
@@ -411,6 +412,7 @@ export const tweetRouter = router({
               replies:true
             },
           },
+       
           retweet: {
             include: {
               user: true,

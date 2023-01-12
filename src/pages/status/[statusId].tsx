@@ -1,18 +1,26 @@
 import { Prisma, Tweet } from "@prisma/client";
 import moment from "moment";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/legacy/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import {
+  AiFillHeart,
   AiOutlineComment,
   AiOutlineHeart,
   AiOutlineRetweet,
 } from "react-icons/ai";
 import { BsArrowLeft } from "react-icons/bs";
 import { v4 } from "uuid";
-import { LikesWithPayloads, RetweetsWithPayloads, TweetWithUser } from "../../../interface";
+import useLikeTweet from "../../../hooks/useLikeTweet";
+import useRetweet from "../../../hooks/useRetweet";
+import {
+  LikesWithPayloads,
+  RetweetsWithPayloads,
+  TweetWithUser,
+} from "../../../interface";
 import {
   useLikesModal,
   useReplyModal,
@@ -31,6 +39,7 @@ import { trpc } from "../../utils/trpc";
 
 const StatusPage = () => {
   const router: any = useRouter();
+  const { status } = useSession();
   const { statusId } = router.query;
 
   const { data: tweetDetails, isLoading } = trpc?.tweet.getSingleTweet.useQuery(
@@ -45,12 +54,19 @@ const StatusPage = () => {
     tweetId: statusId,
   });
 
+  const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet } =
+    useRetweet(tweetDetails?.id as string);
+  console.log(alreadyRetweeted);
+
+  const { handleLike, alreadyLiked, setHasLiked, hasLiked, handleUnlike } =
+    useLikeTweet(tweetDetails?.id as string);
+
   const { setModal: setLikesModal } = useLikesModal();
   const { setModal: setRetweetsModal } = useRetweetsModal();
   const { setModal: setReplyModal } = useReplyModal();
   const { setLikes } = useUserLikes();
   const { setRetweets } = useUserRetweets();
-  const { setTweetId } = useTweetId()
+  const { setTweetId } = useTweetId();
   return (
     <Body>
       <Head>
@@ -120,7 +136,9 @@ const StatusPage = () => {
             <div
               onClick={() => {
                 setRetweetsModal(true);
-                setRetweets(tweetDetails?.retweets as unknown as TweetWithUser[]);
+                setRetweets(
+                  tweetDetails?.retweets as unknown as TweetWithUser[]
+                );
               }}
               className="flex cursor-pointer items-center gap-x-2 text-gray-400"
             >
@@ -150,12 +168,39 @@ const StatusPage = () => {
             </div>
           </div>
           <div className="flex items-center justify-evenly gap-x-4 border-b border-base-200  px-2 pb-4 text-xl text-gray-400">
-            <AiOutlineComment className="cursor-pointer" onClick={()=>{
-              setTweetId(tweetDetails?.id as string)
-              setReplyModal(true)
-            }} />
-            <AiOutlineRetweet className="cursor-pointer" />
-            <AiOutlineHeart className="cursor-pointer" />
+            <AiOutlineComment
+              className="cursor-pointer hover:text-primary  "
+              onClick={() => {
+                setTweetId(tweetDetails?.id as string);
+                setReplyModal(true);
+              }}
+            />
+            {(alreadyRetweeted !== null || hasRetweeted) &&
+            status === "authenticated" ? (
+              <AiOutlineRetweet
+                onClick={handleUndoRetweet}
+                className="cursor-pointer text-primary group-hover:text-primary"
+              />
+            ) : (
+              <AiOutlineRetweet
+                onClick={handleRetweet}
+                className="cursor-pointer group-hover:text-primary"
+              />
+            )}
+            {/* <AiOutlineRetweet className="cursor-pointer hover:text-primary " /> */}
+            <div className="cursor-pointer">
+              {(alreadyLiked !== null || hasLiked) &&
+              status === "authenticated" ? (
+                <AiFillHeart onClick={handleUnlike} className="text-primary" />
+              ) : (
+                <AiOutlineHeart
+                  onClick={handleLike}
+                  className="group-hover:text-primary"
+                />
+              )}
+            </div>
+
+            {/* <AiOutlineHeart className="cursor-pointer hover:text-primary " /> */}
           </div>
           <ReplyForm tweetId={tweetDetails?.id || ""} />
           <div>
