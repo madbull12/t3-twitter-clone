@@ -15,7 +15,9 @@ import { v4 } from "uuid";
 import { LikesWithPayloads, RetweetsWithPayloads, TweetWithUser } from "../../../interface";
 import {
   useLikesModal,
+  useReplyModal,
   useRetweetsModal,
+  useTweetId,
   useUserLikes,
   useUserRetweets,
 } from "../../../lib/zustand";
@@ -45,8 +47,10 @@ const StatusPage = () => {
 
   const { setModal: setLikesModal } = useLikesModal();
   const { setModal: setRetweetsModal } = useRetweetsModal();
+  const { setModal: setReplyModal } = useReplyModal();
   const { setLikes } = useUserLikes();
   const { setRetweets } = useUserRetweets();
+  const { setTweetId } = useTweetId()
   return (
     <Body>
       <Head>
@@ -116,7 +120,7 @@ const StatusPage = () => {
             <div
               onClick={() => {
                 setRetweetsModal(true);
-                setRetweets(tweetDetails?.retweets as unknown as  RetweetsWithPayloads[]);
+                setRetweets(tweetDetails?.retweets as unknown as TweetWithUser[]);
               }}
               className="flex cursor-pointer items-center gap-x-2 text-gray-400"
             >
@@ -146,7 +150,10 @@ const StatusPage = () => {
             </div>
           </div>
           <div className="flex items-center justify-evenly gap-x-4 border-b border-base-200  px-2 pb-4 text-xl text-gray-400">
-            <AiOutlineComment className="cursor-pointer" />
+            <AiOutlineComment className="cursor-pointer" onClick={()=>{
+              setTweetId(tweetDetails?.id as string)
+              setReplyModal(true)
+            }} />
             <AiOutlineRetweet className="cursor-pointer" />
             <AiOutlineHeart className="cursor-pointer" />
           </div>

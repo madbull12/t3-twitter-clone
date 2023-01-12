@@ -55,12 +55,10 @@ const ReplyModal = () => {
               onClick={() => setModal(false)}
             />
             <div className="mt-12 flex items-start gap-x-4">
-              <Image
-                src={tweetReply?.user.image as string}
-                alt={tweetReply?.user.name as string}
+              <Avatar
+                image={tweetReply?.user.image as string}
                 width={50}
                 height={50}
-                className="rounded-full"
               />
               <div className="mb-8 flex w-full flex-col">
                 <div className="flex items-center gap-x-2">

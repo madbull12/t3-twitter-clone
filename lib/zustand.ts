@@ -26,8 +26,8 @@ interface UserLikes {
   setLikes:(value:LikesWithPayloads[]) => void
 }
 interface UserRetweets {
-  retweets:RetweetsWithPayloads[] | null;
-  setRetweets:(value:RetweetsWithPayloads[]) => void
+  retweets:TweetWithUser[] | null;
+  setRetweets:(value:TweetWithUser[]) => void
 }
 
 export const usePreviewStore = create<Preview>((set) => ({
@@ -77,7 +77,7 @@ export const useUserLikes = create<UserLikes>((set)=>({
 }))
 export const useUserRetweets = create<UserRetweets>((set)=>({
   retweets:null,
-  setRetweets:(value:RetweetsWithPayloads[])=>set(()=>({ retweets:value }))
+  setRetweets:(value:TweetWithUser[])=>set(()=>({ retweets:value }))
 }))
 
 export const useMobileDrawer = create<Drawer>((set)=>({

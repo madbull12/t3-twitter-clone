@@ -2,6 +2,7 @@ import React,{ useRef } from 'react'
 import { IoMdClose } from 'react-icons/io';
 import { v4 } from 'uuid';
 import useOnClickOutside from '../../hooks/useOutsideClick';
+import { UserWithPayloads } from '../../interface';
 import { useRetweetsModal, useUserRetweets } from '../../lib/zustand';
 import Backdrop from './Backdrop'
 import PeopleComponent from './PeopleComponent';
@@ -13,7 +14,6 @@ const RetweetsListModal = () => {
     useOnClickOutside(modalRef, () => {
       setModal(false);
     });
-    console.log(typeof retweets)
   return (
     <Backdrop>
     <div
@@ -26,7 +26,7 @@ const RetweetsListModal = () => {
       </div>
       <div>
           {retweets?.map((retweet)=>(
-              <PeopleComponent key={v4()} user={retweet.user} />
+              <PeopleComponent key={v4()} user={retweet.user as UserWithPayloads} />
           ))}
       </div>
     </div>
