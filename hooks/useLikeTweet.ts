@@ -34,6 +34,8 @@ const useLikeTweet = (tweetId: string) => {
     },
     onSettled: () => {
       utils.tweet.getTweets.invalidate();
+      utils.tweet.getSingleTweet.invalidate();
+
     },
   });
   const [hasLiked, setHasLiked] = useState(false);

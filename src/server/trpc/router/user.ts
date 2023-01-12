@@ -15,7 +15,9 @@ export const userRouter = router({
           
         },
         include:{
-          profile:true
+          profile:true,
+          followers:true,
+          followings:true,
         }
       });
     }),

@@ -2,8 +2,23 @@ import { toast } from "react-hot-toast";
 import { trpc } from "../src/utils/trpc";
 import { useState } from 'react'
 const useFollow = (userId:string) => {
-    const { mutateAsync:followUser } = trpc.follow.followUser.useMutation() 
-    const { mutateAsync:unfollowUser } = trpc.follow.unfollowUser.useMutation();
+    const utils = trpc.useContext()
+    const { mutateAsync:followUser } = trpc.follow.followUser.useMutation({
+        onMutate: () => {
+            utils.user.getUserProfile.cancel();
+            const optimisticUpdate = utils.user.getUserProfile.getData();
+            if (optimisticUpdate) {
+              utils.user.getUserProfile.setData(optimisticUpdate);
+            }
+          },
+          onSettled: () => {
+            
+            utils.user.getUserProfile.invalidate();
+          },
+    }) 
+    const { mutateAsync:unfollowUser } = trpc.follow.unfollowUser.useMutation({
+
+    });
     const { data:alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({ followingId:userId as string });
     const [followed,setFollowed] = useState<boolean>();
 

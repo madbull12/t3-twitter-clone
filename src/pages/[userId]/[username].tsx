@@ -129,6 +129,20 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+      <div className="flex items-center gap-x-2 p-2 text-gray-400">
+        <p className="flex items-center gap-x-2 text-sm">
+          <span className="font-semibold text-neutral">
+            {userProfile?.followings.length}
+          </span>
+          Followings
+        </p>
+        <p className="flex items-center gap-x-2 text-sm">
+          <span className="font-semibold text-neutral ">
+            {userProfile?.followers.length}
+          </span>
+          Followers
+        </p>
+      </div>
       <nav className="mt-4 flex list-none items-center justify-between gap-x-2 whitespace-nowrap px-2 text-xs font-semibold xs:text-sm sm:gap-x-4 md:px-4 md:text-base">
         {tweetLinks.map((link) => (
           <li

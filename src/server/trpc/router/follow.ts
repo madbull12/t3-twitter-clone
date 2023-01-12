@@ -15,12 +15,12 @@ export const followRouter = router({
         data: {
           follower: {
             connect: {
-              id: userId as string,
+              id: input?.followingId as string,
             },
           },
           following: {
             connect: {
-              id: input?.followingId as string,
+              id: userId as string,
             },
           },
         },
@@ -37,8 +37,8 @@ export const followRouter = router({
       return ctx.prisma.follows.delete({
         where: {
           followerId_followingId: {
-            followerId: userId as string,
-            followingId: input?.followingId as string,
+            followerId: input?.followingId as string,
+            followingId: userId as string,
           },
         },
       });
@@ -48,12 +48,12 @@ export const followRouter = router({
     .query(({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
       return ctx.prisma.follows.findUnique({
-        where:{
-            followerId_followingId:{
-                followerId: userId as string,
-                followingId: input?.followingId as string,
-            }
-        }
-      })
+        where: {
+          followerId_followingId: {
+            followerId: input?.followingId as string,
+            followingId: userId as string,
+          },
+        },
+      });
     }),
 });
