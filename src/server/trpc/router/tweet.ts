@@ -457,6 +457,7 @@ export const tweetRouter = router({
                 },
               },
               likes: true,
+              retweets:true
             },
             where: {
               text: {
@@ -478,6 +479,8 @@ export const tweetRouter = router({
                 },
               },
               likes: true,
+              retweets:true
+
             },
             where: {
               text: {
@@ -502,6 +505,8 @@ export const tweetRouter = router({
                 },
               },
               likes: true,
+              retweets:true
+
             },
             where: {
               text: {
@@ -525,6 +530,8 @@ export const tweetRouter = router({
                 },
               },
               likes: true,
+              retweets:true
+
             },
             where: {
               text: {
