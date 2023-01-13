@@ -2,19 +2,19 @@ import { useSession } from "next-auth/react";
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useEditProfileModal } from "../../../lib/zustand";
-import Avatar from "../../components/Avatar";
-import Body from "../../components/Body";
-import NavFeed from "../../components/NavFeed";
-import { trpc } from "../../utils/trpc";
+import { useEditProfileModal } from "../../../../lib/zustand";
+import Avatar from "../../../components/Avatar";
+import Body from "../../../components/Body";
+import NavFeed from "../../../components/NavFeed";
+import { trpc } from "../../../utils/trpc";
 import { IoLocation } from "react-icons/io5";
 import { IoIosCalendar } from "react-icons/io";
 import moment from "moment";
 import { AiOutlineLink } from "react-icons/ai";
 import Link from "next/link";
-import TweetList from "../../components/TweetList";
-import { TweetWithUser } from "../../../interface";
-import Loader from "../../components/Loader";
+import TweetList from "../../../components/TweetList";
+import { TweetWithUser } from "../../../../interface";
+import Loader from "../../../components/Loader";
 import Head from "next/head";
 
 const ProfilePage = () => {
@@ -129,7 +129,7 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-x-2 p-2 text-gray-400">
+      <div className="flex items-center gap-x-2 p-2 md:p-4 text-gray-400">
         <p className="flex items-center gap-x-2 text-sm">
           <span className="font-semibold text-neutral">
             {userProfile?.followings.length}

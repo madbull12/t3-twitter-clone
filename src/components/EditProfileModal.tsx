@@ -146,7 +146,7 @@ const EditProfileModal = () => {
         <header className="flex items-center justify-between gap-x-1 xs:gap-x-2 sm:gap-x-4 p-4">
           <IoMdClose className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl cursor-pointer" onClick={()=>setModal(false)} />
           <p className="mr-auto text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-semibold whitespace-nowrap">Edit profile</p>
-          <button className="rounded-full bg-base-200 px-2 md:px-3 py-1 text-xs font-semibold text-white sm:text-sm">
+          <button className="rounded-full bg-black px-2 md:px-3 py-1 text-xs font-semibold text-white sm:text-sm">
             Save
           </button>
         </header>

@@ -72,7 +72,7 @@ const Layout = ({ children }: IProps) => {
   const phone = useMediaQuery("(min-width:768px)");
 
   return (
-    <main className="relative mx-auto  min-h-screen max-w-screen-2xl overflow-hidden  bg-base-100 text-neutral">
+    <main className="relative mx-auto  min-h-screen max-w-screen-2xl overflow-clip  bg-base-100 text-neutral">
       {!phone ? <>{mobileDrawer ? <MobileDrawer /> : null}</> : null}
       {replyModal ? <ReplyModal /> : null}
       {retweetsModal ? <RetweetsListModal /> : null}
