@@ -196,7 +196,7 @@ export const tweetRouter = router({
               user: true,
             },
           },
-          retweets:true,
+          retweets: true,
           likes: true,
           replies: true,
         },
@@ -230,6 +230,51 @@ export const tweetRouter = router({
     });
   }),
 
+  getInfiniteTweets: publicProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().nullish(),
+        skip: z.number().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { limit, skip, cursor } = input;
+      const tweets = await ctx.prisma.tweet.findMany({
+        take: limit + 1,
+        skip: skip,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+        where: {
+          retweet: {
+            is: null,
+          },
+        },
+        include: {
+          user: true,
+          originalTweet: {
+            include: {
+              user: true,
+            },
+          },
+          likes: true,
+          replies: true,
+          retweets: true,
+        },
+     
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (tweets.length > limit) {
+        const nextItem = tweets.pop() ; // return the last item from the array
+        nextCursor = nextItem?.id;
+      }
+      return {
+        tweets,
+        nextCursor,
+      };
+    }),
   getUserTweets: publicProcedure
     .input(z.object({ userId: z.string(), link: z.string() }))
     .query(({ ctx, input }) => {
@@ -408,36 +453,36 @@ export const tweetRouter = router({
             include: {
               user: true,
               likes: true,
-              retweets:true,
-              replies:true
+              retweets: true,
+              replies: true,
             },
           },
-       
+
           retweet: {
             include: {
               user: true,
               likes: true,
-              retweets:true,
-              replies:true
+              retweets: true,
+              replies: true,
             },
           },
           likes: {
-            include:{
-              user:{
-                include:{
-                  profile:true
-                }
-              }
-            }
+            include: {
+              user: {
+                include: {
+                  profile: true,
+                },
+              },
+            },
           },
           retweets: {
-            include:{
-              user:{
-                include:{
-                  profile:true
-                }
-              }
-            }
+            include: {
+              user: {
+                include: {
+                  profile: true,
+                },
+              },
+            },
           },
         },
       });
@@ -457,7 +502,7 @@ export const tweetRouter = router({
                 },
               },
               likes: true,
-              retweets:true
+              retweets: true,
             },
             where: {
               text: {
@@ -479,8 +524,7 @@ export const tweetRouter = router({
                 },
               },
               likes: true,
-              retweets:true
-
+              retweets: true,
             },
             where: {
               text: {
@@ -505,8 +549,7 @@ export const tweetRouter = router({
                 },
               },
               likes: true,
-              retweets:true
-
+              retweets: true,
             },
             where: {
               text: {
@@ -530,8 +573,7 @@ export const tweetRouter = router({
                 },
               },
               likes: true,
-              retweets:true
-
+              retweets: true,
             },
             where: {
               text: {

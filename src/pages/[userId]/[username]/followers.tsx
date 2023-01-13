@@ -28,7 +28,7 @@ const FollowerPage = () => {
       {userFollowers?.followers.length !== 0 ? (
         <div>
           {userFollowers?.followers.map((follower) => (
-            <PeopleComponent user={follower.follower} />
+            <PeopleComponent user={follower.following} />
           ))}
         </div>
       ) : (

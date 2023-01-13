@@ -13,12 +13,32 @@ import Loader from "../components/Loader";
 import TweetList from "../components/TweetList";
 import NavFeed from "../components/NavFeed";
 import useRetweet from "../../hooks/useRetweet";
+import useScrollPosition from "../../hooks/useScrollPosition";
+import { useEffect } from "react";
 
 const Home: NextPage = () => {
-  const { data: tweets, isLoading } = trpc.tweet.getTweets.useQuery();
+  const scrollPosition = useScrollPosition();
+  console.log(scrollPosition);
+  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
+    trpc.tweet.getInfiniteTweets.useInfiniteQuery(
+      {
+        limit: 4,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      }
+    );
 
+  useEffect(() => {
+    if (scrollPosition > 90 && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [scrollPosition, isFetching, hasNextPage, fetchNextPage]);
 
-  const { data,status } = useSession();
+  console.log(data);
+  const tweets = data?.pages.flatMap((page) => page.tweets) ?? [];
+
+  const { data: session, status } = useSession();
 
   return (
     <>
@@ -28,20 +48,22 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Body>
-          <NavFeed title="Home" />
-          {status==="authenticated" ? <CreateTweet /> : null}
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <>
-              <TweetList tweets={tweets as Tweet[]} />
-            </>
-          )}
-        
+        <NavFeed title="Home" />
+        {status === "authenticated" ? <CreateTweet /> : null}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <TweetList tweets={tweets as Tweet[]} />
+          </>
+        )}
       </Body>
+      {isFetching && hasNextPage ? <Loader /> : null}
+      { !hasNextPage ? (
+        <p className="text-center text-gray-500">End of feed</p>
+      ) : null}
     </>
   );
 };
 
 export default Home;
-

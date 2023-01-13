@@ -20,6 +20,7 @@ const useLikeTweet = (tweetId: string) => {
     onSettled: () => {
       
       utils.tweet.getTweets.invalidate();
+      utils.tweet.getInfiniteTweets.invalidate()
       utils.tweet.getSingleTweet.invalidate();
     },
   });
@@ -29,11 +30,12 @@ const useLikeTweet = (tweetId: string) => {
       const optimisticUpdate = utils.tweet.getTweets.getData();
       if (optimisticUpdate) {
         utils.tweet.getTweets.setData(optimisticUpdate);
-        utils.tweet.getSingleTweet.invalidate();
       }
     },
     onSettled: () => {
       utils.tweet.getTweets.invalidate();
+      utils.tweet.getInfiniteTweets.invalidate()
+
       utils.tweet.getSingleTweet.invalidate();
 
     },
