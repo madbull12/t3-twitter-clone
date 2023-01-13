@@ -130,13 +130,13 @@ const ProfilePage = () => {
         </div>
       </div>
       <div className="flex items-center gap-x-2 p-2 md:p-4 text-gray-400">
-        <p className="flex items-center gap-x-2 text-sm">
+        <p className="flex items-center gap-x-2 text-sm cursor-pointer " onClick={()=>router.push(`${router.asPath}/following`,undefined,{ shallow:true })}>
           <span className="font-semibold text-neutral">
             {userProfile?.followings.length}
           </span>
           Followings
         </p>
-        <p className="flex items-center gap-x-2 text-sm">
+        <p className="flex items-center gap-x-2 text-sm cursor-pointer" onClick={()=>router.push(`${router.asPath}/followers`,undefined,{ shallow:true })}>
           <span className="font-semibold text-neutral ">
             {userProfile?.followers.length}
           </span>

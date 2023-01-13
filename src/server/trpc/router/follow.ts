@@ -56,4 +56,60 @@ export const followRouter = router({
         },
       });
     }),
+
+  getUserFollowers: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.user.findMany({
+        where: {
+          id: input?.userId,
+        },
+        select: {
+          followers: {
+            include:{
+              following:{
+                include:{
+                  profile:true
+                }
+              },
+              follower:{
+                include:{
+                  profile:true
+                }
+              }
+            }
+          },
+        },
+        
+      });
+    }),
+  getUserFollowing: publicProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.user.findMany({
+        where: {
+          id: input?.userId as string,
+        },
+        select: {
+          followings:{
+            include:{
+              following:{
+                include:{
+                  profile:true
+                }
+              },
+              follower:{
+                include:{
+                  profile:true
+                }
+              }
+            
+              
+            }
+            
+
+          }
+        },
+      });
+    }),
 });

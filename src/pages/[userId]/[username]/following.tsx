@@ -9,28 +9,27 @@ import NavFeed from "../../../components/NavFeed";
 import PeopleComponent from "../../../components/PeopleComponent";
 import { trpc } from "../../../utils/trpc";
 
-const FollowerPage = () => {
+const FollowingPage = () => {
   const { data: session } = useSession();
-
-  const { userId } = useRouter().query;
-  const { data: userFollowers } = trpc.follow.getUserFollowers.useQuery({
+  const { userId, username } = useRouter().query;
+  const { data: userFollowing } = trpc.follow.getUserFollowing.useQuery({
     userId: userId as string,
   });
+  console.log(
+    userFollowing?.map((following) => following.followings.map((user) => user))
+  );
+
   return (
     <Body>
       <FollowersFollowingNav />
-      <div>
-        {userFollowers?.map((followers) =>
-          followers.followers.map((user) => (
-            <PeopleComponent
-              key={v4()}
-              user={user.following as UserWithPayloads}
-            />
-          ))
-        )}
-      </div>
+      {userFollowing?.map((following) =>
+        following.followings.map((user) => (
+          <PeopleComponent key={v4()} user={user.follower as unknown as UserWithPayloads} />
+        ))
+      )}
+
     </Body>
   );
 };
 
-export default FollowerPage;
+export default FollowingPage;

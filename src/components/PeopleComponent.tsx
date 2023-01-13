@@ -21,7 +21,7 @@ const PeopleComponent = ({ user }: IProps) => {
 
   return (
     <div onClick={() => router.push(`/${user.id}/${user.name}`)}>
-      <div className="flex cursor-pointer items-start justify-between gap-x-4 p-2 transition-all duration-100 ease-in-out hover:bg-base-200">
+      <div className="flex cursor-pointer items-start justify-between gap-x-4 px-2 py-6 transition-all duration-100 ease-in-out hover:bg-base-200">
         <Avatar image={user.image || ""} width={40} height={40} />
         <div className="mr-auto">
           <Link
