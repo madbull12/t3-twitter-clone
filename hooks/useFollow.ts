@@ -17,7 +17,17 @@ const useFollow = (userId:string) => {
           },
     }) 
     const { mutateAsync:unfollowUser } = trpc.follow.unfollowUser.useMutation({
-
+        onMutate: () => {
+            utils.user.getUserProfile.cancel();
+            const optimisticUpdate = utils.user.getUserProfile.getData();
+            if (optimisticUpdate) {
+              utils.user.getUserProfile.setData(optimisticUpdate);
+            }
+          },
+          onSettled: () => {
+            
+            utils.user.getUserProfile.invalidate();
+          },
     });
     const { data:alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({ followingId:userId as string });
     const [followed,setFollowed] = useState<boolean>();

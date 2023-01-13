@@ -16,10 +16,11 @@ import TweetList from "../../../components/TweetList";
 import { TweetWithUser } from "../../../../interface";
 import Loader from "../../../components/Loader";
 import Head from "next/head";
+import useFollow from "../../../../hooks/useFollow";
 
 const ProfilePage = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session,status } = useSession();
   const { setModal } = useEditProfileModal();
   const [_link, setLink] = useState<string>("");
 
@@ -43,6 +44,7 @@ const ProfilePage = () => {
   ];
 
   const { username, userId } = router.query;
+  const [unfollowHovered, setUnfollowHovered] = useState<boolean>(false);
 
   const { data: userTweets, isLoading: isLoadingUserTweets } =
     trpc.tweet.getUserTweets.useQuery({
@@ -57,7 +59,9 @@ const ProfilePage = () => {
     userId: userId as string,
     link: "tweets&replies",
   });
-
+  const { handleFollow, handleUnfollow, alreadyFollowed, followed } = useFollow(
+    userId as string
+  );
   if (isLoadingUserProfile) return <Loader />;
 
   console.log(userProfile);
@@ -96,7 +100,33 @@ const ProfilePage = () => {
           >
             Edit profile
           </button>
-        ) : null}
+        ) : (
+            <>
+                {(alreadyFollowed !== null || followed) &&
+            status === "authenticated" ? (
+              <button
+                onClick={handleUnfollow}
+                onMouseEnter={() => setUnfollowHovered(true)}
+                onMouseLeave={() => setUnfollowHovered(false)}
+                className={` ${
+                  unfollowHovered
+                    ? "border-red-600 bg-transparent text-red-600"
+                    : null
+                } ml-auto mt-4 rounded-full  border border-primary bg-primary px-4 py-2  font-semibold  text-white`}
+              >
+                {unfollowHovered ? "Unfollow" : "Following"}
+              </button>
+            ) : (
+              <button
+                onClick={handleFollow}
+                className="ml-auto mt-4 rounded-full bg-primary px-4 py-2 font-semibold text-white "
+              >
+                Follow
+              </button>
+            )}
+            </>
+            
+        )}
       </div>
       <div className="p-2 md:p-4">
         <p className="text-lg font-bold md:text-2xl">{userProfile?.name}</p>
