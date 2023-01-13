@@ -30,8 +30,8 @@ const NavFeed = ({
     setIsOpen(false);
   };
   return (
-    <nav className="sticky top-0 z-50  w-full  bg-base-100/30 p-2  backdrop-blur-lg  md:gap-x-4">
-      <div className="flex items-center gap-x-4">
+    <nav className="sticky top-0 z-50  w-full  bg-base-100/30 p-3  backdrop-blur-lg  md:gap-x-4">
+      <div className="flex items-center gap-x-8">
         {!phone ? (
           <>
             {router.pathname === "/" ? (

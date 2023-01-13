@@ -60,7 +60,7 @@ export const followRouter = router({
   getUserFollowers: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.prisma.user.findMany({
+      return ctx.prisma.user.findUnique({
         where: {
           id: input?.userId,
         },
@@ -86,7 +86,7 @@ export const followRouter = router({
   getUserFollowing: publicProcedure
     .input(z.object({ userId: z.string() }))
     .query(({ ctx, input }) => {
-      return ctx.prisma.user.findMany({
+      return ctx.prisma.user.findUnique({
         where: {
           id: input?.userId as string,
         },

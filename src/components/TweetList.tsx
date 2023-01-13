@@ -9,7 +9,7 @@ import { TweetWithUser } from "../../interface";
 const TweetList = ({ tweets }: { tweets: Tweet[] }) => {
   const [itemCount, setItemCount] = useState(5);
   return (
-    <div>
+    <div className="w-full">
       <>
         {tweets?.slice(0, itemCount).map((tweet) => (
           <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
@@ -17,7 +17,7 @@ const TweetList = ({ tweets }: { tweets: Tweet[] }) => {
       </>
       {tweets?.length > 5 ? (
         <button
-          className="mt-4 justify-center rounded-lg px-4 py-2 font-bold text-primary bg-base-100 shadow-md "
+          className="mt-4 justify-center self-center justify-self-center rounded-lg px-4 py-2 font-bold text-primary bg-base-100 shadow-md "
           onClick={() => {
             itemCount >= tweets?.length
               ? setItemCount((prev) => prev - 5)
