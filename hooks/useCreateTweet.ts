@@ -25,6 +25,8 @@ const useCreateTweet = () => {
     },
     onSettled: () => {
       utils.tweet.getTweets.invalidate();
+      utils.tweet.getInfiniteTweets.invalidate();
+
     },
   });
 

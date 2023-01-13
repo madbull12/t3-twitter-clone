@@ -16,6 +16,8 @@ const useDeleteTweet = (tweet:TweetWithUser) => {
     },
     onSettled: () => {
       utils.tweet.getTweets.invalidate();
+      utils.tweet.getInfiniteTweets.invalidate();
+
     },
   });
 

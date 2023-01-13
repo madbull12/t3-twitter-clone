@@ -21,7 +21,9 @@ const useRetweet = (tweetId?:string) => {
     },
     onSettled: () => {
       utils.tweet.getTweets.invalidate();
-      utils.tweet.getSingleTweet.invalidate()
+      utils.tweet.getSingleTweet.invalidate();
+      utils.tweet.getInfiniteTweets.invalidate();
+
 
     },
   });
@@ -35,7 +37,9 @@ const useRetweet = (tweetId?:string) => {
     },
     onSettled: () => {
       utils.tweet.getTweets.invalidate();
-      utils.tweet.getSingleTweet.invalidate()
+      utils.tweet.getSingleTweet.invalidate();
+      utils.tweet.getInfiniteTweets.invalidate();
+
     },
   });
 
