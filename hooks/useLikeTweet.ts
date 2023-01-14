@@ -18,7 +18,7 @@ const useLikeTweet = (tweetId: string) => {
       }
     },
     onSettled: () => {
-      
+      utils.tweet.searchTweets.invalidate();
       utils.tweet.getTweets.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
       utils.tweet.getSingleTweet.invalidate();
@@ -35,6 +35,7 @@ const useLikeTweet = (tweetId: string) => {
     onSettled: () => {
       utils.tweet.getTweets.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
+      utils.tweet.searchTweets.invalidate()
 
       utils.tweet.getSingleTweet.invalidate();
 

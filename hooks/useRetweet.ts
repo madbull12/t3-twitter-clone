@@ -23,6 +23,7 @@ const useRetweet = (tweetId?:string) => {
       utils.tweet.getTweets.invalidate();
       utils.tweet.getSingleTweet.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
+      utils.tweet.searchTweets.invalidate();
 
 
     },
@@ -39,6 +40,7 @@ const useRetweet = (tweetId?:string) => {
       utils.tweet.getTweets.invalidate();
       utils.tweet.getSingleTweet.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
+      utils.tweet.searchTweets.invalidate();
 
     },
   });
