@@ -24,7 +24,7 @@ const useLikeTweet = (tweetId: string) => {
       utils.tweet.getSingleTweet.invalidate();
     },
   });
-  const { mutateAsync: unlikeTweet } = trpc.like.unlikeTweet.useMutation({
+  const { mutateAsync: unlikeTweet,isLoading } = trpc.like.unlikeTweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
       const optimisticUpdate = utils.tweet.getTweets.getData();

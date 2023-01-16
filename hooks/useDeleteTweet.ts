@@ -1,10 +1,12 @@
+import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import { TweetWithUser } from "../interface";
 import { trpc } from "../src/utils/trpc";
 
-const useDeleteTweet = (tweet:TweetWithUser) => {
+const useDeleteTweet = (tweet: TweetWithUser) => {
   const { data: session } = trpc.auth.getSession.useQuery();
   const utils = trpc.useContext();
+  const router = useRouter();
 
   const { mutateAsync: deleteTweet } = trpc.tweet.deleteTweet.useMutation({
     onMutate: () => {
@@ -17,9 +19,13 @@ const useDeleteTweet = (tweet:TweetWithUser) => {
     onSettled: () => {
       utils.tweet.getTweets.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
-      utils.tweet.getSingleTweet.invalidate();
-      utils.tweet.searchTweets.invalidate();
-
+      if (router.pathname === "/status/[statusId]") {
+        utils.tweet.getTweetReplies.invalidate();
+        utils.tweet.getSingleTweet.invalidate();
+      }
+      if (router.pathname === "/search") {
+        utils.tweet.searchTweets.invalidate();
+      }
     },
   });
 
@@ -32,8 +38,7 @@ const useDeleteTweet = (tweet:TweetWithUser) => {
     });
   };
 
-  return { handleDeleteTweet }
-
-}
+  return { handleDeleteTweet };
+};
 
 export default useDeleteTweet;

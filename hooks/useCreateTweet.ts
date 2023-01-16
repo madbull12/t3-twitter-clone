@@ -3,8 +3,10 @@ import { useSession } from "next-auth/react";
 import { trpc } from "../src/utils/trpc";
 import { useState, useEffect, useRef } from "react";
 import useMediaUpload from "./useMediaUpload";
+import { useRouter } from "next/router";
 const useCreateTweet = () => {
   const { data: session, status } = useSession();
+  const router = useRouter()
   const utils = trpc.useContext();
   const {
     upload,
@@ -17,17 +19,17 @@ const useCreateTweet = () => {
 
   const { mutateAsync: createTweet } = trpc.tweet.createTweet.useMutation({
     onMutate: () => {
-      utils.tweet.getTweets.cancel();
-      const optimisticUpdate = utils.tweet.getTweets.getData();
+      utils.tweet.getInfiniteTweets.cancel();
+      const optimisticUpdate = utils.tweet.getInfiniteTweets.getData();
       if (optimisticUpdate) {
-        utils.tweet.getTweets.setData(optimisticUpdate);
+        utils.tweet.getInfiniteTweets.setData(optimisticUpdate);
       }
     },
     onSettled: () => {
-      utils.tweet.getTweets.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
 
     },
+   
   });
 
   const [text, setText] = useState("");

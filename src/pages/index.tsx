@@ -22,7 +22,7 @@ const Home: NextPage = () => {
   const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
     trpc.tweet.getInfiniteTweets.useInfiniteQuery(
       {
-        limit: 4,
+        limit: 10,
       },
       {
         getNextPageParam: (lastPage) => lastPage.nextCursor,

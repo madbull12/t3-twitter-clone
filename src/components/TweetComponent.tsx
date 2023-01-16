@@ -1,7 +1,7 @@
 import { Tweet, User } from "@prisma/client";
 import Image from "next/legacy/image";
 import React, { useState } from "react";
-import {  TweetWithUser } from "../../interface";
+import { TweetWithUser } from "../../interface";
 import moment from "moment";
 import ReactTimeAgo from "react-time-ago";
 import { IoAnalyticsOutline } from "react-icons/io5";
@@ -33,18 +33,23 @@ import { FaRetweet } from "react-icons/fa";
 interface IProps {
   tweet: TweetWithUser;
   isRetweet?: boolean;
-  isYourRetweet?:boolean;
-  retweetUsername?:string;
+  isYourRetweet?: boolean;
+  retweetUsername?: string;
 }
 
-const TweetComponent = ({ tweet, isRetweet,isYourRetweet,retweetUsername }: IProps) => {
+const TweetComponent = ({
+  tweet,
+  isRetweet,
+  isYourRetweet,
+  retweetUsername,
+}: IProps) => {
   const now = new Date();
   const { data: session, status } = useSession();
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
   const router = useRouter();
   const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet } =
     useRetweet(tweet.id);
-    console.log(alreadyRetweeted);
+  console.log(alreadyRetweeted);
 
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
 
@@ -53,15 +58,14 @@ const TweetComponent = ({ tweet, isRetweet,isYourRetweet,retweetUsername }: IPro
 
   const { setTweetId } = useTweetId();
 
-  const { handleLike,handleUnlike, alreadyLiked, setHasLiked, hasLiked } = useLikeTweet(
-    tweet.id
-  );
+  const { handleLike, handleUnlike, alreadyLiked, setHasLiked, hasLiked } =
+    useLikeTweet(tweet.id);
 
-  const _isYourRetweet = tweet.userId as string === session?.user?.id;
+  const _isYourRetweet = (tweet.userId as string) === session?.user?.id;
   const _retweetUsername = tweet.user.name;
   return (
     <>
-      {tweet.retweet  ? (
+      {tweet.retweet ? (
         <>
           <TweetComponent
             isRetweet={true}
@@ -83,8 +87,8 @@ const TweetComponent = ({ tweet, isRetweet,isYourRetweet,retweetUsername }: IPro
         >
           {isRetweet ? (
             <p className="mb-2 flex items-center gap-x-2 font-semibold text-gray-400">
-             <FaRetweet />
-             {isYourRetweet ? "You retweeted" : `${retweetUsername} retweeted`}
+              <FaRetweet />
+              {isYourRetweet ? "You retweeted" : `${retweetUsername} retweeted`}
             </p>
           ) : null}
           <div className="flex items-start gap-x-2">
@@ -191,19 +195,23 @@ const TweetComponent = ({ tweet, isRetweet,isYourRetweet,retweetUsername }: IPro
                 </div>
                 <div
                   className="group flex cursor-pointer items-center gap-x-2 rounded-full p-2 text-xs   hover:bg-base-300 md:text-base "
-                  onClick={(e)=>e.stopPropagation()}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   {(alreadyLiked !== null || hasLiked) &&
                   status === "authenticated" ? (
-                    <AiFillHeart
-                      onClick={ handleUnlike}
-                      className="text-primary"
-                    />
+                    <button  onClick={handleUnlike}>
+                      <AiFillHeart
+                        
+                        className="text-primary"
+                      />
+                    </button>
                   ) : (
-                    <AiOutlineHeart
-                      onClick={handleLike}
-                      className="group-hover:text-primary"
-                    />
+                    <button  onClick={handleLike}>
+                      <AiOutlineHeart
+                        
+                        className="group-hover:text-primary"
+                      />
+                    </button>
                   )}
                   <p
                     className={`${
