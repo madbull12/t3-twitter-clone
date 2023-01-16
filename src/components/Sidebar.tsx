@@ -13,11 +13,13 @@ import { useCreateModal } from "../../lib/zustand";
 import { BiBookmark, BiSearch, BiUser } from "react-icons/bi";
 import { IoEllipsisHorizontalCircleOutline } from "react-icons/io5";
 import MoreDropdownSidebar from "./MoreDropdownSidebar";
+import { useRouter } from "next/router";
 
 const Sidebar = () => {
   const { status, data: session } = useSession();
   const matches = useMediaQuery("(min-width: 1280px)");
   const isNotTablet = useMediaQuery("(min-width:1024px)");
+  const router = useRouter()
   const links = [
     {
       name: "Home",
@@ -136,7 +138,7 @@ const Sidebar = () => {
         </button>
       ) : (
         <button
-          onClick={() => signIn("twitter")}
+          onClick={() => router.push("/auth/signin")}
           className={`${
             matches
               ? "px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  "
