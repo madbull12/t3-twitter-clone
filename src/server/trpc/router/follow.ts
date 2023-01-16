@@ -112,4 +112,22 @@ export const followRouter = router({
         },
       });
     }),
+    getFollowersRecommendation:publicProcedure.query(({ ctx,input })=>{
+      const userId = ctx.session?.user?.id;
+
+      return ctx.prisma.follows.findMany({
+        where:{
+          NOT:{
+            followingId:userId
+          }
+        },
+        include:{
+          follower:{
+            include:{
+              profile:true
+            }
+          }
+        }
+      })
+    })
 });

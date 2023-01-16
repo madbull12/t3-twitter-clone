@@ -1,6 +1,7 @@
 import { profile } from "console";
 import { useSession } from "next-auth/react";
 import { Html } from "next/document";
+import { useRouter } from "next/router";
 import React, { FC, useEffect } from "react";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import {
@@ -40,6 +41,7 @@ const Layout = ({ children }: IProps) => {
   const { modal: retweetsModal } = useRetweetsModal();
   const { drawer: mobileDrawer } = useMobileDrawer();
 
+  const router = useRouter();
   const { status } = useSession();
   const isNotTablet = useMediaQuery("(min-width:1024px)");
 
@@ -67,7 +69,7 @@ const Layout = ({ children }: IProps) => {
     displayModal,
     mobileDrawer,
     likesModal,
-    retweetsModal
+    retweetsModal,
   ]);
   const phone = useMediaQuery("(min-width:768px)");
 
@@ -80,12 +82,26 @@ const Layout = ({ children }: IProps) => {
       {createModal ? <CreateModal /> : null}
       {profileModal ? <EditProfileModal /> : null}
       {displayModal ? <DisplayModal /> : null}
-      {likesModal ? <LikesListModal  /> : null}
-      {phone ? <Sidebar /> : status === "authenticated" ? <MobileNav /> : null}
+      {likesModal ? <LikesListModal /> : null}
+
+      {router.pathname !== "/auth/signin" ? (
+        <>
+          {phone ? (
+            <Sidebar />
+          ) : status === "authenticated" ? (
+            <MobileNav />
+          ) : null}
+        </>
+      ) : null}
+
       {children}
-      {isNotTablet ? <Right /> : null}
-      {!phone ?<MobileCreate /> : null }
-      {status === "unauthenticated" ? <Footer /> : null}
+      {router.pathname !== "/auth/signin" ? (
+        <>{isNotTablet ? <Right /> : null}</>
+      ) : null}
+      {!phone ? <MobileCreate /> : null}
+      {router.pathname !== "/auth/signin" ? (
+        <>{status === "unauthenticated" ? <Footer /> : null}</>
+      ) : null}
     </main>
   );
 };

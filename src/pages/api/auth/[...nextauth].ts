@@ -2,7 +2,7 @@ import NextAuth, { type NextAuthOptions } from "next-auth";
 import TwitterProvider from "next-auth/providers/twitter";
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-
+import GoogleProvider from 'next-auth/providers/google'
 import { env } from "../../../env/server.mjs";
 import { prisma } from "../../../server/db/client";
 
@@ -27,9 +27,16 @@ export const authOptions: NextAuthOptions = {
       clientId: env.TWITTER_CLIENT_ID as string,
       clientSecret: env.TWITTER_CLIENT_SECRET as string,
       version: "2.0", // opt-in to Twitter OAuth 2.0
+    }),
+    GoogleProvider({
+      clientId:env.GOOGLE_CLIENT_ID as string, 
+      clientSecret:env.GOOGLE_CLIENT_SECRET as string
     })
     // ...add more providers here
   ],
+  pages:{
+    signIn:"/auth/signin"
+  }
 };
 
 export default NextAuth(authOptions);

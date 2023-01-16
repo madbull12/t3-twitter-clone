@@ -59,7 +59,7 @@ const ProfilePage = () => {
     userId: userId as string,
     link: "tweets&replies",
   });
-  const { handleFollow, handleUnfollow, alreadyFollowed, followed } = useFollow(
+  const { handleFollow, handleUnfollow, alreadyFollowed, followed,unfollowingUser,followingUser } = useFollow(
     userId as string
   );
   if (isLoadingUserProfile) return <Loader />;
@@ -108,6 +108,7 @@ const ProfilePage = () => {
                 onClick={handleUnfollow}
                 onMouseEnter={() => setUnfollowHovered(true)}
                 onMouseLeave={() => setUnfollowHovered(false)}
+                disabled={unfollowingUser || followingUser}
                 className={` ${
                   unfollowHovered
                     ? "border-red-600 bg-transparent text-red-600"
@@ -119,6 +120,7 @@ const ProfilePage = () => {
             ) : (
               <button
                 onClick={handleFollow}
+                disabled={unfollowingUser || followingUser}
                 className="ml-auto mt-4 rounded-full bg-primary px-4 py-2 font-semibold text-white "
               >
                 Follow
