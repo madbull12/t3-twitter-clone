@@ -9,7 +9,7 @@ const useLikeTweet = (tweetId: string) => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const utils = trpc.useContext();
-  const { mutateAsync: likeTweet } = trpc.like.likeTweet.useMutation({
+  const { mutateAsync: likeTweet,isLoading:likeLoading } = trpc.like.likeTweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
       const optimisticUpdate = utils.tweet.getTweets.getData();
@@ -24,7 +24,7 @@ const useLikeTweet = (tweetId: string) => {
       utils.tweet.getSingleTweet.invalidate();
     },
   });
-  const { mutateAsync: unlikeTweet,isLoading } = trpc.like.unlikeTweet.useMutation({
+  const { mutateAsync: unlikeTweet,isLoading:unlikeLoading } = trpc.like.unlikeTweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
       const optimisticUpdate = utils.tweet.getTweets.getData();
@@ -82,7 +82,7 @@ const useLikeTweet = (tweetId: string) => {
   };
 
 
-  return { handleLike, hasLiked,handleUnlike, setHasLiked, alreadyLiked };
+  return { handleLike, hasLiked,handleUnlike, setHasLiked, alreadyLiked,likeLoading,unlikeLoading };
 };
 
 export default useLikeTweet;

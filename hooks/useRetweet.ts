@@ -11,7 +11,7 @@ const useRetweet = (tweetId?:string) => {
   const { status, data: session } = useSession();
   const { data: bookmarks } = trpc.bookmark.getUserBookmarks.useQuery();
   const utils = trpc.useContext();
-  const { mutateAsync: retweet } = trpc.tweet.createRetweet.useMutation({
+  const { mutateAsync: retweet,isLoading:isRetweeting } = trpc.tweet.createRetweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
       const optimisticUpdate = utils.tweet.getTweets.getData();
@@ -28,7 +28,7 @@ const useRetweet = (tweetId?:string) => {
 
     },
   });
-  const { mutateAsync: undoRetweet } = trpc.tweet.undoRetweet.useMutation({
+  const { mutateAsync: undoRetweet,isLoading:isUndoingRetweet } = trpc.tweet.undoRetweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
       const optimisticUpdate = utils.tweet.getTweets.getData();
@@ -80,6 +80,8 @@ const useRetweet = (tweetId?:string) => {
     hasRetweeted,
     alreadyRetweeted,
     handleUndoRetweet,
+    isRetweeting,
+    isUndoingRetweet
   };
 };
 

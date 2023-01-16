@@ -3,7 +3,7 @@ import { trpc } from "../src/utils/trpc";
 import { useState } from 'react'
 const useFollow = (userId:string) => {
     const utils = trpc.useContext()
-    const { mutateAsync:followUser } = trpc.follow.followUser.useMutation({
+    const { mutateAsync:followUser,isLoading:followingUser } = trpc.follow.followUser.useMutation({
         onMutate: () => {
             utils.user.getUserProfile.cancel();
             const optimisticUpdate = utils.user.getUserProfile.getData();
@@ -16,7 +16,7 @@ const useFollow = (userId:string) => {
             utils.user.getUserProfile.invalidate();
           },
     }) 
-    const { mutateAsync:unfollowUser } = trpc.follow.unfollowUser.useMutation({
+    const { mutateAsync:unfollowUser,isLoading:unfollowingUser } = trpc.follow.unfollowUser.useMutation({
         onMutate: () => {
             utils.user.getUserProfile.cancel();
             const optimisticUpdate = utils.user.getUserProfile.getData();
@@ -50,7 +50,7 @@ const useFollow = (userId:string) => {
     }
     
 
-    return { handleFollow,handleUnfollow,followed,alreadyFollowed }
+    return { handleFollow,handleUnfollow,followed,alreadyFollowed,followingUser,unfollowingUser }
 
 
 

@@ -47,8 +47,14 @@ const TweetComponent = ({
   const { data: session, status } = useSession();
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
   const router = useRouter();
-  const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet } =
-    useRetweet(tweet.id);
+  const {
+    alreadyRetweeted,
+    hasRetweeted,
+    handleUndoRetweet,
+    handleRetweet,
+    isRetweeting,
+    isUndoingRetweet,
+  } = useRetweet(tweet.id);
   console.log(alreadyRetweeted);
 
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
@@ -58,8 +64,15 @@ const TweetComponent = ({
 
   const { setTweetId } = useTweetId();
 
-  const { handleLike, handleUnlike, alreadyLiked, setHasLiked, hasLiked } =
-    useLikeTweet(tweet.id);
+  const {
+    handleLike,
+    handleUnlike,
+    alreadyLiked,
+    setHasLiked,
+    hasLiked,
+    likeLoading,
+    unlikeLoading,
+  } = useLikeTweet(tweet.id);
 
   const _isYourRetweet = (tweet.userId as string) === session?.user?.id;
   const _retweetUsername = tweet.user.name;
@@ -199,18 +212,18 @@ const TweetComponent = ({
                 >
                   {(alreadyLiked !== null || hasLiked) &&
                   status === "authenticated" ? (
-                    <button  onClick={handleUnlike}>
-                      <AiFillHeart
-                        
-                        className="text-primary"
-                      />
+                    <button
+                      onClick={handleUnlike}
+                      disabled={likeLoading || unlikeLoading}
+                    >
+                      <AiFillHeart className="text-primary" />
                     </button>
                   ) : (
-                    <button  onClick={handleLike}>
-                      <AiOutlineHeart
-                        
-                        className="group-hover:text-primary"
-                      />
+                    <button
+                      onClick={handleLike}
+                      disabled={unlikeLoading || likeLoading}
+                    >
+                      <AiOutlineHeart className="group-hover:text-primary" />
                     </button>
                   )}
                   <p
@@ -230,15 +243,13 @@ const TweetComponent = ({
                 >
                   {(alreadyRetweeted !== null || hasRetweeted) &&
                   status === "authenticated" ? (
-                    <AiOutlineRetweet
-                      onClick={handleUndoRetweet}
-                      className="text-primary group-hover:text-primary"
-                    />
+                    <button onClick={handleUndoRetweet} disabled={isUndoingRetweet || isRetweeting}>
+                      <AiOutlineRetweet className="text-primary group-hover:text-primary" />
+                    </button>
                   ) : (
-                    <AiOutlineRetweet
-                      onClick={handleRetweet}
-                      className="group-hover:text-primary"
-                    />
+                    <button onClick={handleRetweet} disabled={isUndoingRetweet || isRetweeting}>
+                      <AiOutlineRetweet className="group-hover:text-primary" />
+                    </button>
                   )}
                   <p
                     className={`${

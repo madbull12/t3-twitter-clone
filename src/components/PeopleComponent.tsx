@@ -12,12 +12,17 @@ interface IProps {
   user: UserWithPayloads;
 }
 const PeopleComponent = ({ user }: IProps) => {
-  const { data: session,status } = useSession();
+  const { data: session, status } = useSession();
   const [unfollowHovered, setUnfollowHovered] = useState<boolean>(false);
   const router = useRouter();
-  const { handleFollow, handleUnfollow, alreadyFollowed, followed } = useFollow(
-    user.id as string
-  );
+  const {
+    handleFollow,
+    handleUnfollow,
+    alreadyFollowed,
+    followed,
+    followingUser,
+    unfollowingUser,
+  } = useFollow(user.id as string);
 
   return (
     <div onClick={() => router.push(`/${user.id}/${user.name}`)}>
@@ -37,6 +42,7 @@ const PeopleComponent = ({ user }: IProps) => {
             {(alreadyFollowed !== null || followed) &&
             status === "authenticated" ? (
               <button
+                disabled={unfollowingUser || followingUser}
                 onClick={handleUnfollow}
                 onMouseEnter={() => setUnfollowHovered(true)}
                 onMouseLeave={() => setUnfollowHovered(false)}
@@ -50,6 +56,7 @@ const PeopleComponent = ({ user }: IProps) => {
               </button>
             ) : (
               <button
+                disabled={unfollowingUser || followingUser}
                 onClick={handleFollow}
                 className="ml-auto rounded-full bg-primary px-4 py-2 font-semibold text-white "
               >
