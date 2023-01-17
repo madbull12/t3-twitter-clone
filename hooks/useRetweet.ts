@@ -20,10 +20,19 @@ const useRetweet = (tweetId?:string) => {
       }
     },
     onSettled: () => {
+      if(router.pathname==="/search") {
+        utils.tweet.searchTweets.invalidate();
+
+      }
       utils.tweet.getTweets.invalidate();
-      utils.tweet.getSingleTweet.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
-      utils.tweet.searchTweets.invalidate();
+      if(router.pathname==="/status/[statusId]") {
+        utils.tweet.getSingleTweet.invalidate();
+
+      }
+      if(router.pathname==="/[userId]/[username]") {
+        utils.tweet.getUserTweets.invalidate();
+      }
 
 
     },
@@ -37,10 +46,19 @@ const useRetweet = (tweetId?:string) => {
       }
     },
     onSettled: () => {
+      if(router.pathname==="/search") {
+        utils.tweet.searchTweets.invalidate();
+
+      }
       utils.tweet.getTweets.invalidate();
-      utils.tweet.getSingleTweet.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
-      utils.tweet.searchTweets.invalidate();
+      if(router.pathname==="/status/[statusId]") {
+        utils.tweet.getSingleTweet.invalidate();
+
+      }
+      if(router.pathname==="/[userId]/[username]") {
+        utils.tweet.getUserTweets.invalidate();
+      }
 
     },
   });

@@ -18,23 +18,21 @@ const useLikeTweet = (tweetId: string) => {
       }
     },
     onSettled: () => {
-      // if(router.pathname==="/search") {
-      //   utils.tweet.searchTweets.invalidate();
+      if(router.pathname==="/search") {
+        utils.tweet.searchTweets.invalidate();
 
-      // }
-      // utils.tweet.getTweets.invalidate();
-      // utils.tweet.getInfiniteTweets.invalidate();
-      // if(router.pathname==="/status/[statusId]") {
-      //   utils.tweet.getSingleTweet.invalidate();
+      }
+      utils.tweet.getTweets.invalidate();
+      utils.tweet.getInfiniteTweets.invalidate();
+      if(router.pathname==="/status/[statusId]") {
+        utils.tweet.getSingleTweet.invalidate();
 
-      // }
-      // if(router.pathname==="/[userId]/[username]") {
-      //   utils.tweet.getUserTweets.invalidate();
-      // }
+      }
+      if(router.pathname==="/[userId]/[username]") {
+        utils.tweet.getUserTweets.invalidate();
+      }
 
-      utils.tweet.getSingleTweet.invalidate({
-        tweetId
-      })
+  
     },
   });
   const { mutateAsync: unlikeTweet,isLoading:unlikeLoading } = trpc.like.unlikeTweet.useMutation({
@@ -46,22 +44,20 @@ const useLikeTweet = (tweetId: string) => {
       }
     },
     onSettled: () => {
-      // if(router.pathname==="/search") {
-      //   utils.tweet.searchTweets.invalidate();
+      if(router.pathname==="/search") {
+        utils.tweet.searchTweets.invalidate();
 
-      // }
-      // utils.tweet.getTweets.invalidate();
-      // utils.tweet.getInfiniteTweets.invalidate();
-      // if(router.pathname==="/status/[statusId]") {
-      //   utils.tweet.getSingleTweet.invalidate();
+      }
+      utils.tweet.getTweets.invalidate();
+      utils.tweet.getInfiniteTweets.invalidate();
+      if(router.pathname==="/status/[statusId]") {
+        utils.tweet.getSingleTweet.invalidate();
 
-      // }
-      // if(router.pathname==="/[userId]/[username]") {
-      //   utils.tweet.getUserTweets.invalidate();
-      // }
-      utils.tweet.getSingleTweet.invalidate({
-        tweetId
-      })
+      }
+      if(router.pathname==="/[userId]/[username]") {
+        utils.tweet.getUserTweets.invalidate();
+      }
+  
 
     },
   });
