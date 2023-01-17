@@ -206,29 +206,32 @@ export const tweetRouter = router({
       });
     }),
 
-  getTweets: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.tweet.findMany({
-      where: {
-        retweet: {
-          is: null,
-        },
-      },
-      include: {
-        user: true,
-        originalTweet: {
-          include: {
-            user: true,
+  getTweets: publicProcedure
+    .input(z.object({ limit: z.number() }))
+    .query(({ ctx,input }) => {
+      return ctx.prisma.tweet.findMany({
+        where: {
+          retweet: {
+            is: null,
           },
         },
-        likes: true,
-        replies: true,
-        retweets: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  }),
+        take:input?.limit,
+        include: {
+          user: true,
+          originalTweet: {
+            include: {
+              user: true,
+            },
+          },
+          likes: true,
+          replies: true,
+          retweets: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+    }),
 
   getInfiniteTweets: publicProcedure
     .input(
@@ -263,11 +266,10 @@ export const tweetRouter = router({
           replies: true,
           retweets: true,
         },
-     
       });
       let nextCursor: typeof cursor | undefined = undefined;
       if (tweets.length > limit) {
-        const nextItem = tweets.pop() ; // return the last item from the array
+        const nextItem = tweets.pop(); // return the last item from the array
         nextCursor = nextItem?.id;
       }
       return {

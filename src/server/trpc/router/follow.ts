@@ -115,19 +115,36 @@ export const followRouter = router({
     getFollowersRecommendation:publicProcedure.query(({ ctx,input })=>{
       const userId = ctx.session?.user?.id;
 
-      return ctx.prisma.follows.findMany({
+      return ctx.prisma.user.findMany({
         where:{
           NOT:{
-            followingId:userId
+            followers:{
+              some:{
+                followingId:userId as string
+              }
+            }
           }
         },
-        include:{
-          follower:{
-            include:{
-              profile:true
+       include:{
+        followers:{
+          include:{
+            follower:{
+              include:{
+                profile:true
+              }
+            }
+          }
+        },
+        followings:{
+          include:{
+            following:{
+              include:{
+                profile:true
+              }
             }
           }
         }
+       }
       })
     })
 });

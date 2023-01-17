@@ -12,6 +12,7 @@ const useFollow = (userId:string) => {
             }
           },
           onSettled: () => {
+            utils.follow.getFollowersRecommendation.invalidate()
             
             utils.user.getUserProfile.invalidate();
           },
@@ -25,7 +26,7 @@ const useFollow = (userId:string) => {
             }
           },
           onSettled: () => {
-            
+            utils.follow.getFollowersRecommendation.invalidate()
             utils.user.getUserProfile.invalidate();
           },
     });

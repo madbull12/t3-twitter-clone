@@ -21,14 +21,14 @@ const CreateTweet = () => {
 
   const { mutateAsync: createTweet } = trpc.tweet.createTweet.useMutation({
     onMutate: () => {
-      utils.tweet.getTweets.cancel();
-      const optimisticUpdate = utils.tweet.getTweets.getData();
+      utils.tweet.getInfiniteTweets.cancel();
+      const optimisticUpdate = utils.tweet.getInfiniteTweets.getData();
       if (optimisticUpdate) {
-        utils.tweet.getTweets.setData(optimisticUpdate);
+        utils.tweet.getInfiniteTweets.setData(optimisticUpdate);
       }
     },
     onSettled: () => {
-      utils.tweet.getTweets.invalidate();
+      utils.tweet.getInfiniteTweets.invalidate();
     },
   });
   const [selectedFile, setSelectedFile] = useState<any>();
