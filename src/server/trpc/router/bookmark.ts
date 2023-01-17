@@ -18,8 +18,17 @@ export const bookmarkRouter = router({
                 user: true,
               },
             },
+            retweet: {
+              include: {
+                user: true,
+                likes: true,
+                replies: true,
+                retweets: true,
+              },
+            },
             likes: true,
             replies: true,
+            retweets: true,
           },
         },
       },

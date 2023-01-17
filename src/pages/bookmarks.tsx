@@ -6,9 +6,12 @@ import { TweetWithUser } from "../../interface";
 import Body from "../components/Body";
 import NavFeed from "../components/NavFeed";
 import TweetComponent from "../components/TweetComponent";
+import TweetList from "../components/TweetList";
 
 const BookmarkPage = () => {
-  const { bookmarks } = useBookmark();
+  const { bookmarks:data } = useBookmark();
+  const bookmarks = data?.map((bookmark)=>bookmark.tweet);
+  console.log(bookmarks)
   return (
     <Body>
       <Head>
@@ -17,9 +20,10 @@ const BookmarkPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavFeed title="Bookmarks" />
-      {bookmarks?.map((bookmark) => (
+      <TweetList tweets={bookmarks as TweetWithUser[]} />
+      {/* {bookmarks?.map((bookmark) => (
         <TweetComponent key={v4()} tweet={bookmark.tweet as TweetWithUser} />
-      ))}
+      ))} */}
     </Body>
   );
 };

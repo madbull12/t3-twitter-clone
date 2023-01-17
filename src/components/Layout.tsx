@@ -98,7 +98,9 @@ const Layout = ({ children }: IProps) => {
       {router.pathname !== "/auth/signin" ? (
         <>{isNotTablet ? <Right /> : null}</>
       ) : null}
-      {!phone ? <MobileCreate /> : null}
+      {status === "authenticated" ? (
+        <>{!phone ? <MobileCreate /> : null}</>
+      ) : null}
       {router.pathname !== "/auth/signin" ? (
         <>{status === "unauthenticated" ? <Footer /> : null}</>
       ) : null}

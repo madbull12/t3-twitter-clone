@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.twitter-login {
+    background-image: url("/public/twitter-login.png");
+}
