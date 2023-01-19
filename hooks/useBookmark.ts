@@ -8,7 +8,7 @@ const useBookmark = (tweetId?:string) => {
   const router = useRouter();
   const { data: bookmarks } = trpc.bookmark.getUserBookmarks.useQuery();
   const utils = trpc.useContext();
-  const { mutateAsync: createBookmark } =
+  const { mutateAsync: createBookmark,isLoading:createBookmarkLoading } =
     trpc.bookmark.createBookmark.useMutation({
       onMutate: () => {
         utils.bookmark.getUserBookmarks.cancel();
@@ -21,7 +21,7 @@ const useBookmark = (tweetId?:string) => {
         utils.bookmark.getUserBookmarks.invalidate();
       },
     });
-  const { mutateAsync: deleteBookmark } =
+  const { mutateAsync: deleteBookmark,isLoading:deleteBookmarkLoading } =
     trpc.bookmark.deleteBookmark.useMutation({
       onMutate: () => {
         utils.bookmark.getUserBookmarks.cancel();
@@ -59,7 +59,7 @@ const useBookmark = (tweetId?:string) => {
   };
 
 
-  return { bookmarks, handleCreateBookmark,bookmarkAddedState,isAdded,handleDeleteBookmark };
+  return { createBookmarkLoading,deleteBookmarkLoading, bookmarks, handleCreateBookmark,bookmarkAddedState,isAdded,handleDeleteBookmark };
 };
 
 export default useBookmark;

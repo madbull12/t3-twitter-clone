@@ -20,6 +20,8 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
     isAdded,
     bookmarkAddedState,
     handleDeleteBookmark,
+    deleteBookmarkLoading,
+    createBookmarkLoading,
   } = useBookmark(tweet.id);
 
   const isYourTweet = tweet.userId === session?.user?.id;
@@ -53,18 +55,26 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
               className="dropdown-content menu rounded-box absolute top-0 w-52 bg-base-100 p-2 shadow"
             >
               {isAdded || bookmarkAddedState ? (
-                <li onClick={() => handleDeleteBookmark()}>
-                  <div className="flex items-center gap-x-2 font-bold text-red-500">
+                <li>
+                  <button
+                    disabled={createBookmarkLoading || deleteBookmarkLoading}
+                    onClick={() => handleDeleteBookmark()}
+                    className="flex items-center gap-x-2 font-bold text-red-500"
+                  >
                     <IoTrash />
                     <a className="">Delete Bookmark</a>
-                  </div>
+                  </button>
                 </li>
               ) : (
-                <li onClick={() => handleCreateBookmark(tweet.id)}>
-                  <div className="flex items-center gap-x-2 font-bold ">
+                <li>
+                  <button
+                    disabled={createBookmarkLoading || deleteBookmarkLoading}
+                    onClick={() => handleCreateBookmark(tweet.id)}
+                    className="flex items-center gap-x-2 font-bold "
+                  >
                     <FiBookmark />
                     <a>Bookmark</a>
-                  </div>
+                  </button>
                 </li>
               )}
             </ul>
@@ -116,18 +126,30 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
                 <div className="modal modal-middle">
                   <div className="modal-box flex list-none flex-col items-center">
                     {isAdded || bookmarkAddedState ? (
-                      <li onClick={() => handleDeleteBookmark()}>
-                        <div className="flex items-center gap-x-2 font-bold text-red-500">
+                      <li>
+                        <button
+                          disabled={
+                            createBookmarkLoading || deleteBookmarkLoading
+                          }
+                          onClick={() => handleDeleteBookmark()}
+                          className="flex items-center gap-x-2 font-bold text-red-500"
+                        >
                           <IoTrash />
                           <a className=""> Delete Bookmark</a>
-                        </div>
+                        </button>
                       </li>
                     ) : (
-                      <li onClick={() => handleCreateBookmark(tweet.id)}>
-                        <div className="flex items-center gap-x-2 font-bold ">
+                      <li>
+                        <button
+                          disabled={
+                            createBookmarkLoading || deleteBookmarkLoading
+                          }
+                          onClick={() => handleCreateBookmark(tweet.id)}
+                          className="flex items-center gap-x-2 font-bold "
+                        >
                           <FiBookmark />
                           <a>Bookmark</a>
-                        </div>
+                        </button>
                       </li>
                     )}
                     <div className="modal-action self-end">
