@@ -3,11 +3,13 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { BiDotsHorizontal } from "react-icons/bi";
 import { IoMdClose } from "react-icons/io";
+import { IoTrash } from "react-icons/io5";
 import useBookmark from "../../hooks/useBookmark";
 import useDeleteTweet from "../../hooks/useDeleteTweet";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { TweetWithUser } from "../../interface";
 import { trpc } from "../utils/trpc";
+import { FiBookmark } from "react-icons/fi";
 
 const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
   const { data: session } = trpc.auth.getSession.useQuery();
@@ -39,7 +41,10 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
               className="dropdown-content menu rounded-box absolute  top-0 w-52 bg-base-100 p-2 shadow"
             >
               <li onClick={handleDeleteTweet}>
-                <a className="text-red-500">Delete</a>
+                <div className="flex items-center gap-x-2 font-bold text-red-500">
+                  <IoTrash />
+                  <a className="">Delete Tweet</a>
+                </div>
               </li>
             </ul>
           ) : (
@@ -49,11 +54,17 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
             >
               {isAdded || bookmarkAddedState ? (
                 <li onClick={() => handleDeleteBookmark()}>
-                  <a className="text-red-500">Delete Bookmark</a>
+                  <div className="flex items-center gap-x-2 font-bold text-red-500">
+                    <IoTrash />
+                    <a className="">Delete Bookmark</a>
+                  </div>
                 </li>
               ) : (
                 <li onClick={() => handleCreateBookmark(tweet.id)}>
-                  <a>Bookmark</a>
+                  <div className="flex items-center gap-x-2 font-bold ">
+                    <FiBookmark />
+                    <a>Bookmark</a>
+                  </div>
                 </li>
               )}
             </ul>
@@ -69,7 +80,7 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
             {isYourTweet ? (
               <>
                 <label htmlFor="my-modal-7">
-                  <BiDotsHorizontal className="text-xl cursor-pointer text-gray-400" />
+                  <BiDotsHorizontal className="cursor-pointer text-xl text-gray-400" />
                 </label>
                 <input
                   type="checkbox"
@@ -79,12 +90,10 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
 
                 <div className="modal modal-middle  ">
                   <div className="modal-box flex flex-col items-center">
-                    <h3
-                      className="text-lg font-bold text-red-500"
-                      onClick={handleDeleteTweet}
-                    >
-                      Delete
-                    </h3>
+                    <div className="flex items-center gap-x-2 font-bold text-red-500">
+                      <IoTrash />
+                      <a className=""> Delete Tweet</a>
+                    </div>
 
                     <div className="modal-action self-end">
                       <label htmlFor="my-modal-7">
@@ -105,15 +114,20 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
                   className="modal-toggle"
                 />
                 <div className="modal modal-middle">
-                  <div className="modal-box flex flex-col items-center list-none">
- 
+                  <div className="modal-box flex list-none flex-col items-center">
                     {isAdded || bookmarkAddedState ? (
                       <li onClick={() => handleDeleteBookmark()}>
-                        <a className="text-lg font-bold text-red-500">Delete Bookmark</a>
+                        <div className="flex items-center gap-x-2 font-bold text-red-500">
+                          <IoTrash />
+                          <a className=""> Delete Bookmark</a>
+                        </div>
                       </li>
                     ) : (
                       <li onClick={() => handleCreateBookmark(tweet.id)}>
-                        <a>Bookmark</a>
+                        <div className="flex items-center gap-x-2 font-bold ">
+                          <FiBookmark />
+                          <a>Bookmark</a>
+                        </div>
                       </li>
                     )}
                     <div className="modal-action self-end">
