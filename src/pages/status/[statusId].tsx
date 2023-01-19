@@ -58,8 +58,15 @@ const StatusPage = () => {
     useRetweet(tweetDetails?.id as string);
   console.log(alreadyRetweeted);
 
-  const { handleLike, alreadyLiked, setHasLiked, hasLiked, handleUnlike } =
-    useLikeTweet(tweetDetails?.id as string);
+  const {
+    handleLike,
+    alreadyLiked,
+    setHasLiked,
+    hasLiked,
+    handleUnlike,
+    likeLoading,
+    unlikeLoading,
+  } = useLikeTweet(tweetDetails?.id as string);
 
   const { setModal: setLikesModal } = useLikesModal();
   const { setModal: setRetweetsModal } = useRetweetsModal();
@@ -191,12 +198,19 @@ const StatusPage = () => {
             <div className="cursor-pointer">
               {(alreadyLiked !== null || hasLiked) &&
               status === "authenticated" ? (
-                <AiFillHeart onClick={handleUnlike} className="text-primary" />
+                <button
+                  onClick={handleUnlike}
+                  disabled={likeLoading || unlikeLoading}
+                >
+                  <AiFillHeart className="text-primary" />
+                </button>
               ) : (
-                <AiOutlineHeart
+                <button
                   onClick={handleLike}
-                  className="group-hover:text-primary"
-                />
+                  disabled={unlikeLoading || likeLoading}
+                >
+                  <AiOutlineHeart className="group-hover:text-primary" />
+                </button>
               )}
             </div>
 

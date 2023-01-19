@@ -26,8 +26,12 @@ const useRetweet = (tweetId?:string) => {
       }
       utils.tweet.getTweets.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
+      utils.tweet.userAlreadyRetweet.invalidate({tweetId:tweetId as string})
+
       if(router.pathname==="/status/[statusId]") {
         utils.tweet.getSingleTweet.invalidate();
+        utils.tweet.getTweetReplies.invalidate()
+
 
       }
       if(router.pathname==="/[userId]/[username]") {
@@ -50,6 +54,7 @@ const useRetweet = (tweetId?:string) => {
         utils.tweet.searchTweets.invalidate();
 
       }
+      utils.tweet.userAlreadyRetweet.invalidate({tweetId:tweetId as string})
       utils.tweet.getTweets.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
       if(router.pathname==="/status/[statusId]") {

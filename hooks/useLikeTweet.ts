@@ -23,6 +23,8 @@ const useLikeTweet = (tweetId: string) => {
 
       }
       utils.tweet.getTweets.invalidate();
+      utils.like.userLikeTweet.invalidate({tweetId})
+
       utils.tweet.getInfiniteTweets.invalidate();
       if(router.pathname==="/status/[statusId]") {
         utils.tweet.getSingleTweet.invalidate();
@@ -48,10 +50,12 @@ const useLikeTweet = (tweetId: string) => {
         utils.tweet.searchTweets.invalidate();
 
       }
+      utils.like.userLikeTweet.invalidate({tweetId})
       utils.tweet.getTweets.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
       if(router.pathname==="/status/[statusId]") {
         utils.tweet.getSingleTweet.invalidate();
+        utils.tweet.getTweetReplies.invalidate()
 
       }
       if(router.pathname==="/[userId]/[username]") {
