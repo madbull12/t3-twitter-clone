@@ -16,6 +16,9 @@ const useFollow = (userId: string) => {
       },
       onSettled: () => {
         utils.follow.getFollowersRecommendation.invalidate();
+        utils.follow.getSingleFollower.invalidate({
+          followingId: userId as string,
+        });
         if (router.pathname === "/[userId]/[username]/followers") {
           utils.follow.getUserFollowers.invalidate();
         }
@@ -36,6 +39,9 @@ const useFollow = (userId: string) => {
       },
       onSettled: () => {
         utils.follow.getFollowersRecommendation.invalidate();
+        utils.follow.getSingleFollower.invalidate({
+          followingId: userId as string,
+        });
         if (router.pathname === "/[userId]/[username]/followers") {
           utils.follow.getUserFollowers.invalidate();
         }

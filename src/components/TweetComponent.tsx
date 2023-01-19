@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { TweetWithUser } from "../../interface";
 import moment from "moment";
 import ReactTimeAgo from "react-time-ago";
-import { IoAnalyticsOutline } from "react-icons/io5";
+import { IoAnalyticsOutline, IoShareOutline } from "react-icons/io5";
 import {
   AiFillHeart,
   AiOutlineComment,
@@ -29,6 +29,7 @@ import BottomMenuModal from "./BottomMenuModal";
 import useLikeTweet from "../../hooks/useLikeTweet";
 import useRetweet from "../../hooks/useRetweet";
 import { FaRetweet } from "react-icons/fa";
+import ShareDropdown from "./ShareDropdown";
 
 interface IProps {
   tweet: TweetWithUser;
@@ -262,8 +263,9 @@ const TweetComponent = ({
                     {tweet?.retweets?.length}
                   </p>
                 </div>
-                <div className="group cursor-pointer rounded-full p-2 text-xs   hover:bg-base-300 md:text-base">
-                  <AiOutlineShareAlt className="group-hover:text-primary" />
+                <div onClick={(e)=>e.stopPropagation()} className="cursor-pointer   rounded-full px-4 py-2 transition-all duration-200 ease-in-out  hover:bg-base-300">
+                <ShareDropdown tweetId={tweet.id as string} />
+
                 </div>
                 <div className="group cursor-pointer rounded-full  p-2 text-xs  hover:bg-base-300 md:text-base">
                   <IoAnalyticsOutline className="group-hover:text-primary" />
