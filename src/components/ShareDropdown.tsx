@@ -22,7 +22,7 @@ const ShareDropdown = ({ tweetId }: { tweetId: string }) => {
       {tablet ? (
         <div className="dropdown dropdown-top   list-none ">
           <li tabIndex={0}>
-            <IoShareOutline />
+            <IoShareOutline className="hover:text-primary" />
           </li>
           <ul
             tabIndex={0}
