@@ -17,14 +17,7 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
   const { data: session } = trpc.auth.getSession.useQuery();
   const { status } = useSession();
   const { handleDeleteTweet } = useDeleteTweet(tweet);
-  const {
-    handleCreateBookmark,
-    isAdded,
-    bookmarkAddedState,
-    handleDeleteBookmark,
-    deleteBookmarkLoading,
-    createBookmarkLoading,
-  } = useBookmark(tweet.id);
+
 
   const {
     handleFollow,
@@ -70,14 +63,14 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
             >
               {(alreadyFollowed !== null || followed) &&
               status === "authenticated" ? (
-                <li>
+                <li className="">
                   <button
                     disabled={followingUser || unfollowingUser}
                     onClick={() => handleUnfollow()}
-                    className="flex items-center gap-x-2 whitespace-nowrap font-bold text-red-500"
+                    className="flex items-center gap-x-2 w-[90%]  whitespace-nowrap   font-bold text-red-500"
                   >
                     <RiUserUnfollowLine />
-                    <a className="">Unfollow {tweet.user.name}</a>
+                    <p className="truncate w-full">Unfollow {tweet.user.name}</p>
                   </button>
                 </li>
               ) : (
@@ -85,10 +78,10 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
                   <button
                     disabled={followingUser || unfollowingUser}
                     onClick={() => handleFollow()}
-                    className="flex items-center gap-x-2 whitespace-nowrap font-bold"
+                    className="flex items-center gap-x-2 w-[90%] whitespace-nowrap font-bold"
                   >
                     <RiUserFollowLine />
-                    <a>Follow {tweet.user.name}</a>
+                    <p className="truncate w-full">Follow {tweet.user.name}</p>
                   </button>
                 </li>
               )}

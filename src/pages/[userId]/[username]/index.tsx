@@ -179,7 +179,7 @@ const ProfilePage = () => {
         {tweetLinks.map((link) => (
           <li
             className={`cursor-pointer text-gray-500 ${
-              link.slug === _link ? "border-b-2 border-blue-500" : null
+              link.slug === _link ? "border-b-4 border-primary" : null
             }`}
             onClick={() => setLink(link.slug)}
           >

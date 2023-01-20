@@ -54,7 +54,7 @@ const StatusPage = () => {
     tweetId: statusId,
   });
 
-  const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet } =
+  const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet,isRetweeting,isUndoingRetweet } =
     useRetweet(tweetDetails?.id as string);
   console.log(alreadyRetweeted);
 
@@ -184,15 +184,13 @@ const StatusPage = () => {
             />
             {(alreadyRetweeted !== null || hasRetweeted) &&
             status === "authenticated" ? (
-              <AiOutlineRetweet
-                onClick={handleUndoRetweet}
-                className="cursor-pointer text-primary group-hover:text-primary"
-              />
+              <button onClick={handleUndoRetweet} disabled={isUndoingRetweet || isRetweeting}>
+                <AiOutlineRetweet className="cursor-pointer text-primary group-hover:text-primary" />
+              </button>
             ) : (
-              <AiOutlineRetweet
-                onClick={handleRetweet}
-                className="cursor-pointer group-hover:text-primary"
-              />
+              <button onClick={handleRetweet} disabled={isUndoingRetweet || isRetweeting}>
+                <AiOutlineRetweet className="cursor-pointer group-hover:text-primary" />
+              </button>
             )}
             {/* <AiOutlineRetweet className="cursor-pointer hover:text-primary " /> */}
             <div className="cursor-pointer">
