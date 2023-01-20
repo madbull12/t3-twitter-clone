@@ -19,8 +19,8 @@ const ShareDropdown = ({ tweetId }: { tweetId: string }) => {
   const [value, copy] = useCopyToClipboard();
   return (
     <>
-      {tablet ? (
-        <div className="dropdown dropdown-top   list-none ">
+
+        <div className="dropdown dropdown-top dropdown-end   list-none ">
           <li tabIndex={0}>
             <IoShareOutline className="hover:text-primary" />
           </li>
@@ -73,50 +73,7 @@ const ShareDropdown = ({ tweetId }: { tweetId: string }) => {
             )}
           </ul>
         </div>
-      ) : (
-        <>
-          <label htmlFor="share">
-            <IoShareOutline className="cursor-pointer text-sm text-gray-400" />
-          </label>
-          <input type="checkbox" id="share" className="modal-toggle" />
-
-          <div className="modal modal-middle z-[9999] bg-[#0000007e] ">
-            <div className="modal-box flex flex-col items-center">
-              <button
-                onClick={() => {
-                  toast.success("Tweet url copied to clipboard");
-                  copy(
-                    `${
-                      process.env.NODE_ENV === "development"
-                        ? "localhost:3000"
-                        : "t3-twitter-clone-nine.vercel.app"
-                    }/status/${tweetId}`
-                  );
-                }}
-                className="flex items-center gap-x-2 rounded-xl p-4 font-bold transition-all  duration-100 ease-in-out hover:bg-base-300"
-              >
-                <IoIosLink />
-
-                <a>Copy url to tweet</a>
-              </button>
-              <button
-                  disabled={createBookmarkLoading || deleteBookmarkLoading}
-                  onClick={() => handleCreateBookmark(tweetId)}
-                  className="flex items-center gap-x-2 font-bold "
-                >
-                  <FiBookmark />
-                  <a>Bookmark</a>
-                </button>
-
-              <div className="modal-action self-end">
-                <label htmlFor="share">
-                  <IoMdClose className="text-xl" />
-                </label>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+   
     </>
   );
 };
