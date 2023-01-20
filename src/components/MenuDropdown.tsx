@@ -15,7 +15,7 @@ import { RiUserFollowLine, RiUserUnfollowLine } from "react-icons/ri";
 
 const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
   const { data: session } = trpc.auth.getSession.useQuery();
-  const { status } = useSession()
+  const { status } = useSession();
   const { handleDeleteTweet } = useDeleteTweet(tweet);
   const {
     handleCreateBookmark,
@@ -104,24 +104,24 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
           <>
             {isYourTweet ? (
               <>
-                <label htmlFor="my-modal-7">
+                <label htmlFor={tweet.id}>
                   <BiDotsHorizontal className="cursor-pointer text-xl text-gray-400" />
                 </label>
                 <input
                   type="checkbox"
-                  id="my-modal-7"
+                  id={tweet.id}
                   className="modal-toggle"
                 />
 
-                <div className="modal modal-middle  ">
+                <div className="modal  modal-middle z-[9999] bg-[#0000007e] ">
                   <div className="modal-box flex flex-col items-center">
-                    <button className="flex items-center gap-x-2 font-bold text-red-500">
+                    <button className="flex items-center gap-x-2 font-bold text-red-500"  onClick={handleDeleteTweet}>
                       <IoTrash />
                       <a className=""> Delete Tweet</a>
                     </button>
 
                     <div className="modal-action self-end">
-                      <label htmlFor="my-modal-7">
+                      <label htmlFor={tweet.id}>
                         <IoMdClose className="text-xl" />
                       </label>
                     </div>
@@ -130,45 +130,42 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
               </>
             ) : (
               <>
-                <label htmlFor="my-modal-6">
+                <label htmlFor={tweet.user.id}>
                   <BiDotsHorizontal className="text-xl text-gray-400" />
                 </label>
                 <input
                   type="checkbox"
-                  id="my-modal-6"
+                  id={tweet.user.id}
                   className="modal-toggle"
                 />
-                <div className="modal modal-middle">
+                <div className="modal modal-middle z-[9999] bg-[#0000007e]">
                   <div className="modal-box flex list-none flex-col items-center">
-                    {isAdded || bookmarkAddedState ? (
+                    {(alreadyFollowed !== null || followed) &&
+                    status === "authenticated" ? (
                       <li>
                         <button
-                          disabled={
-                            createBookmarkLoading || deleteBookmarkLoading
-                          }
-                          onClick={() => handleDeleteBookmark()}
-                          className="flex items-center gap-x-2 font-bold text-red-500"
+                          disabled={followingUser || unfollowingUser}
+                          onClick={() => handleUnfollow()}
+                          className="flex items-center gap-x-2 whitespace-nowrap font-bold text-red-500"
                         >
-                          <IoTrash />
-                          <a className=""> Delete Bookmark</a>
+                          <RiUserUnfollowLine />
+                          <a className="">Unfollow {tweet.user.name}</a>
                         </button>
                       </li>
                     ) : (
                       <li>
                         <button
-                          disabled={
-                            createBookmarkLoading || deleteBookmarkLoading
-                          }
-                          onClick={() => handleCreateBookmark(tweet.id)}
-                          className="flex items-center gap-x-2 font-bold "
+                          disabled={followingUser || unfollowingUser}
+                          onClick={() => handleFollow()}
+                          className="flex items-center gap-x-2 whitespace-nowrap font-bold"
                         >
-                          <FiBookmark />
-                          <a>Bookmark</a>
+                          <RiUserFollowLine />
+                          <a>Follow {tweet.user.name}</a>
                         </button>
                       </li>
                     )}
                     <div className="modal-action self-end">
-                      <label htmlFor="my-modal-6">
+                      <label htmlFor={tweet.user.id}>
                         <IoMdClose className="text-xl" />
                       </label>
                     </div>

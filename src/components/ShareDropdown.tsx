@@ -32,7 +32,13 @@ const ShareDropdown = ({ tweetId }: { tweetId: string }) => {
               <button
                 onClick={() => {
                   toast.success("Tweet url copied to clipboard");
-                  copy(`localhost:3000/status/${tweetId}`);
+                  copy(
+                    `${
+                      process.env.NODE_ENV === "development"
+                        ? "localhost:3000"
+                        : "t3-twitter-clone-nine.vercel.app"
+                    }/status/${tweetId}`
+                  );
                 }}
                 className="flex items-center gap-x-2 rounded-xl p-4 font-bold "
               >
@@ -74,13 +80,33 @@ const ShareDropdown = ({ tweetId }: { tweetId: string }) => {
           </label>
           <input type="checkbox" id="share" className="modal-toggle" />
 
-          <div className="modal modal-middle  ">
+          <div className="modal modal-middle z-[9999] bg-[#0000007e] ">
             <div className="modal-box flex flex-col items-center">
-              <div className="flex items-center gap-x-2 rounded-xl p-4 font-bold transition-all  duration-100 ease-in-out hover:bg-base-300">
+              <button
+                onClick={() => {
+                  toast.success("Tweet url copied to clipboard");
+                  copy(
+                    `${
+                      process.env.NODE_ENV === "development"
+                        ? "localhost:3000"
+                        : "t3-twitter-clone-nine.vercel.app"
+                    }/status/${tweetId}`
+                  );
+                }}
+                className="flex items-center gap-x-2 rounded-xl p-4 font-bold transition-all  duration-100 ease-in-out hover:bg-base-300"
+              >
                 <IoIosLink />
 
                 <a>Copy url to tweet</a>
-              </div>
+              </button>
+              <button
+                  disabled={createBookmarkLoading || deleteBookmarkLoading}
+                  onClick={() => handleCreateBookmark(tweetId)}
+                  className="flex items-center gap-x-2 font-bold "
+                >
+                  <FiBookmark />
+                  <a>Bookmark</a>
+                </button>
 
               <div className="modal-action self-end">
                 <label htmlFor="share">
