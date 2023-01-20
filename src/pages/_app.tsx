@@ -32,7 +32,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <SessionProvider session={session}>
         <AuthWrapper>
           <Layout>
-            <Toaster />
+            <Toaster
+              position="bottom-center"
+              toastOptions={{
+                style:{
+                  background:"#1D9BF0",
+                  color:"#fff"
+                }
+              }}
+            />
 
             <Component {...pageProps} />
           </Layout>

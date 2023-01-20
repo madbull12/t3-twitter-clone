@@ -10,10 +10,12 @@ import useMediaQuery from "../../hooks/useMediaQuery";
 import { TweetWithUser } from "../../interface";
 import { trpc } from "../utils/trpc";
 import { FiBookmark } from "react-icons/fi";
+import useFollow from "../../hooks/useFollow";
+import { RiUserFollowLine, RiUserUnfollowLine } from "react-icons/ri";
 
 const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
   const { data: session } = trpc.auth.getSession.useQuery();
-
+  const { status } = useSession()
   const { handleDeleteTweet } = useDeleteTweet(tweet);
   const {
     handleCreateBookmark,
@@ -23,6 +25,15 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
     deleteBookmarkLoading,
     createBookmarkLoading,
   } = useBookmark(tweet.id);
+
+  const {
+    handleFollow,
+    handleUnfollow,
+    followed,
+    alreadyFollowed,
+    followingUser,
+    unfollowingUser,
+  } = useFollow(tweet.user.id);
 
   const isYourTweet = tweet.userId === session?.user?.id;
   //   console.log(isYourTweet);
@@ -42,11 +53,14 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
               tabIndex={0}
               className="dropdown-content menu rounded-box absolute  top-0 w-52 bg-base-100 p-2 shadow"
             >
-              <li onClick={handleDeleteTweet}>
-                <div className="flex items-center gap-x-2 font-bold text-red-500">
+              <li>
+                <button
+                  onClick={handleDeleteTweet}
+                  className="flex items-center gap-x-2 font-bold text-red-500"
+                >
                   <IoTrash />
                   <a className="">Delete Tweet</a>
-                </div>
+                </button>
               </li>
             </ul>
           ) : (
@@ -54,26 +68,27 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
               tabIndex={0}
               className="dropdown-content menu rounded-box absolute top-0 w-52 bg-base-100 p-2 shadow"
             >
-              {isAdded || bookmarkAddedState ? (
+              {(alreadyFollowed !== null || followed) &&
+              status === "authenticated" ? (
                 <li>
                   <button
-                    disabled={createBookmarkLoading || deleteBookmarkLoading}
-                    onClick={() => handleDeleteBookmark()}
-                    className="flex items-center gap-x-2 font-bold text-red-500"
+                    disabled={followingUser || unfollowingUser}
+                    onClick={() => handleUnfollow()}
+                    className="flex items-center gap-x-2 whitespace-nowrap font-bold text-red-500"
                   >
-                    <IoTrash />
-                    <a className="">Delete Bookmark</a>
+                    <RiUserUnfollowLine />
+                    <a className="">Unfollow {tweet.user.name}</a>
                   </button>
                 </li>
               ) : (
                 <li>
                   <button
-                    disabled={createBookmarkLoading || deleteBookmarkLoading}
-                    onClick={() => handleCreateBookmark(tweet.id)}
-                    className="flex items-center gap-x-2 font-bold "
+                    disabled={followingUser || unfollowingUser}
+                    onClick={() => handleFollow()}
+                    className="flex items-center gap-x-2 whitespace-nowrap font-bold"
                   >
-                    <FiBookmark />
-                    <a>Bookmark</a>
+                    <RiUserFollowLine />
+                    <a>Follow {tweet.user.name}</a>
                   </button>
                 </li>
               )}
@@ -100,10 +115,10 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
 
                 <div className="modal modal-middle  ">
                   <div className="modal-box flex flex-col items-center">
-                    <div className="flex items-center gap-x-2 font-bold text-red-500">
+                    <button className="flex items-center gap-x-2 font-bold text-red-500">
                       <IoTrash />
                       <a className=""> Delete Tweet</a>
-                    </div>
+                    </button>
 
                     <div className="modal-action self-end">
                       <label htmlFor="my-modal-7">

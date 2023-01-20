@@ -57,11 +57,11 @@ const Home: NextPage = () => {
             <TweetList tweets={tweets as Tweet[]} />
           </>
         )}
+        {isFetching && hasNextPage ? <Loader /> : null}
+        {!hasNextPage ? (
+          <p className="text-center text-gray-500">End of feed</p>
+        ) : null}
       </Body>
-      {isFetching && hasNextPage ? <Loader /> : null}
-      { !hasNextPage ? (
-        <p className="text-center text-gray-500">End of feed</p>
-      ) : null}
     </>
   );
 };

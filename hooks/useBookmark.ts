@@ -6,7 +6,7 @@ import { TweetWithUser } from "../interface";
 
 const useBookmark = (tweetId?:string) => {
   const router = useRouter();
-  const { data: bookmarks } = trpc.bookmark.getUserBookmarks.useQuery();
+  const { data: bookmarks,isLoading } = trpc.bookmark.getUserBookmarks.useQuery();
   const utils = trpc.useContext();
   const { mutateAsync: createBookmark,isLoading:createBookmarkLoading } =
     trpc.bookmark.createBookmark.useMutation({
@@ -59,7 +59,7 @@ const useBookmark = (tweetId?:string) => {
   };
 
 
-  return { createBookmarkLoading,deleteBookmarkLoading, bookmarks, handleCreateBookmark,bookmarkAddedState,isAdded,handleDeleteBookmark };
+  return {isLoading, createBookmarkLoading,deleteBookmarkLoading, bookmarks, handleCreateBookmark,bookmarkAddedState,isAdded,handleDeleteBookmark };
 };
 
 export default useBookmark;

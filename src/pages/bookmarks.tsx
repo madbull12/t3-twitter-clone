@@ -1,17 +1,19 @@
 import Head from "next/head";
+import Image from "next/legacy/image";
 import React from "react";
 import { v4 } from "uuid";
 import useBookmark from "../../hooks/useBookmark";
 import { TweetWithUser } from "../../interface";
 import Body from "../components/Body";
+import Loader from "../components/Loader";
 import NavFeed from "../components/NavFeed";
 import TweetComponent from "../components/TweetComponent";
 import TweetList from "../components/TweetList";
 
 const BookmarkPage = () => {
-  const { bookmarks:data } = useBookmark();
-  const bookmarks = data?.map((bookmark)=>bookmark.tweet);
-  console.log(bookmarks)
+  const { bookmarks: data, isLoading } = useBookmark();
+  const bookmarks = data?.map((bookmark) => bookmark.tweet);
+  console.log(bookmarks);
   return (
     <Body>
       <Head>
@@ -20,7 +22,31 @@ const BookmarkPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavFeed title="Bookmarks" />
-      <TweetList tweets={bookmarks as TweetWithUser[]} />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          {bookmarks?.length !== 0 ? (
+            <TweetList tweets={bookmarks as TweetWithUser[]} />
+          ) : (
+            <div className="flex flex-col gap-y-4 items-centers justify-center text-center ">
+              <div className="relative mx-auto h-44 w-1/2">
+                <Image
+                  alt="no bookmarks"
+                  layout="fill"
+                  objectFit="cover"
+                  src="/no-bookmarks.png"
+                />
+              </div>
+              <h1 className="text-4xl font-bold text-neutral">
+                Save tweets for later
+              </h1>
+              <p className="w-1/2 mx-auto text-start text-gray-500">Don’t let the good ones fly away! Bookmark Tweets to easily find them again in the future.</p>
+            </div>
+          )}
+        </>
+      )}
+
       {/* {bookmarks?.map((bookmark) => (
         <TweetComponent key={v4()} tweet={bookmark.tweet as TweetWithUser} />
       ))} */}

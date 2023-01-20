@@ -1,42 +1,75 @@
 import React from "react";
 import { IoIosLink, IoMdClose } from "react-icons/io";
-import { IoShareOutline } from "react-icons/io5";
+import { IoShareOutline, IoTrash } from "react-icons/io5";
 import useMediaQuery from "../../hooks/useMediaQuery";
-import { useCopyToClipboard } from 'usehooks-ts';
+import { useCopyToClipboard } from "usehooks-ts";
 import { toast } from "react-hot-toast";
-const ShareDropdown = ({ tweetId }:{ tweetId:string } ) => {
+import useBookmark from "../../hooks/useBookmark";
+import { FiBookmark } from "react-icons/fi";
+const ShareDropdown = ({ tweetId }: { tweetId: string }) => {
   const tablet = useMediaQuery("(min-width:1110px)");
-
-  const[value,copy] = useCopyToClipboard()
+  const {
+    createBookmarkLoading,
+    handleCreateBookmark,
+    handleDeleteBookmark,
+    deleteBookmarkLoading,
+    isAdded,
+    bookmarkAddedState,
+  } = useBookmark(tweetId);
+  const [value, copy] = useCopyToClipboard();
   return (
     <>
       {tablet ? (
-        <div
-        
-          className="dropdown list-none "
-        >
-          <li
-            tabIndex={0}
-          >
+        <div className="dropdown dropdown-top   list-none ">
+          <li tabIndex={0}>
             <IoShareOutline />
           </li>
           <ul
             tabIndex={0}
-            className="dropdown-content  menu rounded-box w-52 bg-base-100  shadow"
+            className="dropdown-content   menu rounded-box w-52 bg-base-100  shadow"
           >
-            <div onClick={()=>{
-                toast.success("Tweet url copied to clipboard")
-                copy(`localhost:3000/status/${tweetId}`)
-            }} className="flex items-center gap-x-2 rounded-xl p-4 font-bold transition-all  duration-100 ease-in-out hover:bg-base-300">
-              <IoIosLink />
+            <li>
+              <button
+                onClick={() => {
+                  toast.success("Tweet url copied to clipboard");
+                  copy(`localhost:3000/status/${tweetId}`);
+                }}
+                className="flex items-center gap-x-2 rounded-xl p-4 font-bold "
+              >
+                <IoIosLink />
 
-              <a>Copy url to tweet</a>
-            </div>
+                <a>Copy url to tweet</a>
+              </button>
+            </li>
+
+            {isAdded || bookmarkAddedState ? (
+              <li>
+                <button
+                  disabled={createBookmarkLoading || deleteBookmarkLoading}
+                  onClick={() => handleDeleteBookmark()}
+                  className="flex items-center gap-x-2 font-bold text-red-500"
+                >
+                  <IoTrash />
+                  <a className="">Delete Bookmark</a>
+                </button>
+              </li>
+            ) : (
+              <li>
+                <button
+                  disabled={createBookmarkLoading || deleteBookmarkLoading}
+                  onClick={() => handleCreateBookmark(tweetId)}
+                  className="flex items-center gap-x-2 font-bold "
+                >
+                  <FiBookmark />
+                  <a>Bookmark</a>
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       ) : (
         <>
-          <label htmlFor="share"  >
+          <label htmlFor="share">
             <IoShareOutline className="cursor-pointer text-sm text-gray-400" />
           </label>
           <input type="checkbox" id="share" className="modal-toggle" />
