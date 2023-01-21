@@ -1,4 +1,5 @@
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 import React, { useRef } from "react";
 import { BsTwitter } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
@@ -8,7 +9,7 @@ import Backdrop from "./Backdrop";
 
 const LoginModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
-
+  const router = useRouter()
   const { setModal } = useLoginModal();
   useOnClickOutside(modalRef, () => {
     setModal(false);
@@ -28,7 +29,10 @@ const LoginModal = () => {
           <BsTwitter className="text-3xl  text-primary" />
           <h1 className="text-3xl font-bold">Login Twitter</h1>
           <button
-            onClick={() => signIn("twitter")}
+            onClick={() =>{ 
+              router.push('/auth/signin')
+              setModal(false)
+          }}
             className={`${"px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  text-black"}`}
           >
             Sign in
