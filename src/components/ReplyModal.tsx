@@ -2,6 +2,7 @@ import { Tweet } from "@prisma/client";
 import moment from "moment";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useRef, useState,useEffect } from "react";
 import toast from "react-hot-toast";
 import { IoClose } from "react-icons/io5";
@@ -44,7 +45,7 @@ const ReplyModal = () => {
     <Backdrop>
       <div
         ref={modalRef}
-        className="relative mx-auto max-w-lg rounded-2xl overflow-y-scroll max-h-[500px]  bg-base-100 p-4 text-neutral"
+        className="relative mx-auto max-h-[500px] max-w-xs md:max-w-lg overflow-y-scroll rounded-2xl  bg-base-100 p-4 text-black"
       >
         {isLoading ? (
           <Loader />
@@ -62,9 +63,9 @@ const ReplyModal = () => {
               />
               <div className="mb-8 flex w-full flex-col">
                 <div className="flex items-center gap-x-2">
-                  <h1 className="text-lg font-semibold">
+                  <Link href={`/${tweetReply?.userId}/${tweetReply?.user.name}`} className="text-lg cursor-pointer hover:underline font-semibold">
                     {tweetReply?.user.name}
-                  </h1>
+                  </Link>
                   <p className="text-sm text-gray-400">
                     {hoursBetweenDates > 24 ? (
                       <span>

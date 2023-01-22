@@ -36,10 +36,10 @@ const SignInPage = () => {
           <h1 className="mt-12 text-6xl font-black">Happening now </h1>
 
           ):(
-          <h1 className="mt-12 max-w-xs text-4xl font-black">See what's happening in the world right now </h1>
+          <h1 className="mt-12 max-w-xs text-2xl sm:text-4xl font-black">See what's happening in the world right now </h1>
             
           )}
-          <p className="mt-12 text-4xl font-black">Join Twitter today.</p>
+          <p className="mt-12 text-2xl sm:text-4xl font-black">Join Twitter today.</p>
           <div className="mt-8 space-y-4">
             <button
               onClick={() =>
@@ -47,7 +47,7 @@ const SignInPage = () => {
                   callbackUrl: env.NEXTAUTH_URL,
                 })
               }
-              className={`${tablet ? null :"mx-auto"} flex   w-3/4 items-center justify-center gap-x-2 rounded-full  border border-base-300 px-4 py-2 text-lg font-semibold transition-all duration-100 ease-in-out hover:bg-base-200`}
+              className={`${tablet ? null :"mx-auto"} flex whitespace-nowrap  w-3/4 items-center justify-center gap-x-2 rounded-full  border border-base-300 px-4 py-2 text-base sm:text-lg font-semibold transition-all duration-100 ease-in-out hover:bg-base-200`}
             >
               <FcGoogle />
               <p>Sign in with Google</p>
@@ -58,7 +58,7 @@ const SignInPage = () => {
                   callbackUrl: env.NEXTAUTH_URL,
                 })
               }
-              className={`${tablet ? null :"mx-auto"} flex  w-3/4 items-center justify-center gap-x-2 rounded-full border border-base-300 px-4 py-2 text-lg font-semibold transition-all duration-100 ease-in-out hover:bg-base-200`}
+              className={`${tablet ? null :"mx-auto"} flex whitespace-nowrap w-3/4 items-center justify-center gap-x-2 rounded-full border border-base-300 px-4 py-2 text-base sm:text-lg font-semibold transition-all duration-100 ease-in-out hover:bg-base-200`}
             >
               <BsTwitter className="text-primary" />
               <p>Sign in with Twitter</p>
@@ -71,7 +71,7 @@ const SignInPage = () => {
         </div>
       </div>
       <div className="flex min-h-screen  items-center justify-center">
-        <div className="relative mx-auto h-96 w-1/2  ">
+        <div className="relative mx-auto h-72 sm:h-96 w-3/4 md:w-1/2  ">
           <Image src="/elon-musk-smoke.gif" layout="fill" />
         </div>
       </div>

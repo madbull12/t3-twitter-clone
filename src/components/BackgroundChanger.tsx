@@ -11,9 +11,9 @@ const BackgroundChanger = () => {
       <p className="text-start text-xs font-semibold text-gray-400">
         Background
       </p>
-      <div className=" rounded-3xl bg-base-300 px-4 py-2 md:h-20 ">
+      <div className="flex items-center rounded-3xl bg-base-300 px-4 py-2 md:h-20 ">
         <div className="flex flex-col items-center justify-between md:justify-center gap-y-4 gap-x-4 w-full md:flex-row md:w-1/2 mx-auto ">
-          <button className="flex h-full w-full whitespace-nowrap flex-1 items-center  rounded-md bg-white px-2 py-1 text-black">
+          <button className="flex h-full w-full whitespace-nowrap flex-1  rounded-md bg-white px-2 py-1 text-black">
             <div className="flex items-center gap-x-4">
               <input
                 type="radio"

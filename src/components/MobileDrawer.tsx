@@ -1,7 +1,9 @@
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useRef } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useRef } from "react";
 import { BiBookmark, BiUser } from "react-icons/bi";
+import { BsTwitter } from "react-icons/bs";
 import { IoMdClose } from "react-icons/io";
 import { useOnClickOutside } from "usehooks-ts";
 import { v4 } from "uuid";
@@ -12,11 +14,12 @@ import MoreDropdownSidebar from "./MoreDropdownSidebar";
 
 const MobileDrawer = () => {
   const drawerRef = useRef<HTMLDivElement>(null);
-
+  const router = useRouter()
   const { setDrawer, drawer } = useMobileDrawer();
   useOnClickOutside(drawerRef, () => {
     setDrawer(false);
   });
+
   const { data: session } = useSession();
   const links = [
     {
@@ -78,6 +81,21 @@ const MobileDrawer = () => {
               <MoreDropdownSidebar mobile={true} />
           </li>
         </ul>
+        <button
+          onClick={() => signOut()}
+          className={`${
+       
+               "px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  "
+             
+          }`}
+        >
+         
+            <>
+              <BsTwitter className="text-primary " />
+              <span className="">Sign out</span>
+            </>
+      
+        </button>
       </div>
     </Backdrop>
   );
