@@ -1,5 +1,11 @@
+import { Bookmark } from "@prisma/client";
 import create from "zustand";
-import { LikesWithPayloads, RetweetsWithPayloads, TweetWithUser, UserWithPayloads } from "../interface";
+import {
+  LikesWithPayloads,
+  RetweetsWithPayloads,
+  TweetWithUser,
+  UserWithPayloads,
+} from "../interface";
 
 interface Preview {
   preview: string;
@@ -12,8 +18,8 @@ interface Modal {
 }
 
 interface TweetIdStore {
-  tweetId:string;
-  setTweetId:(value:string) => void;
+  tweetId: string;
+  setTweetId: (value: string) => void;
 }
 
 interface Drawer {
@@ -22,12 +28,17 @@ interface Drawer {
 }
 
 interface UserLikes {
-  likes:LikesWithPayloads[] | null;
-  setLikes:(value:LikesWithPayloads[]) => void
+  likes: LikesWithPayloads[] | null;
+  setLikes: (value: LikesWithPayloads[]) => void;
 }
 interface UserRetweets {
-  retweets:TweetWithUser[] | null;
-  setRetweets:(value:TweetWithUser[]) => void
+  retweets: TweetWithUser[] | null;
+  setRetweets: (value: TweetWithUser[]) => void;
+}
+
+interface UserBookmarks {
+  bookmarks:Bookmark[] | null;
+  setBookmarks:(value:Bookmark[])=>void
 }
 
 export const usePreviewStore = create<Preview>((set) => ({
@@ -48,39 +59,44 @@ export const useCreateModal = create<Modal>((set) => ({
   setModal: (value: boolean) => set(() => ({ modal: value })),
 }));
 
-export const useTweetId = create<TweetIdStore>((set)=>({
-  tweetId:"",
-  setTweetId:(value:string)=>set(()=>({ tweetId:value }))
-}))
-
-export const useEditProfileModal = create<Modal>((set)=>({
-  modal:false,
-  setModal:(value:boolean)=>set(()=>({ modal:value }))
+export const useTweetId = create<TweetIdStore>((set) => ({
+  tweetId: "",
+  setTweetId: (value: string) => set(() => ({ tweetId: value })),
 }));
 
-export const useDisplayModal = create<Modal>((set)=>({
-  modal:false,
-  setModal:(value:boolean)=>set(()=>({ modal:value }))
-}))
-export const useLikesModal = create<Modal>((set)=>({
-  modal:false,
-  setModal:(value:boolean)=>set(()=>({ modal:value }))
-}))
-export const useRetweetsModal = create<Modal>((set)=>({
-  modal:false,
-  setModal:(value:boolean)=>set(()=>({ modal:value }))
-}))
+export const useEditProfileModal = create<Modal>((set) => ({
+  modal: false,
+  setModal: (value: boolean) => set(() => ({ modal: value })),
+}));
 
-export const useUserLikes = create<UserLikes>((set)=>({
-  likes:null,
-  setLikes:(value:LikesWithPayloads[])=>set(()=>({ likes:value }))
-}))
-export const useUserRetweets = create<UserRetweets>((set)=>({
-  retweets:null,
-  setRetweets:(value:TweetWithUser[])=>set(()=>({ retweets:value }))
-}))
+export const useDisplayModal = create<Modal>((set) => ({
+  modal: false,
+  setModal: (value: boolean) => set(() => ({ modal: value })),
+}));
+export const useLikesModal = create<Modal>((set) => ({
+  modal: false,
+  setModal: (value: boolean) => set(() => ({ modal: value })),
+}));
+export const useRetweetsModal = create<Modal>((set) => ({
+  modal: false,
+  setModal: (value: boolean) => set(() => ({ modal: value })),
+}));
 
-export const useMobileDrawer = create<Drawer>((set)=>({
-  drawer:false,
-  setDrawer:(value:boolean)=>set(()=>({ drawer:value }))
-}))
+export const useUserLikes = create<UserLikes>((set) => ({
+  likes: null,
+  setLikes: (value: LikesWithPayloads[]) => set(() => ({ likes: value })),
+}));
+export const useUserRetweets = create<UserRetweets>((set) => ({
+  retweets: null,
+  setRetweets: (value: TweetWithUser[]) => set(() => ({ retweets: value })),
+}));
+
+export const useMobileDrawer = create<Drawer>((set) => ({
+  drawer: false,
+  setDrawer: (value: boolean) => set(() => ({ drawer: value })),
+}));
+
+export const useDebouncedBookmarks = create<UserBookmarks>((set)=>({
+  bookmarks:null,
+  setBookmarks:(value:Bookmark[])=>set(()=>({ bookmarks:value }))
+}));
