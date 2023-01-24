@@ -7,6 +7,7 @@ import ReactTimeAgo from "react-time-ago";
 import { IoAnalyticsOutline, IoShareOutline } from "react-icons/io5";
 import {
   AiFillHeart,
+  AiFillPushpin,
   AiOutlineComment,
   AiOutlineHeart,
   AiOutlineRetweet,
@@ -105,6 +106,17 @@ const TweetComponent = ({
               {isYourRetweet ? "You retweeted" : `${retweetUsername} retweeted`}
             </p>
           ) : null}
+          {router.pathname === "/[userId]/[username]" ? (
+            <>
+              {tweet.isPinned ? (
+                <p className="mb-2 flex items-center gap-x-2 font-semibold text-gray-400">
+                  <AiFillPushpin />
+                  Tweet pinned
+                </p>
+              ) : null}
+            </>
+          ) : null}
+
           <div className="flex items-start gap-x-2">
             <div>
               <Avatar image={tweet.user.image || ""} width={40} height={40} />
@@ -244,11 +256,17 @@ const TweetComponent = ({
                 >
                   {(alreadyRetweeted !== null || hasRetweeted) &&
                   status === "authenticated" ? (
-                    <button onClick={handleUndoRetweet} disabled={isUndoingRetweet || isRetweeting}>
+                    <button
+                      onClick={handleUndoRetweet}
+                      disabled={isUndoingRetweet || isRetweeting}
+                    >
                       <AiOutlineRetweet className="text-primary group-hover:text-primary" />
                     </button>
                   ) : (
-                    <button onClick={handleRetweet} disabled={isUndoingRetweet || isRetweeting}>
+                    <button
+                      onClick={handleRetweet}
+                      disabled={isUndoingRetweet || isRetweeting}
+                    >
                       <AiOutlineRetweet className="group-hover:text-primary" />
                     </button>
                   )}
@@ -263,9 +281,11 @@ const TweetComponent = ({
                     {tweet?.retweets?.length}
                   </p>
                 </div>
-                <div onClick={(e)=>e.stopPropagation()} className="cursor-pointer   rounded-full px-4 py-2 transition-all duration-200 ease-in-out  hover:bg-base-300">
-                <ShareDropdown tweetId={tweet.id as string} />
-
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="cursor-pointer   rounded-full px-4 py-2 transition-all duration-200 ease-in-out  hover:bg-base-300"
+                >
+                  <ShareDropdown tweetId={tweet.id as string} />
                 </div>
                 <div className="group cursor-pointer rounded-full  p-2 text-xs  hover:bg-base-300 md:text-base">
                   <IoAnalyticsOutline className="group-hover:text-primary" />

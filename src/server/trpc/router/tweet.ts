@@ -23,6 +23,7 @@ export const tweetRouter = router({
         data: {
           text: input?.text,
           image: input?.mediaUrl,
+          isPinned: false,
           user: {
             connect: {
               id: userId,
@@ -92,6 +93,7 @@ export const tweetRouter = router({
         data: {
           text: input?.text,
           image: input?.mediaUrl,
+          isPinned: false,
           user: {
             connect: {
               id: userId,
@@ -127,6 +129,7 @@ export const tweetRouter = router({
         data: {
           text: input?.text,
           image: input?.mediaUrl,
+          isPinned: false,
           user: {
             connect: {
               id: userId,
@@ -208,14 +211,14 @@ export const tweetRouter = router({
 
   getTweets: publicProcedure
     .input(z.object({ limit: z.number() }))
-    .query(({ ctx,input }) => {
+    .query(({ ctx, input }) => {
       return ctx.prisma.tweet.findMany({
         where: {
           retweet: {
             is: null,
           },
         },
-        take:input?.limit,
+        take: input?.limit,
         include: {
           user: true,
           originalTweet: {
@@ -277,6 +280,55 @@ export const tweetRouter = router({
         nextCursor,
       };
     }),
+
+  pinTweet: publicProcedure
+    .input(z.object({ tweetId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.session) {
+        throw new Error("You have to be logged in first");
+      }
+      const userId = ctx?.session?.user?.id;
+      await ctx.prisma.tweet.updateMany({
+        where: {
+          userId,
+        },
+        data: {
+          isPinned: false,
+        },
+      });
+
+      return await ctx.prisma.tweet.update({
+        where: {
+          id_userId: {
+            id: input?.tweetId,
+            userId: userId as string,
+          },
+        },
+        data: {
+          isPinned: true,
+        },
+      });
+    }),
+
+  unpinTweet: publicProcedure
+    .input(z.object({ tweetId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      const userId = ctx?.session?.user?.id;
+      if (!ctx.session) {
+        throw new Error("You have to be logged in first");
+      }
+      return ctx.prisma.tweet.update({
+        where: {
+          id_userId: {
+            id: input?.tweetId,
+            userId: userId as string,
+          },
+        },
+        data: {
+          isPinned: false,
+        },
+      });
+    }),
   getUserTweets: publicProcedure
     .input(z.object({ userId: z.string(), link: z.string() }))
     .query(({ ctx, input }) => {
@@ -291,6 +343,7 @@ export const tweetRouter = router({
                 },
               },
             },
+
             include: {
               user: true,
               originalTweet: {

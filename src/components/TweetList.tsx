@@ -21,9 +21,28 @@ const TweetList = ({ tweets }: { tweets: Tweet[] }) => {
           </>
         ) : (
           <>
-            {tweets?.slice(0, itemCount).map((tweet) => (
-              <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
-            ))}
+            {router.pathname === "/[userId]/[username]" ? (
+              <>
+                {tweets
+                  ?.slice(0, itemCount)
+                  .filter((tweet) => tweet.isPinned === true)
+                  .map((tweet) => (
+                    <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
+                  ))}
+                {tweets
+                  ?.slice(0, itemCount)
+                  .filter((tweet) => tweet.isPinned === false)
+                  .map((tweet) => (
+                    <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
+                  ))}
+              </>
+            ) : (
+              <>
+                {tweets?.slice(0, itemCount).map((tweet) => (
+                  <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
+                ))}
+              </>
+            )}
           </>
         )}
       </>

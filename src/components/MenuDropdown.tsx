@@ -12,12 +12,13 @@ import { trpc } from "../utils/trpc";
 import { FiBookmark } from "react-icons/fi";
 import useFollow from "../../hooks/useFollow";
 import { RiUserFollowLine, RiUserUnfollowLine } from "react-icons/ri";
+import { AiOutlinePushpin } from "react-icons/ai";
+import usePin from "../../hooks/usePin";
 
 const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
   const { data: session } = trpc.auth.getSession.useQuery();
   const { status } = useSession();
   const { handleDeleteTweet } = useDeleteTweet(tweet);
-
 
   const {
     handleFollow,
@@ -27,6 +28,12 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
     followingUser,
     unfollowingUser,
   } = useFollow(tweet.user.id);
+  const {
+    handlePinTweet,
+    handleUnpin,
+    isPinned
+
+  } = usePin(tweet.id);
 
   const isYourTweet = tweet.userId === session?.user?.id;
   //   console.log(isYourTweet);
@@ -35,68 +42,80 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
 
   return (
     <>
-   
-        <div className="dropdown dropdown-bottom dropdown-end ">
-          <label tabIndex={0} className=" relative  cursor-pointer ">
-            <BiDotsHorizontal className="text-xl text-gray-400" />
-          </label>
+      <div className="dropdown-bottom dropdown-end dropdown ">
+        <label tabIndex={0} className=" relative  cursor-pointer ">
+          <BiDotsHorizontal className="text-xl text-gray-400" />
+        </label>
 
-          {isYourTweet ? (
-            <ul
-              tabIndex={0}
-              className="dropdown-content  menu rounded-box absolute  top-0 w-52 bg-base-100 p-2 shadow"
-            >
+        {isYourTweet ? (
+          <ul
+            tabIndex={0}
+            className="dropdown-content  menu rounded-box absolute  top-0 w-52 bg-base-100 p-2 shadow"
+          >
+            <li>
+              <button
+                onClick={handleDeleteTweet}
+                className="flex items-center gap-x-2 font-bold text-red-500"
+              >
+                <IoTrash />
+                <a className="">Delete Tweet</a>
+              </button>
+            </li>
+            {tweet.isPinned ? (
               <li>
-                <button
-                  onClick={handleDeleteTweet}
-                  className="flex items-center gap-x-2 font-bold text-red-500"
-                >
-                  <IoTrash />
-                  <a className="">Delete Tweet</a>
+                <button className="flex items-center gap-x-2 font-bold " onClick={handleUnpin}>
+                  <AiOutlinePushpin />
+                  <a>Unpin to profile</a>
                 </button>
               </li>
-            </ul>
-          ) : (
-            <ul
-              tabIndex={0}
-              className="dropdown-content dropdown-bottom dropdown-end menu rounded-box absolute top-0 w-52 bg-base-100 p-2 shadow"
-            >
-              {(alreadyFollowed !== null || followed) &&
-              status === "authenticated" ? (
-                <li className="">
-                  <button
-                    disabled={followingUser || unfollowingUser}
-                    onClick={() => handleUnfollow()}
-                    className="flex items-center gap-x-2 w-[90%]  whitespace-nowrap   font-bold text-red-500"
-                  >
-                    <RiUserUnfollowLine />
-                    <p className="truncate w-full">Unfollow {tweet.user.name}</p>
-                  </button>
-                </li>
-              ) : (
-                <li>
-                  <button
-                    disabled={followingUser || unfollowingUser}
-                    onClick={() => handleFollow()}
-                    className="flex items-center gap-x-2 w-[90%] whitespace-nowrap font-bold"
-                  >
-                    <RiUserFollowLine />
-                    <p className="truncate w-full">Follow {tweet.user.name}</p>
-                  </button>
-                </li>
-              )}
-            </ul>
-          )}
-        </div>
-        <>
-          {/* <label htmlFor="my-modal-6" onClick={handleClick}>
+            ) : (
+              <li>
+                <button className="flex items-center gap-x-2 font-bold " onClick={handlePinTweet}>
+                  <AiOutlinePushpin />
+                  <a>Pin to profile</a>
+                </button>
+              </li>
+            )}
+          </ul>
+        ) : (
+          <ul
+            tabIndex={0}
+            className="dropdown-bottom dropdown-end dropdown-content menu rounded-box absolute top-0 w-52 bg-base-100 p-2 shadow"
+          >
+            {(alreadyFollowed !== null || followed) &&
+            status === "authenticated" ? (
+              <li className="">
+                <button
+                  disabled={followingUser || unfollowingUser}
+                  onClick={() => handleUnfollow()}
+                  className="flex w-[90%] items-center gap-x-2  whitespace-nowrap   font-bold text-red-500"
+                >
+                  <RiUserUnfollowLine />
+                  <p className="w-full truncate">Unfollow {tweet.user.name}</p>
+                </button>
+              </li>
+            ) : (
+              <li>
+                <button
+                  disabled={followingUser || unfollowingUser}
+                  onClick={() => handleFollow()}
+                  className="flex w-[90%] items-center gap-x-2 whitespace-nowrap font-bold"
+                >
+                  <RiUserFollowLine />
+                  <p className="w-full truncate">Follow {tweet.user.name}</p>
+                </button>
+              </li>
+            )}
+          </ul>
+        )}
+      </div>
+      <>
+        {/* <label htmlFor="my-modal-6" onClick={handleClick}>
             <BiDotsHorizontal className="text-xl text-gray-400" />
           </label> */}
 
-          <>
-          
-
-            {/* <div className="modal modal-bottom md:modal-middle">
+        <>
+          {/* <div className="modal modal-bottom md:modal-middle">
               <div className="modal-box flex flex-col items-center">
                 <h1>{`${isYourTweet}`}</h1>
                 {isYourTweet ? (
@@ -117,8 +136,8 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
                 </div>
               </div>
             </div> */}
-          </>
         </>
+      </>
       {/* <div className="dropdown ">
         {tablet ? (
           <label tabIndex={0} className=" relative  cursor-pointer ">

@@ -8,7 +8,7 @@ const TrendList = () => {
   const { data } = trpc.hashtag.getTopHashtags.useQuery();
   const router = useRouter()
   return (
-    <div className="bg-base-250 rounded-lg">
+    <div className="bg-base-250 rounded-xl overflow-hidden">
       <h1 className="p-4 text-2xl font-bold text-neutral">Trends for you </h1>
       {data?.slice(0, 10).map((hashtag) => (
         <TrendComponent hashtag={hashtag} key={v4()} />
