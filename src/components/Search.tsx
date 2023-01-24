@@ -2,7 +2,10 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 
-const Search = () => {
+interface IProps {
+  placeholder:string
+}
+const Search = ({ placeholder }:IProps) => {
   const [term, setTerm] = useState("");
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const router = useRouter();
@@ -38,7 +41,7 @@ const Search = () => {
         onChange={(e) => setTerm(e.target.value)}
         type="text"
         className="w-full bg-transparent outline-none"
-        placeholder="Search Twitter"
+        placeholder={placeholder}
       />
     </form>
   );

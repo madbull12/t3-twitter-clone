@@ -17,7 +17,7 @@ const ExplorePage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="p-2 md:p-4">
-        <Search />
+        <Search placeholder="Search Twitter" />
         <div className="mt-4 ">
           <h1 className="text-xl font-bold  ">Trends for you </h1>
           {data?.slice(0, 4).map((hashtag) => (

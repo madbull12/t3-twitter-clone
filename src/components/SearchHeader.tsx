@@ -17,7 +17,7 @@ const SearchHeader = () => {
           onClick={() => router.back()}
         />
         <div className="flex-[.75]">
-          <Search />
+          <Search placeholder="Search Twitter" />
         </div>
       </div>
       <ul className=" flex items-center justify-between flex-wrap">

@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import { User } from "@prisma/client";
 
 
@@ -32,6 +32,31 @@ export type RetweetsWithPayloads = Prisma.TweetGetPayload<{
   }
 }>
 
+export type BookmarksWithPayloads = Prisma.BookmarkGetPayload<{
+  include: {
+    tweet: {
+      include: {
+        user: true,
+        originalTweet: {
+          include: {
+            user: true,
+          },
+        },
+        retweet: {
+          include: {
+            user: true,
+            likes: true,
+            replies: true,
+            retweets: true,
+          },
+        },
+        likes: true,
+        replies: true,
+        retweets: true,
+      },
+    },
+  },
+}>
 
 export type TweetWithUser = Prisma.TweetGetPayload<{
     include: {

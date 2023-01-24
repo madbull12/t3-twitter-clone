@@ -29,9 +29,14 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
     },
   });
 
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     let mediaUrl = null;
+    let hashtags = text
+    .split(" ")
+    .filter((word) => word.startsWith("#"))
+    .map((word) => word.slice(1));
 
     //upload image
     if (selectedFile) {
@@ -39,6 +44,7 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
       formData.append("file", selectedFile);
       formData.append("upload_preset", "xap2a5k4");
       // formData.append("file", );
+  
 
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/dem2vt6lj/${
@@ -53,7 +59,7 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
       mediaUrl = res.secure_url;
     }
 
-    toast.promise(createReply({ text, mediaUrl, tweetId }), {
+    toast.promise(createReply({ text, mediaUrl, tweetId ,hashtags}), {
       success: "Reply created",
       loading: "Replying...",
       error: (err) => "Oops.. something went wrong " + err,

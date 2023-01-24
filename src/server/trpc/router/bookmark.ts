@@ -60,12 +60,51 @@ export const bookmarkRouter = router({
       const userId = ctx.session?.user?.id;
 
       return ctx.prisma.bookmark.delete({
-        where:{
-          userId_tweetId:{
-            tweetId:input?.tweetId,
-            userId:userId as string
-          }        
-        }
+        where: {
+          userId_tweetId: {
+            tweetId: input?.tweetId,
+            userId: userId as string,
+          },
+        },
       });
+    }),
+
+  searchUserBookmarks: publicProcedure
+    .input(z.object({ term: z.string() }))
+    .query(({ ctx, input }) => {
+      const userId = ctx?.session?.user?.id;
+      return ctx.prisma.bookmark.findMany({
+        where:{
+          tweet:{
+            text:{
+              contains:input?.term
+            }
+          },
+          userId
+        },
+        include: {
+          tweet: {
+            include: {
+              user: true,
+              originalTweet: {
+                include: {
+                  user: true,
+                },
+              },
+              retweet: {
+                include: {
+                  user: true,
+                  likes: true,
+                  replies: true,
+                  retweets: true,
+                },
+              },
+              likes: true,
+              replies: true,
+              retweets: true,
+            },
+          },
+        },
+      })
     }),
 });
