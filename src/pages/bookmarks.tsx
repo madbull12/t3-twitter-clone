@@ -11,14 +11,21 @@ import Loader from "../components/Loader";
 import NavFeed from "../components/NavFeed";
 import TweetComponent from "../components/TweetComponent";
 import TweetList from "../components/TweetList";
+import { trpc } from "../utils/trpc";
 
 const BookmarkPage = () => {
   const { bookmarks: data, isLoading } = useBookmark();
   const bookmarks = data?.map((bookmark) => bookmark.tweet);
   console.log(bookmarks);
-  const { bookmarks:debouncedBookmarks } = useDebouncedBookmarks();
+  const { bookmark: bookmarkValue } = useDebouncedBookmarks();
 
-  console.log(debouncedBookmarks)
+  const { data: searchBookmarks, isLoading: searchLoading } =
+    trpc.bookmark.searchUserBookmarks.useQuery({
+      term: bookmarkValue,
+    });
+
+  const debouncedBookmarks = searchBookmarks?.map((bookmark) => bookmark.tweet);
+
   return (
     <Body>
       <Head>
@@ -32,9 +39,21 @@ const BookmarkPage = () => {
       ) : (
         <>
           {bookmarks?.length !== 0 ? (
-            <TweetList tweets={bookmarks as TweetWithUser[]} />
+            <>
+              {bookmarkValue === "" ? (
+                <TweetList tweets={bookmarks as TweetWithUser[]} />
+              ) : (
+                <>
+                  {searchLoading ? (
+                    <Loader />
+                  ) : (
+                    <TweetList tweets={debouncedBookmarks as TweetWithUser[]} />
+                  )}
+                </>
+              )}
+            </>
           ) : (
-            <div className="flex flex-col gap-y-4 items-centers justify-center text-center ">
+            <div className="items-centers flex flex-col justify-center gap-y-4 text-center ">
               <div className="relative mx-auto h-44 w-1/2">
                 <Image
                   alt="no bookmarks"
@@ -46,7 +65,10 @@ const BookmarkPage = () => {
               <h1 className="text-4xl font-bold text-neutral">
                 Save tweets for later
               </h1>
-              <p className="w-1/2 mx-auto text-start text-gray-500">Don’t let the good ones fly away! Bookmark Tweets to easily find them again in the future.</p>
+              <p className="mx-auto w-1/2 text-start text-gray-500">
+                Don’t let the good ones fly away! Bookmark Tweets to easily find
+                them again in the future.
+              </p>
             </div>
           )}
         </>

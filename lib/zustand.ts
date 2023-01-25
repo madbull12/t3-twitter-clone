@@ -1,6 +1,7 @@
 import { Bookmark } from "@prisma/client";
 import create from "zustand";
 import {
+  BookmarksWithPayloads,
   LikesWithPayloads,
   RetweetsWithPayloads,
   TweetWithUser,
@@ -37,8 +38,8 @@ interface UserRetweets {
 }
 
 interface UserBookmarks {
-  bookmarks:Bookmark[] | null;
-  setBookmarks:(value:Bookmark[])=>void
+  bookmark:string;
+  setBookmark:(value:string)=>void
 }
 
 export const usePreviewStore = create<Preview>((set) => ({
@@ -97,6 +98,6 @@ export const useMobileDrawer = create<Drawer>((set) => ({
 }));
 
 export const useDebouncedBookmarks = create<UserBookmarks>((set)=>({
-  bookmarks:null,
-  setBookmarks:(value:Bookmark[])=>set(()=>({ bookmarks:value }))
+  bookmark:"",
+  setBookmark:(value:string)=>set(()=>({ bookmark:value }))
 }));

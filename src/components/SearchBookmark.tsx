@@ -17,15 +17,15 @@ const SearchBookmark = ({ placeholder }: IProps) => {
 
   const [value, setValue] = useState<string>("");
   const debouncedValue = useDebounce<string>(value, 500);
-  const { setBookmarks } = useDebouncedBookmarks();
+  const { setBookmark } = useDebouncedBookmarks();
   const { data: bookmarks, refetch } =
     trpc.bookmark.searchUserBookmarks.useQuery({ term: debouncedValue });
     console.log(bookmarks)
   useEffect(() => {
     // Do fetch here...
-    refetch();
+    // refetch();
     
-    setBookmarks(bookmarks as unknown as BookmarksWithPayloads[]);
+    setBookmark(debouncedValue);
 
   }, [debouncedValue]);
 
