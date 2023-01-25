@@ -8,7 +8,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Button from "./Button";
 import Profile from "./Profile";
 import useMediaQuery from "../../hooks/useMediaQuery";
-import { IoMdAddCircle, IoMdLogIn, IoMdLogOut } from "react-icons/io";
+import { IoIosListBox, IoMdAddCircle, IoMdLogIn, IoMdLogOut } from "react-icons/io";
 import { useCreateModal } from "../../lib/zustand";
 import { BiBookmark, BiSearch, BiUser } from "react-icons/bi";
 import { IoEllipsisHorizontalCircleOutline } from "react-icons/io5";
@@ -51,6 +51,12 @@ const Sidebar = () => {
       hidden: true,
       icon: <BiBookmark />,
     },
+    {
+      name:"Lists",
+      link:`/list/${session?.user?.name}`,
+      hidden:true,
+      icon:<IoIosListBox />
+    }
   ];
   const { setModal } = useCreateModal();
   return (

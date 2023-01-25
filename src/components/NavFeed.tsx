@@ -10,12 +10,12 @@ import MobileDrawerToggle from "./MobileDrawerToggle";
 
 const NavFeed = ({
   title,
-  tweets,
   children,
+  subtitle
 }: {
   title: string;
-  tweets?: number;
   children?: React.ReactNode;
+  subtitle?:string;
 }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -49,8 +49,8 @@ const NavFeed = ({
 
         <div className="flex flex-col  items-start">
           <h1 className=" text-xl font-semibold">{title}</h1>
-          {tweets ? (
-            <p className="text-xs text-gray-500 sm:text-sm">{tweets} tweets</p>
+          {subtitle ? (
+            <p className="text-xs text-gray-500 sm:text-sm">{subtitle}</p>
           ) : null}
         </div>
       </div>
