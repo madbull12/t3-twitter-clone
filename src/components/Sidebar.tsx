@@ -14,6 +14,7 @@ import { BiBookmark, BiSearch, BiUser } from "react-icons/bi";
 import { IoEllipsisHorizontalCircleOutline } from "react-icons/io5";
 import MoreDropdownSidebar from "./MoreDropdownSidebar";
 import { useRouter } from "next/router";
+import { trpc } from "../utils/trpc";
 
 const Sidebar = () => {
   const { status, data: session } = useSession();
@@ -53,7 +54,7 @@ const Sidebar = () => {
     },
     {
       name:"Lists",
-      link:`/list/${session?.user?.name}`,
+      link:`/list/${session?.user?.id}`,
       hidden:true,
       icon:<IoIosListBox />
     }

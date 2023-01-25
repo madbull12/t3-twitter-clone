@@ -4,10 +4,11 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef } from "react";
 import { BiBookmark, BiUser } from "react-icons/bi";
 import { BsTwitter } from "react-icons/bs";
-import { IoMdClose } from "react-icons/io";
+import { IoIosListBox, IoMdClose } from "react-icons/io";
 import { useOnClickOutside } from "usehooks-ts";
 import { v4 } from "uuid";
 import { useMobileDrawer } from "../../lib/zustand";
+import { trpc } from "../utils/trpc";
 import Avatar from "./Avatar";
 import Backdrop from "./Backdrop";
 import MoreDropdownSidebar from "./MoreDropdownSidebar";
@@ -20,7 +21,11 @@ const MobileDrawer = () => {
     setDrawer(false);
   });
 
+
+  useEffect(()=>{
+  },[])
   const { data: session } = useSession();
+
   const links = [
     {
       name: "Profile",
@@ -33,7 +38,12 @@ const MobileDrawer = () => {
       link: `/bookmarks`,
       hidden: true,
       icon: <BiBookmark />,
-    },
+    },{
+      name:"Lists",
+      link:`/list/${session?.user?.id}`,
+      hidden:true,
+      icon:<IoIosListBox />
+    }
   ];
   return (
     <Backdrop>
@@ -64,6 +74,7 @@ const MobileDrawer = () => {
           {links.map((link) => (
             <li
               key={v4()}
+              onClick={()=>setDrawer(false)}
               className="rounded-full px-4 py-2 font-semibold transition-all duration-300 ease-in-out  hover:bg-base-300"
             >
               <Link href={link?.link}>

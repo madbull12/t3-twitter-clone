@@ -109,10 +109,14 @@ const TweetComponent = ({
           {router.pathname === "/[userId]/[username]" ? (
             <>
               {tweet.isPinned ? (
-                <p className="mb-2 flex items-center gap-x-2 font-semibold text-gray-400">
-                  <AiFillPushpin />
-                  Tweet pinned
-                </p>
+                <>
+                  {!isRetweet ? (
+                    <p className="mb-2 flex items-center gap-x-2 font-semibold text-gray-400">
+                      <AiFillPushpin />
+                      Tweet pinned
+                    </p>
+                  ) : null}
+                </>
               ) : null}
             </>
           ) : null}

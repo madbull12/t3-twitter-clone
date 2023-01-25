@@ -7,6 +7,11 @@ import { useHandleModal } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import Backdrop from "./Backdrop";
 
+interface Error {
+  isError: boolean;
+  message: string;
+}
+
 const HandleModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { setModal } = useHandleModal();
@@ -37,16 +42,62 @@ const HandleModal = () => {
       utils.user.getUser.invalidate();
     },
   });
+  const [handleError, setHandleError] = useState<Error>({
+    isError: false,
+    message: "",
+  });
+  let regexHandle = /^[a-zA-Z0-9_]+$/;
 
-  console.log(debouncedValue);
   useEffect(() => {
     // Do fetch here...
     // refetch();
-    if (userHandle) {
-      setHandleExist(true);
+
+    if (!regexHandle.test(debouncedValue)) {
+      setHandleError({
+        isError: true,
+        message: "Your handle can only contain letters, numbers and '_'",
+      });
+    } else if (debouncedValue.length <= 4) {
+      setHandleError({
+        isError: true,
+        message: "Your handle must be longer than 4 characters.",
+      });
+    } else if (userHandle) {
+      setHandleError({
+        isError: true,
+        message: "That handle has been taken. Please choose another.",
+      });
     } else {
-      setHandleExist(true);
+      setHandleError({ isError: false, message: "" });
+
     }
+
+    // if (regexHandle.test(debouncedValue)) {
+    //   setHandleError({ isError: false, message: "" });
+    //   console.log(handleError)
+    // } else {
+    //   setHandleError({
+    //     isError: true,
+    //     message: "Your handle can only contain letters, numbers and '_'",
+    //   });
+    // }
+    // if (debouncedValue.length < 4) {
+    //   setHandleError({
+    //     isError: true,
+    //     message: "Your handle must be longer than 4 characters.",
+    //   });
+    // } else {
+    //   setHandleError({ isError: false, message: "" });
+    // }
+
+    // if (!userHandle) {
+    //   setHandleError({ isError: false, message: "" });
+    // } else {
+    //   setHandleError({
+    //     isError: true,
+    //     message: "That handle has been taken. Please choose another.",
+    //   });
+    // }
   }, [debouncedValue]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -58,10 +109,9 @@ const HandleModal = () => {
   const handleSubmit = async () => {
     setModal(false);
 
-    if (userHandle) {
-      toast.error("Please use other name");
+    if (handleError.isError) {
+      toast.error(handleError.message);
     } else {
-
       await toast.promise(editHandle({ handle: value }), {
         loading: "Changing handle",
         success: "Handle succesfully changed",
@@ -94,9 +144,9 @@ const HandleModal = () => {
               You can edit your handle name here
             </span>
           </label>
-          {userHandle ? (
+          {handleError.isError ? (
             <label className="label">
-              <span className="text-red-400">Handle name already taken</span>
+              <span className="text-red-400 text-xs  ">{handleError.message}</span>
             </label>
           ) : null}
 
@@ -106,7 +156,7 @@ const HandleModal = () => {
               ?.replace(/\s/g, "")
               .toLowerCase()}`}
             className={` ${
-              userHandle ? "input-error " : null
+              handleError.isError ? "input-error " : null
             } input-bordered input-primary input w-full`}
             onChange={handleChange}
             defaultValue={user?.handle || ""}
