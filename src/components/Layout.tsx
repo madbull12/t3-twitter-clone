@@ -8,6 +8,7 @@ import {
   useCreateModal,
   useDisplayModal,
   useEditProfileModal,
+  useHandleModal,
   useLikesModal,
   useLoginModal,
   useMobileDrawer,
@@ -18,6 +19,7 @@ import CreateModal from "./CreateModal";
 import DisplayModal from "./DisplayModal";
 import EditProfileModal from "./EditProfileModal";
 import Footer from "./Footer";
+import HandleModal from "./HandleModal";
 import LikesListModal from "./LikesListModal";
 import LoginModal from "./LoginModal";
 import MobileCreate from "./MobileCreate";
@@ -38,6 +40,7 @@ const Layout = ({ children }: IProps) => {
   const { modal: profileModal } = useEditProfileModal();
   const { modal: displayModal } = useDisplayModal();
   const { modal: likesModal } = useLikesModal();
+  const { modal: handleModal } = useHandleModal();
   const { modal: retweetsModal } = useRetweetsModal();
   const { drawer: mobileDrawer } = useMobileDrawer();
 
@@ -54,7 +57,8 @@ const Layout = ({ children }: IProps) => {
       displayModal ||
       mobileDrawer ||
       likesModal ||
-      retweetsModal
+      retweetsModal ||
+      handleModal
     ) {
       window.scrollTo(0, 0);
       document.body.style.overflow = "hidden";
@@ -70,6 +74,7 @@ const Layout = ({ children }: IProps) => {
     mobileDrawer,
     likesModal,
     retweetsModal,
+    handleModal
   ]);
   const phone = useMediaQuery("(min-width:768px)");
 
@@ -83,6 +88,7 @@ const Layout = ({ children }: IProps) => {
       {profileModal ? <EditProfileModal /> : null}
       {displayModal ? <DisplayModal /> : null}
       {likesModal ? <LikesListModal /> : null}
+      {handleModal ? <HandleModal /> : null}
 
       {router.pathname !== "/auth/signin" ? (
         <>

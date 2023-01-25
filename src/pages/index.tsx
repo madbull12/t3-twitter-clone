@@ -39,7 +39,6 @@ const Home: NextPage = () => {
   const tweets = data?.pages.flatMap((page) => page.tweets) ?? [];
 
   const { data: session, status } = useSession();
-
   return (
     <>
       <Head>

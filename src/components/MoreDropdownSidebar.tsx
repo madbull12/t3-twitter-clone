@@ -1,9 +1,10 @@
 import React from "react";
 import { IoEllipsisHorizontalCircleOutline } from "react-icons/io5";
 import { FaPaintBrush } from 'react-icons/fa'
-import { useDisplayModal } from "../../lib/zustand";
+import { useDisplayModal, useHandleModal } from "../../lib/zustand";
 const MoreDropdownSidebar = ({ mobile }:{ mobile?:boolean }) => {
     const { setModal } = useDisplayModal(); 
+    const { setModal:setHandleModal } = useHandleModal();
 
   return (
     <div className="dropdown ">
@@ -21,6 +22,11 @@ const MoreDropdownSidebar = ({ mobile }:{ mobile?:boolean }) => {
           <a>
             <FaPaintBrush />
             Display
+          </a>
+        </li>
+        <li onClick={()=>setHandleModal(true)} >
+          <a>
+            Edit handle
           </a>
         </li>
     

@@ -12,13 +12,12 @@ export const userRouter = router({
             contains: input.term,
             mode: "insensitive",
           },
-          
         },
-        include:{
-          profile:true,
-          followers:true,
-          followings:true,
-        }
+        include: {
+          profile: true,
+          followers: true,
+          followings: true,
+        },
       });
     }),
   getUserProfile: publicProcedure
@@ -28,12 +27,17 @@ export const userRouter = router({
         where: {
           id: input?.userId,
         },
-        include:{
-            profile:true,
-            followers:true,
-            followings:true,
-        }
+        include: {
+          profile: true,
+          followers: true,
+          followings: true,
+        },
       });
     }),
-    
+
+  getUserByHandle: publicProcedure
+    .input(z.object({ handle: z.string() }))
+    .query(({ input, ctx }) => {
+      
+    }),
 });
