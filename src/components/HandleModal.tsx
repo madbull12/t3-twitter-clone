@@ -10,11 +10,11 @@ import Backdrop from "./Backdrop";
 const HandleModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { setModal } = useHandleModal();
-  const [handleExist,setHandleExist] = useState(false)
+  const [handleExist, setHandleExist] = useState(false);
   const { data: user } = trpc.user.getUser.useQuery();
   console.log(user);
 
-  const utils = trpc.useContext()
+  const utils = trpc.useContext();
   useOnClickOutside(modalRef, () => {
     setModal(false);
   });
@@ -22,11 +22,10 @@ const HandleModal = () => {
 
   const debouncedValue = useDebounce<string>(value, 500);
   const { data: userHandle } = trpc.user.getUserByHandle.useQuery({
-    handle:debouncedValue,
+    handle: debouncedValue,
   });
 
-
-  const { mutateAsync:editHandle } = trpc.user.editUserHandle.useMutation({
+  const { mutateAsync: editHandle } = trpc.user.editUserHandle.useMutation({
     onMutate: () => {
       utils.user.getUser.cancel();
       const optimisticUpdate = utils.user.getUser.getData();
@@ -36,8 +35,6 @@ const HandleModal = () => {
     },
     onSettled: () => {
       utils.user.getUser.invalidate();
-
-  
     },
   });
 
@@ -45,13 +42,11 @@ const HandleModal = () => {
   useEffect(() => {
     // Do fetch here...
     // refetch();
-    if(userHandle) {
-      setHandleExist(true)
+    if (userHandle) {
+      setHandleExist(true);
     } else {
-      setHandleExist(true)
-
+      setHandleExist(true);
     }
-
   }, [debouncedValue]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -60,15 +55,20 @@ const HandleModal = () => {
 
   const { data: session } = useSession();
 
-  const handleSubmit =async()=>{
-    setModal(false)
+  const handleSubmit = async () => {
+    setModal(false);
 
-    await toast.promise(editHandle({ handle:value }),{
-      loading:"Changing handle",
-      success:"Handle succesfully changed",
-      error:(err)=>`Oops something went wrong `+ err
-    });
-  }
+    if (userHandle) {
+      toast.error("Please use other name");
+    } else {
+
+      await toast.promise(editHandle({ handle: value }), {
+        loading: "Changing handle",
+        success: "Handle succesfully changed",
+        error: (err) => `Oops something went wrong ` + err,
+      });
+    }
+  };
 
   return (
     <Backdrop>
@@ -82,10 +82,13 @@ const HandleModal = () => {
             onClick={() => setModal(false)}
           />
         </div>
-        <form className="form-control w-full " onSubmit={(e)=>{
-          e.preventDefault()
-          handleSubmit()
-        }}>
+        <form
+          className="form-control w-full "
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
           <label className="label">
             <span className="label-text mx-auto text-center text-base font-semibold sm:text-lg md:text-xl">
               You can edit your handle name here
@@ -93,7 +96,7 @@ const HandleModal = () => {
           </label>
           {userHandle ? (
             <label className="label">
-              <span className="text-red-600">Handle name already taken</span>
+              <span className="text-red-400">Handle name already taken</span>
             </label>
           ) : null}
 
@@ -103,8 +106,8 @@ const HandleModal = () => {
               ?.replace(/\s/g, "")
               .toLowerCase()}`}
             className={` ${
-              userHandle ? "border-red-600" : null
-            } input-bordered input w-full `}
+              userHandle ? "input-error " : null
+            } input-bordered input-primary input w-full`}
             onChange={handleChange}
             defaultValue={user?.handle || ""}
           />

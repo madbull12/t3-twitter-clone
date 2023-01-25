@@ -143,7 +143,8 @@ export const followRouter = router({
               }
             }
           }
-        }
+        },
+        profile:true
        }
       })
     })

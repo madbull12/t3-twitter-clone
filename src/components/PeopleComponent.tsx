@@ -28,14 +28,16 @@ const PeopleComponent = ({ user }: IProps) => {
     <div onClick={() => router.push(`/${user.id}/${user.name}`)}>
       <div className="flex cursor-pointer items-start justify-between gap-x-4 px-2 py-6 transition-all duration-100 ease-in-out hover:bg-base-200">
         <Avatar image={user.image || ""} width={40} height={40} />
-        <div className="mr-auto">
+        <div className="mr-auto truncate ">
           <Link
-            className="text-lg font-semibold hover:underline"
+            className="text-lg font-semibold  hover:underline"
             href={`/${user.id}/${user.name}`}
           >
             {user.name}
           </Link>
-          <p>{user.profile?.bio}</p>
+          <p className="text-gray-500 text-sm truncate">@{user.handle}</p>
+          {router.pathname==="/connect_people" ? <p className="text-sm">{user.profile?.bio}</p> : null}
+
         </div>
         {session?.user?.id !== user.id ? (
           <>
