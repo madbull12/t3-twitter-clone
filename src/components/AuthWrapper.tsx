@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import ProtectedRoute from './ProtectedRoute'
 
-const authRoutes = ['/status/[statusId]','[userId]/[username]',"/bookmarks"]
+const authRoutes = ['/status/[statusId]','[userId]/[username]',"/bookmarks","/list/[userId]"]
 
 const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const session = useSession()

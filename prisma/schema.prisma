@@ -159,11 +159,15 @@ model Bookmark {
 }
 
 model List {
-  id        String @id @default(uuid())
-  creator   User   @relation(fields: [creatorId], references: [id])
-  creatorId String
-  members   User[] @relation("members")
-  followers User[] @relation("followers")
+  id          String  @id @default(uuid())
+  creator     User    @relation(fields: [creatorId], references: [id])
+  creatorId   String
+  members     User[]  @relation("members")
+  followers   User[]  @relation("followers")
+  name        String
+  description String?
+  isPrivate   Boolean @default(false)
+  coverPhoto  String?
 }
 
 // model Retweet {

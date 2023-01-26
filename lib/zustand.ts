@@ -101,6 +101,12 @@ export const useMobileDrawer = create<Drawer>((set) => ({
   setDrawer: (value: boolean) => set(() => ({ drawer: value })),
 }));
 
+export const useCreateListModal = create<Modal>((set)=>({
+  modal:false,
+  setModal: (value: boolean) => set(() => ({ modal: value })),
+
+}))
+
 export const useDebouncedBookmarks = create<UserBookmarks>((set)=>({
   bookmark:"",
   setBookmark:(value:string)=>set(()=>({ bookmark:value }))

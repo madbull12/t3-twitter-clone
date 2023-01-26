@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import React, { FC, useEffect } from "react";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import {
+  useCreateListModal,
   useCreateModal,
   useDisplayModal,
   useEditProfileModal,
@@ -15,6 +16,7 @@ import {
   useReplyModal,
   useRetweetsModal,
 } from "../../lib/zustand";
+import CreateListModal from "./CreateListModal";
 import CreateModal from "./CreateModal";
 import DisplayModal from "./DisplayModal";
 import EditProfileModal from "./EditProfileModal";
@@ -38,6 +40,7 @@ const Layout = ({ children }: IProps) => {
   const { modal: loginModal } = useLoginModal();
   const { modal: createModal } = useCreateModal();
   const { modal: profileModal } = useEditProfileModal();
+  const { modal: listModal } = useCreateListModal();
   const { modal: displayModal } = useDisplayModal();
   const { modal: likesModal } = useLikesModal();
   const { modal: handleModal } = useHandleModal();
@@ -58,7 +61,8 @@ const Layout = ({ children }: IProps) => {
       mobileDrawer ||
       likesModal ||
       retweetsModal ||
-      handleModal
+      handleModal ||
+      listModal
     ) {
       window.scrollTo(0, 0);
       document.body.style.overflow = "hidden";
@@ -74,7 +78,8 @@ const Layout = ({ children }: IProps) => {
     mobileDrawer,
     likesModal,
     retweetsModal,
-    handleModal
+    handleModal,
+    listModal
   ]);
   const phone = useMediaQuery("(min-width:768px)");
 
@@ -89,6 +94,7 @@ const Layout = ({ children }: IProps) => {
       {displayModal ? <DisplayModal /> : null}
       {likesModal ? <LikesListModal /> : null}
       {handleModal ? <HandleModal /> : null}
+      {listModal ? <CreateListModal /> : null}
 
       {router.pathname !== "/auth/signin" ? (
         <>

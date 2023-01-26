@@ -17,6 +17,25 @@ export type LikesWithPayloads = Prisma.LikeGetPayload<{
     }
   }
 }>
+export type ListWithPayloads = Prisma.ListGetPayload<{
+  include:{
+    creator:{
+      include:{
+        profile:true
+      }
+    },
+    followers:{
+      include:{
+        profile:true
+      }
+    },
+    members:{
+      include:{
+        profile:true
+      }
+    }
+  }
+}>
 export type RetweetsWithPayloads = Prisma.TweetGetPayload<{
   include:{
     retweets:{
