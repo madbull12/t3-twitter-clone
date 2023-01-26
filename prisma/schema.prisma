@@ -66,6 +66,9 @@ model User {
   profile       Profile?
   bookmarks     Bookmark[]
   handle        String?    @unique
+  listFollowing List[]     @relation("followers")
+  listMember    List[]     @relation("members")
+  lists         List[]
 }
 
 model VerificationToken {
@@ -153,6 +156,14 @@ model Bookmark {
   tweet   Tweet  @relation(fields: [tweetId], references: [id])
 
   @@unique([userId, tweetId])
+}
+
+model List {
+  id        String @id @default(uuid())
+  creator   User   @relation(fields: [creatorId], references: [id])
+  creatorId String
+  members   User[] @relation("members")
+  followers User[] @relation("followers")
 }
 
 // model Retweet {

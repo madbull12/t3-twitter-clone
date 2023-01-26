@@ -1,14 +1,33 @@
-import React from "react";
+import Picker from "@emoji-mart/react";
+import data from "@emoji-mart/data";
+import React, { useState,useEffect,useRef } from "react";
 import { AiOutlineFileGif, AiOutlinePicture } from "react-icons/ai";
 import { BiPoll } from "react-icons/bi";
+import { BsEmojiSmile } from "react-icons/bs";
+import { useReadLocalStorage } from "usehooks-ts";
+import useOnClickOutside from "../../hooks/useOutsideClick";
+import useMediaQuery from "../../hooks/useMediaQuery";
 
 interface IProps {
-  onSelectFile: (e: any) => void;
+  onSelectFile: (e: React.FormEvent<HTMLInputElement>) => void;
+  onEmojiSelect: (e: React.FormEvent<HTMLInputElement>) => void;
 }
-const MediaTools = ({ onSelectFile }: IProps) => {
-  
+const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const theme = useReadLocalStorage("theme");
+  console.log(theme);
+  const phone = useMediaQuery("(min-width:640px)");
+
+
+  const pickerRef = useRef<HTMLDivElement>(null)
+  useOnClickOutside(pickerRef,()=>{
+    setIsPickerOpen(false)
+  })
+  useEffect(()=>{
+    console.log(isPickerOpen)
+  },[isPickerOpen])
   return (
-    <div className=" flex flex-[0.5] items-center gap-x-4 text-base md:text-lg text-primary">
+    <div className=" flex flex-[0.5] items-center gap-x-4 text-base text-primary md:text-lg">
       <div>
         <input
           className=""
@@ -22,6 +41,28 @@ const MediaTools = ({ onSelectFile }: IProps) => {
           <AiOutlinePicture />
         </label>
       </div>
+      {phone ? (
+        <div className="relative" >
+        <BsEmojiSmile
+          className="cursor-pointer"
+          onClick={() => setIsPickerOpen(true)}
+          
+        />
+
+        {isPickerOpen ? (
+          <div ref={pickerRef} className="absolute   z-[999999]" onClick={(e)=>e.stopPropagation()}>
+            <Picker
+              onEmojiSelect={onEmojiSelect}
+              data={data}
+              theme={theme === "default" ? "light" : "dark"}
+            />
+          </div>
+        ) : null}
+      </div>
+      ):null}
+
+      
+
       <AiOutlineFileGif />
       <BiPoll />
     </div>

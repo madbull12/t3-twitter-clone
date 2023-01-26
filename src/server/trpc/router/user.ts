@@ -49,11 +49,10 @@ export const userRouter = router({
         },
       });
     }),
-  getUser: publicProcedure.query(({ ctx }) => {
-    const userId = ctx.session?.user?.id;
+  getUser: publicProcedure.input(z.object({ userId:z.string()})).query(({ ctx,input }) => {
     return ctx.prisma.user.findUnique({
       where: {
-        id: userId,
+        id: input?.userId,
       },
     });
   }),

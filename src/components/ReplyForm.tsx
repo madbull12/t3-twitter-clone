@@ -66,6 +66,7 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
     });
 
     textRef!.current!.value = "";
+    setText("")
     setSelectedFile(undefined);
     
     await router.push(`/status/${tweetId}`);
@@ -92,6 +93,14 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
     setSelectedFile(e.target.files[0]);
   };
 
+  const onEmojiSelect = (e:any) => {
+    let sym = e.unified.split("-");
+    let codesArray:any = [];
+    sym.forEach((el:any) => codesArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setText(text + emoji);
+  }
+
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
       <div className="flex items-start gap-x-4">
@@ -99,7 +108,7 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
         <textarea
           ref={textRef}
           cols={50}
-          
+          value={text || ""}
           onChange={(e) => setText(e.target.value)}
           className="flex-1 resize-none bg-transparent text-base md:text-xl outline-none"
           placeholder="Tweet your reply"
@@ -126,7 +135,7 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
       )}
       <div className="mt-4 flex justify-between items-center gap-x-2  ">
             
-        <MediaTools onSelectFile={onSelectFile} />
+        <MediaTools onSelectFile={onSelectFile} onEmojiSelect={onEmojiSelect} />
             <div className="flex-[0.5]">
               <Button text="Reply" />
 

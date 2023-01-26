@@ -87,15 +87,24 @@ const CreateTweet = () => {
     // free memory when ever this component is unmounted
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
-  const onSelectFile = (e: any) => {
-    if (!e.target.files || e.target.files.length === 0) {
+  const onSelectFile = (e: React.FormEvent<HTMLInputElement>) => {
+    if (!e.currentTarget.files || e.currentTarget.files.length === 0) {
       setSelectedFile(undefined);
       return;
     }
 
     // I've kept this example simple by using the first image instead of multiple
-    setSelectedFile(e.target.files[0]);
+    setSelectedFile(e.currentTarget.files[0]);
   };
+
+  const onEmojiSelect = (e:any) => {
+    let sym = e.unified.split("-");
+    let codesArray:any = [];
+    sym.forEach((el:any) => codesArray.push("0x" + el));
+    let emoji = String.fromCodePoint(...codesArray);
+    setText(text + emoji);
+  }
+
 
   // const {
   //   // upload: imageUpload,
@@ -115,6 +124,7 @@ const CreateTweet = () => {
       <form className="flex-1 space-y-3" onSubmit={handleSubmit}>
         <textarea
           cols={50}
+          value={text}
           ref={textRef}
           onChange={(e) => setText(e.target.value)}
           placeholder="What's happening?"
@@ -163,7 +173,7 @@ const CreateTweet = () => {
             <BiPoll />
             
           </div> */}
-          <MediaTools onSelectFile={(e: any) => onSelectFile(e)} />
+          <MediaTools onEmojiSelect={onEmojiSelect} onSelectFile={onSelectFile} />
           <div className="flex-[0.4]">
             <Button text="Tweet" />
           </div>

@@ -77,11 +77,13 @@ export const bookmarkRouter = router({
         where:{
           tweet:{
             text:{
-              contains:input?.term
+              contains:input?.term,
+              mode:"insensitive"
             }
           },
           userId
         },
+        
         include: {
           tweet: {
             include: {
