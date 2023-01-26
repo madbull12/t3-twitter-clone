@@ -15,8 +15,11 @@ interface Error {
 const HandleModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
   const { setModal } = useHandleModal();
+  const { data:session } = useSession()
   const [handleExist, setHandleExist] = useState(false);
-  const { data: user } = trpc.user.getUser.useQuery();
+  const { data: user } = trpc.user.getUser.useQuery({
+    userId:session?.user?.id as string
+  });
   console.log(user);
 
   const utils = trpc.useContext();
@@ -104,7 +107,6 @@ const HandleModal = () => {
     setValue(event.target.value);
   };
 
-  const { data: session } = useSession();
 
   const handleSubmit = async () => {
     setModal(false);
