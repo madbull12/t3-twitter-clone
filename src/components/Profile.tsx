@@ -6,7 +6,7 @@ import Avatar from "./Avatar";
 
 const Profile = () => {
   const { data: session } = useSession();
-  const { data: user } = trpc.user.getUser.useQuery();
+  const { data: user } = trpc.user.getUser.useQuery({ userId:session?.user?.id as string});
   return (
     <div className="mt-4 flex  items-center gap-x-2">
       <Avatar image={session?.user?.image || ""} width={40} height={40} />

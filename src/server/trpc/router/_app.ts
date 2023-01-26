@@ -4,6 +4,7 @@ import { bookmarkRouter } from "./bookmark";
 import { followRouter } from "./follow";
 import { hashtagRouter } from "./hashtag";
 import { likeRouter } from "./like";
+import { listRouter } from "./list";
 import { profileRouter } from "./profile";
 import { searchRouter } from "./search";
 import { tweetRouter } from "./tweet";
@@ -19,9 +20,10 @@ export const appRouter = router({
   profile:profileRouter,
   hashtag:hashtagRouter,
   bookmark:bookmarkRouter,
-  follow:followRouter
+  follow:followRouter,
   // retweet:retweetRouter
   // reply:replyRouter
+  list:listRouter
 });
 
 // export type definition of API

@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
 import React from "react";
+import { v4 } from "uuid";
 import { UserWithPayloads } from "../../interface";
 import Body from "../components/Body";
 import NavFeed from "../components/NavFeed";
@@ -21,7 +22,7 @@ const connect_people = () => {
       {data
         ?.filter((user) => user.id !== session?.user?.id)
         .map((user: unknown) => (
-          <PeopleComponent user={user as unknown as UserWithPayloads} />
+          <PeopleComponent key={v4()} user={user as unknown as UserWithPayloads} />
         ))}
     </Body>
   );

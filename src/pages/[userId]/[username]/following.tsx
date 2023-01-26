@@ -28,7 +28,7 @@ const FollowingPage = () => {
       {userFollowing?.followings.length !== 0 ? (
         <div>
           {userFollowing?.followings.map((following) => (
-            <PeopleComponent user={following.follower} />
+            <PeopleComponent user={following.follower} key={v4()} />
           ))}
         </div>
       ) : (
