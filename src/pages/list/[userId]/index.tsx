@@ -1,14 +1,14 @@
 import React from "react";
-import Body from "../../components/Body";
-import NavFeed from "../../components/NavFeed";
-import { trpc } from "../../utils/trpc";
+import Body from "../../../components/Body";
+import NavFeed from "../../../components/NavFeed";
+import { trpc } from "../../../utils/trpc";
 import { MdPostAdd } from "react-icons/md";
 import { useRouter } from "next/router";
-import Loader from "../../components/Loader";
+import Loader from "../../../components/Loader";
 import { useSession } from "next-auth/react";
-import { useCreateListModal } from "../../../lib/zustand";
-import ListComponent from "../../components/ListComponent";
-import { ListWithPayloads } from "../../../interface";
+import { useCreateListModal } from "../../../../lib/zustand";
+import ListComponent from "../../../components/ListComponent";
+import { ListWithPayloads } from "../../../../interface";
 const ListPage = () => {
   const router = useRouter();
   const { userId } = router.query;

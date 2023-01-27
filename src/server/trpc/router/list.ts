@@ -16,16 +16,7 @@ export const listRouter = router({
               profile: true,
             },
           },
-          followers: {
-            include: {
-              profile: true,
-            },
-          },
-          members: {
-            include: {
-              profile: true,
-            },
-          },
+        
         },
       });
     }),
@@ -53,6 +44,33 @@ export const listRouter = router({
           isPrivate: input?.isPrivate,
           description: input?.description,
           coverPhoto: input?.coverPhoto,
+        },
+      });
+    }),
+
+  getListDetails: publicProcedure
+    .input(z.object({ listId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.list.findUnique({
+        where: {
+          id: input?.listId,
+        },
+        include: {
+          creator: {
+            include: {
+              profile: true,
+            },
+          },
+          followers: {
+            include: {
+              profile: true,
+            },
+          },
+          members: {
+            include: {
+              profile: true,
+            },
+          },
         },
       });
     }),

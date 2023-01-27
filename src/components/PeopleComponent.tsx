@@ -35,7 +35,10 @@ const PeopleComponent = ({ user }: IProps) => {
           >
             {user.name}
           </Link>
+          {user.handle ? (
           <p className="text-gray-500 text-sm truncate">@{user.handle}</p>
+
+          ):null}
           {router.pathname==="/connect_people" ? <p className="text-sm">{user.profile?.bio}</p> : null}
 
         </div>

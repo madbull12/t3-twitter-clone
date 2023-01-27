@@ -45,7 +45,7 @@ const ReplyModal = () => {
     <Backdrop>
       <div
         ref={modalRef}
-        className="relative mx-auto max-h-[500px] max-w-xs md:max-w-lg overflow-y-scroll rounded-2xl  bg-base-100 p-4 text-black"
+        className="relative mx-auto max-h-[500px] max-w-xs md:max-w-lg overflow-y-scroll rounded-2xl  bg-base-100 p-4 "
       >
         {isLoading ? (
           <Loader />
@@ -55,7 +55,7 @@ const ReplyModal = () => {
               className="absolute top-4 left-4 cursor-pointer text-2xl"
               onClick={() => setModal(false)}
             />
-            <div className="mt-12 flex items-start gap-x-4">
+            <div className="mt-12 flex items-start gap-x-2 md:gap-x-4">
               <Avatar
                 image={tweetReply?.user.image as string}
                 width={50}
@@ -63,12 +63,12 @@ const ReplyModal = () => {
               />
               <div className="mb-8 flex w-full flex-col">
                 <div className="flex items-center gap-x-2">
-                  <Link href={`/${tweetReply?.userId}/${tweetReply?.user.name}`} className="text-lg cursor-pointer hover:underline font-semibold">
+                  <Link href={`/${tweetReply?.userId}/${tweetReply?.user.name}`} className="text-base md:text-lg truncate cursor-pointer hover:underline font-semibold">
                     {tweetReply?.user.name}
                   </Link>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm truncate text-gray-400">
                     {hoursBetweenDates > 24 ? (
-                      <span>
+                      <span >
                         {moment(tweetReply?.createdAt as Date).format("ll")}
                       </span>
                     ) : (

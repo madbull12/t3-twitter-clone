@@ -1,12 +1,14 @@
 import { List } from "@prisma/client";
 import Image from "next/legacy/image";
+import { useRouter } from "next/router";
 import React from "react";
 import { ListWithPayloads } from "../../interface";
 import Avatar from "./Avatar";
 
 const ListComponent = ({ list }: { list: ListWithPayloads }) => {
+  const router = useRouter()
   return (
-    <div className="flex items-center gap-x-4 p-4 hover:bg-base-200 cursor-pointer">
+    <div className="flex items-center gap-x-4 p-4 hover:bg-base-200 cursor-pointer" onClick={()=>router.push(`/list/${list.creatorId}/${list.id}`)}>
       <div className="relative h-12 w-12 rounded-xl overflow-hidden bg-gray-400">
         {list.coverPhoto ? (
           <Image
