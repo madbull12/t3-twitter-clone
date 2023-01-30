@@ -67,9 +67,14 @@ export const listRouter = router({
           "You have to be logged in in order to perform this action!"
         );
       }
+      const userId = ctx.session.user?.id;
+
       return ctx.prisma.list.update({
         where:{
-          id:input?.listId
+          id_creatorId:{
+            id:input?.listId,
+            creatorId:userId as string
+          }
         },
         data:{
           name:input?.name as string,

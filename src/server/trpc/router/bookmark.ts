@@ -38,7 +38,11 @@ export const bookmarkRouter = router({
     .input(z.object({ tweetId: z.string() }))
     .mutation(({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
-
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
       return ctx.prisma.bookmark.create({
         data: {
           user: {
@@ -58,7 +62,11 @@ export const bookmarkRouter = router({
     .input(z.object({ tweetId: z.string() }))
     .mutation(({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
-
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
       return ctx.prisma.bookmark.delete({
         where: {
           userId_tweetId: {

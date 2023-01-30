@@ -7,8 +7,8 @@ import Avatar from "../../../components/Avatar";
 import Body from "../../../components/Body";
 import NavFeed from "../../../components/NavFeed";
 import { trpc } from "../../../utils/trpc";
-import { IoLocation } from "react-icons/io5";
-import { IoIosCalendar } from "react-icons/io";
+import { IoEllipsisHorizontalCircleOutline, IoLocation } from "react-icons/io5";
+import { IoIosCalendar, IoIosLink, IoIosListBox } from "react-icons/io";
 import moment from "moment";
 import { AiOutlineLink } from "react-icons/ai";
 import Link from "next/link";
@@ -17,6 +17,8 @@ import { TweetWithUser } from "../../../../interface";
 import Loader from "../../../components/Loader";
 import Head from "next/head";
 import useFollow from "../../../../hooks/useFollow";
+import { toast } from "react-hot-toast";
+import { useCopyToClipboard } from "usehooks-ts";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -59,6 +61,7 @@ const ProfilePage = () => {
     userId: userId as string,
     link: "tweets&replies",
   });
+  const [value, copy] = useCopyToClipboard();
   const {
     handleFollow,
     handleUnfollow,
@@ -109,32 +112,76 @@ const ProfilePage = () => {
             Edit profile
           </button>
         ) : (
-          <>
+          <div className="flex items-center mt-4 ">
+            <div className="dropdown-bottom dropdown-end dropdown">
+              <label
+                tabIndex={0}
+                className="btn m-1 border-none  bg-transparent text-neutral hover:bg-transparent"
+              >
+                <IoEllipsisHorizontalCircleOutline className="cursor-pointer text-3xl " />
+              </label>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu rounded-box w-52 bg-base-100 p-2 font-bold shadow"
+              >
+                <li>
+                  <button
+                    onClick={() => {
+                      toast.success("Profile link copied to clipboard");
+
+                      copy(
+                        `${
+                          process.env.NODE_ENV === "development"
+                            ? "localhost:3000"
+                            : "t3-twitter-clone-nine.vercel.app"
+                        }/${userId}/${username}`
+                      );
+                    }}
+                    className="flex items-center gap-x-2 rounded-xl p-2 font-bold "
+                  >
+                    <IoIosLink />
+
+                    <a>Copy link to profile</a>
+                  </button>
+                </li>
+                <li>
+                  <button
+           
+                    className="flex items-center gap-x-2 rounded-xl p-2 font-bold "
+                  >
+                    <IoIosListBox />
+                    <Link href={`/list/${userId}`}>View User's list</Link>
+                  </button>
+                </li>
+              </ul>
+            </div>
             {(alreadyFollowed !== null || followed) &&
             status === "authenticated" ? (
-              <button
-                onClick={handleUnfollow}
-                onMouseEnter={() => setUnfollowHovered(true)}
-                onMouseLeave={() => setUnfollowHovered(false)}
-                disabled={unfollowingUser || followingUser}
-                className={` ${
-                  unfollowHovered
-                    ? "border-red-600 bg-transparent text-red-600"
-                    : null
-                } ml-auto mt-4 rounded-full  border border-primary bg-primary px-4 py-2  font-semibold  text-white`}
-              >
-                {unfollowHovered ? "Unfollow" : "Following"}
-              </button>
+              <div className="flex items-center gap-x-2">
+                <button
+                  onClick={handleUnfollow}
+                  onMouseEnter={() => setUnfollowHovered(true)}
+                  onMouseLeave={() => setUnfollowHovered(false)}
+                  disabled={unfollowingUser || followingUser}
+                  className={` ${
+                    unfollowHovered
+                      ? "border-red-600 bg-transparent text-red-600"
+                      : null
+                  } ml-auto  rounded-full  border border-primary bg-primary px-4 py-2  font-semibold  text-white`}
+                >
+                  {unfollowHovered ? "Unfollow" : "Following"}
+                </button>
+              </div>
             ) : (
               <button
                 onClick={handleFollow}
                 disabled={unfollowingUser || followingUser}
-                className="ml-auto mt-4 rounded-full bg-primary px-4 py-2 font-semibold text-white "
+                className="ml-auto rounded-full bg-primary px-4 py-2 font-semibold text-white "
               >
                 Follow
               </button>
             )}
-          </>
+          </div>
         )}
       </div>
       <div className="p-2 md:p-4">

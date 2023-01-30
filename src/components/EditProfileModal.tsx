@@ -207,25 +207,25 @@ const EditProfileModal = () => {
         </div>
         <div className="flex flex-col gap-y-6 p-2 md:p-4">
           <input
-            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 bg-transparent focus:ring-blue-500"
+            className="input-bordered  input-primary input w-full "
             placeholder="Name"
             defaultValue={userProfile?.name as string}
             {...register("name")}
           />
           <input
-            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 bg-transparent focus:ring-blue-500"
+            className="input-bordered  input-primary input w-full "
             placeholder="Bio"
             defaultValue={userProfile?.profile?.bio as string}
             {...register("bio")}
           />
           <input
-            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 bg-transparent focus:ring-blue-500"
+            className="input-bordered  input-primary input w-full "
             placeholder="Location"
             defaultValue={userProfile?.profile?.location as string}
             {...register("location")}
           />
           <input
-            className="w-full rounded-lg border border-gray-300 px-2 py-1  md:px-4 md:py-2 text-xs xs:text-sm md:text-base outline-none focus:ring-2 bg-transparent focus:ring-blue-500"
+            className="input-bordered  input-primary input w-full "
             placeholder="Website"
             defaultValue={userProfile?.profile?.website as string}
             {...register("website")}

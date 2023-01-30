@@ -66,21 +66,20 @@ export const followRouter = router({
         },
         select: {
           followers: {
-            include:{
-              following:{
-                include:{
-                  profile:true
-                }
+            include: {
+              following: {
+                include: {
+                  profile: true,
+                },
               },
-              follower:{
-                include:{
-                  profile:true
-                }
-              }
-            }
+              follower: {
+                include: {
+                  profile: true,
+                },
+              },
+            },
           },
         },
-        
       });
     }),
   getUserFollowing: publicProcedure
@@ -91,61 +90,73 @@ export const followRouter = router({
           id: input?.userId as string,
         },
         select: {
-          followings:{
-            include:{
-              following:{
-                include:{
-                  profile:true
-                }
+          followings: {
+            include: {
+              following: {
+                include: {
+                  profile: true,
+                },
               },
-              follower:{
-                include:{
-                  profile:true
-                }
-              }
-            
-              
-            }
-            
-
-          }
+              follower: {
+                include: {
+                  profile: true,
+                },
+              },
+            },
+          },
         },
       });
     }),
-    getFollowersRecommendation:publicProcedure.query(({ ctx,input })=>{
-      const userId = ctx.session?.user?.id;
+  followList: publicProcedure
+    .input(z.object({ userId: z.string(), listId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.list.update({
+        where: {
+          id: input?.listId as string,
+        },
+        data: {
+          followers: {
+            connect: {
+              id: input?.userId,
+            },
+          },
+        },
+      });
+    }),
+  getFollowersRecommendation: publicProcedure.query(({ ctx, input }) => {
+    const userId = ctx.session?.user?.id;
 
-      return ctx.prisma.user.findMany({
-        where:{
-          NOT:{
-            followers:{
-              some:{
-                followingId:userId as string
-              }
-            }
-          }
+    return ctx.prisma.user.findMany({
+      where: {
+        NOT: {
+          followers: {
+            some: {
+              followingId: userId as string,
+            },
+          },
         },
-       include:{
-        followers:{
-          include:{
-            follower:{
-              include:{
-                profile:true
-              }
-            }
-          }
+      },
+      include: {
+        followers: {
+          include: {
+            follower: {
+              include: {
+                profile: true,
+              },
+            },
+          },
         },
-        followings:{
-          include:{
-            following:{
-              include:{
-                profile:true
-              }
-            }
-          }
+        followings: {
+          include: {
+            following: {
+              include: {
+                profile: true,
+              },
+            },
+          },
         },
-        profile:true
-       }
-      })
-    })
+        profile: true,
+      },
+    });
+  }),
 });

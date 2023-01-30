@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 import React from "react";
@@ -14,6 +15,7 @@ import { trpc } from "../../../utils/trpc";
 
 const ListDetails = () => {
   const router = useRouter();
+  const { data:session } = useSession()
   const { listId, userId } = router.query;
   const { setModal } = useEditListModal();
   const [value, copy] = useCopyToClipboard();
@@ -34,7 +36,7 @@ const ListDetails = () => {
           <div className="dropdown-bottom dropdown-end dropdown">
             <label
               tabIndex={0}
-              className="btn m-1 border-none  bg-transparent text-white hover:bg-transparent"
+              className="btn m-1 border-none  bg-transparent text-neutral hover:bg-transparent"
             >
               <IoShareOutline className="cursor-pointer text-2xl " />
             </label>
@@ -99,7 +101,7 @@ const ListDetails = () => {
             <span className="text-gray-500">Followers</span>{" "}
           </p>
         </div>
-        {listDetails?.creatorId === userId ? (
+        {listDetails?.creatorId === session?.user?.id ? (
           <button
             onClick={() => setModal(true)}
             className="rounded-full border border-base-300 bg-transparent px-4 py-2 font-semibold hover:bg-base-200"
@@ -107,7 +109,7 @@ const ListDetails = () => {
             Edit List
           </button>
         ) : (
-          <button className="bg-primary px-4 py-2 font-semibold text-white">
+          <button className="rounded-full bg-primary px-4 py-2 font-semibold text-white">
             Follow
           </button>
         )}

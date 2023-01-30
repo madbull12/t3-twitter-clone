@@ -162,7 +162,11 @@ export const tweetRouter = router({
     )
     .mutation(({ input, ctx }) => {
       const userId = ctx?.session?.user?.id;
-
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
       return ctx.prisma.tweet.delete({
         where: {
           retweetId_userId: {
