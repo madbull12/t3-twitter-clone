@@ -123,6 +123,22 @@ export const followRouter = router({
         },
       });
     }),
+  unfollowList: publicProcedure
+    .input(z.object({ userId: z.string(), listId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.list.update({
+        where: {
+          id: input?.listId as string,
+        },
+        data: {
+          followers: {
+            disconnect:{
+              id:input?.userId
+            }
+          },
+        },
+      });
+    }),
   getFollowersRecommendation: publicProcedure.query(({ ctx, input }) => {
     const userId = ctx.session?.user?.id;
 

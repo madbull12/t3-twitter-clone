@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import { IoIosLink } from "react-icons/io";
 import { IoShareOutline } from "react-icons/io5";
@@ -15,14 +15,64 @@ import { trpc } from "../../../utils/trpc";
 
 const ListDetails = () => {
   const router = useRouter();
-  const { data:session } = useSession()
+  const { data: session } = useSession();
   const { listId, userId } = router.query;
   const { setModal } = useEditListModal();
   const [value, copy] = useCopyToClipboard();
+  const utils = trpc.useContext()
+  const [followed, setFollowed] = useState<boolean>();
+
+  const { mutateAsync: followList,isLoading:followLoading } = trpc.follow.followList.useMutation({
+    onMutate: () => {
+      utils.list.getListDetails.invalidate({ listId: listId as string });
+      const optimisticUpdate = utils.list.getListDetails.getData();
+      if (optimisticUpdate) {
+        utils.list.getListDetails.setData(optimisticUpdate);
+      }
+    },
+    onSettled: () => {
+      utils.list.getListDetails.invalidate({ listId: listId as string });
+    },
+  });
+  const { mutateAsync: unfollowList,isLoading:unfollowLoading } = trpc.follow.unfollowList.useMutation(
+    {}
+  );
+
+  const handleFollowList = async () => {
+    setFollowed(true);
+    await toast.promise(
+      followList({
+        userId: session?.user?.id as string,
+        listId: listId as string,
+      }),
+      {
+        loading: "Following  list",
+        success: "List followed",
+        error: (err) => `Oops... something went wrong ` + err,
+      }
+    );
+  };
+  const handleUnfollowList = async () => {
+    setFollowed(false);
+    await toast.promise(
+      unfollowList({
+        userId: session?.user?.id as string,
+        listId: listId as string,
+      }),
+      {
+        loading: "Unfollowing  list",
+        success: "List followed",
+        error: (err) => `Oops... something went wrong ` + err,
+      }
+    );
+  };
 
   const { data: listDetails, isLoading } = trpc.list.getListDetails.useQuery({
     listId: listId as string,
   });
+  const followExist = listDetails?.followers.find(
+    (follower) => follower.id === session?.user?.id
+  );
   if (isLoading) return <Loader />;
   return (
     <Body>
@@ -109,9 +159,25 @@ const ListDetails = () => {
             Edit List
           </button>
         ) : (
-          <button className="rounded-full bg-primary px-4 py-2 font-semibold text-white">
-            Follow
-          </button>
+          <>
+            {followExist || followed ? (
+              <button
+                onClick={handleUnfollowList}
+                disabled={unfollowLoading || followLoading}
+                className=" border-red-600 border rounded-full px-4 py-2 font-semibold text-white"
+              >
+                Unfollow
+              </button>
+            ) : (
+              <button
+                onClick={handleFollowList}
+                disabled={unfollowLoading || followLoading}
+                className="rounded-full bg-primary px-4 py-2 font-semibold text-white"
+              >
+                Follow
+              </button>
+            )}
+          </>
         )}
       </div>
     </Body>
