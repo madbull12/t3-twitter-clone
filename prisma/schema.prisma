@@ -168,6 +168,8 @@ model List {
   description String?
   isPrivate   Boolean @default(false)
   coverPhoto  String?
+
+  @@unique([id,creatorId])
 }
 
 // model Retweet {

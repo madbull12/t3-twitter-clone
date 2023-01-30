@@ -16,7 +16,6 @@ export const listRouter = router({
               profile: true,
             },
           },
-        
         },
       });
     }),
@@ -24,7 +23,7 @@ export const listRouter = router({
   createList: publicProcedure
     .input(
       z.object({
-        name: z.string(),
+        name: z.string().min(4,"Name should have at least 4 characters"),
         description: z.string().optional(),
         isPrivate: z.boolean(),
         coverPhoto: z.string().optional().nullable(),
@@ -32,7 +31,11 @@ export const listRouter = router({
     )
     .mutation(({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
-
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
       return ctx.prisma.list.create({
         data: {
           creator: {
@@ -46,6 +49,59 @@ export const listRouter = router({
           coverPhoto: input?.coverPhoto,
         },
       });
+    }),
+
+  editList: publicProcedure
+    .input(
+      z.object({
+        name: z.string().optional(),
+        description: z.string().optional(),
+        isPrivate: z.boolean().optional(),
+        coverPhoto: z.string().optional().nullable(),
+        listId:z.string()
+      })
+    )
+    .mutation(({ ctx,input })=>{
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
+      return ctx.prisma.list.update({
+        where:{
+          id:input?.listId
+        },
+        data:{
+          name:input?.name as string,
+          description:input?.description as string,
+          isPrivate:input?.isPrivate as boolean,
+          coverPhoto:input?.coverPhoto as string
+        }
+      })
+    }),
+    deleteList:publicProcedure
+    .input(
+      z.object({
+   
+        listId:z.string()
+      })
+    )
+    .mutation(({ ctx,input })=>{
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
+      const userId = ctx.session.user?.id;
+      return ctx.prisma.list.delete({
+        where:{
+          id_creatorId:{
+            id:input?.listId,
+            creatorId:userId as string
+          }
+        },
+ 
+      })
     }),
 
   getListDetails: publicProcedure
