@@ -21,7 +21,7 @@ const EditListModal = () => {
   const nameRef = useRef<HTMLInputElement>(null);
   const { setModal } = useEditListModal();
   let coverPhotoUrl: null | string = null;
-
+  const router = useRouter();
   const { listId } = useRouter().query;
   useOnClickOutside(modalRef, () => {
     setModal(false);
@@ -61,6 +61,27 @@ const EditListModal = () => {
       utils.list.getListDetails.invalidate({ listId: listId as string });
     },
   });
+  const { mutateAsync: deleteList } = trpc.list.deleteList.useMutation({
+    // onMutate: () => {
+    //   utils.list.getListDetails.invalidate({ listId: listId as string });
+    //   const optimisticUpdate = utils.list.getListDetails.getData();
+    //   if (optimisticUpdate) {
+    //     utils.list.getListDetails.setData(optimisticUpdate);
+    //   }
+    // },
+    onSettled: () => {
+      router.push(`/list/${listDetails?.creatorId}`)
+    },
+  });
+
+  const handleDelete = async() => {
+    setModal(false)
+    await toast.promise(deleteList({ listId:listId as string }),{
+      loading:"Deleting list",
+      success:"List deleted",
+      error:(err)=>`Oops... something went wrong ` + err
+    })
+  }
 
   const coverPhotoUpload = async () => {
     const formData = new FormData();
@@ -175,7 +196,7 @@ const EditListModal = () => {
               />
             </label>
           </div>
-          <button className="text-red-600 hover:text-red-500">
+          <button className="text-red-600 hover:text-red-500" type="button" onClick={handleDelete}>
             Delete List
           </button>
         </div>
