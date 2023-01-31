@@ -29,9 +29,14 @@ const ListPage = () => {
           user ? `@${user?.handle ?? user?.name?.trim().toLowerCase()} ` : ""
         }
       >
-        <div className="absolute top-6 right-4" onClick={() => setModal(true)}>
-          <MdPostAdd className="cursor-pointer text-2xl " />
-        </div>
+        {session?.user?.id === userId ? (
+          <div
+            className="absolute top-6 right-4"
+            onClick={() => setModal(true)}
+          >
+            <MdPostAdd className="cursor-pointer text-2xl " />
+          </div>
+        ) : null}
       </NavFeed>
       <div className="p-2">
         {user ? (

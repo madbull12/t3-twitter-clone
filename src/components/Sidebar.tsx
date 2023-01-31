@@ -1,73 +1,124 @@
 import Link from "next/link";
 import React from "react";
 import { BsTwitter } from "react-icons/bs";
-import { AiFillHome, AiFillBell } from "react-icons/ai";
-import { RiHashtag } from "react-icons/ri";
+import {
+  AiFillHome,
+  AiFillBell,
+  AiOutlineHome,
+  AiOutlineBell,
+} from "react-icons/ai";
+import {
+  RiFileListFill,
+  RiFileListLine,
+  RiHashtag,
+  RiUserFill,
+  RiUserLine,
+} from "react-icons/ri";
 import { v4 } from "uuid";
 import { signIn, signOut, useSession } from "next-auth/react";
 import Button from "./Button";
 import Profile from "./Profile";
 import useMediaQuery from "../../hooks/useMediaQuery";
-import { IoIosListBox, IoMdAddCircle, IoMdLogIn, IoMdLogOut } from "react-icons/io";
+import { IoMdAddCircle, IoMdLogIn, IoMdLogOut } from "react-icons/io";
 import { useCreateModal } from "../../lib/zustand";
-import { BiBookmark, BiSearch, BiUser } from "react-icons/bi";
-import { IoEllipsisHorizontalCircleOutline } from "react-icons/io5";
+import { BiSearch } from "react-icons/bi";
+import { IoBookmark, IoBookmarkOutline } from "react-icons/io5";
 import MoreDropdownSidebar from "./MoreDropdownSidebar";
 import { useRouter } from "next/router";
-import { trpc } from "../utils/trpc";
+import { FaHashtag, FaSearch } from "react-icons/fa";
 
 const Sidebar = () => {
   const { status, data: session } = useSession();
   const matches = useMediaQuery("(min-width: 1280px)");
   const isNotTablet = useMediaQuery("(min-width:1024px)");
-  const router = useRouter()
+  const router = useRouter();
   const links = [
     {
       name: "Home",
       link: "/",
       hidden: false,
-      icon: <AiFillHome />,
+      active: router.pathname === "/",
+      icon: router.pathname === "/" ? <AiFillHome /> : <AiOutlineHome />,
     },
     {
       name: "Explore",
       link: "/explore",
+      active: router.pathname === "/explore",
       hidden: false,
-      icon: isNotTablet ? <RiHashtag /> : <BiSearch />,
+      icon: isNotTablet ? (
+        router.pathname === "/explore" ? (
+          <FaHashtag />
+        ) : (
+          <RiHashtag />
+        )
+      ) : router.pathname === "/explore" ? (
+        <FaSearch />
+      ) : (
+        <BiSearch />
+      ),
     },
     {
       name: "Notifications",
-      link: "/",
+      link: "/notifications",
       hidden: true,
-      icon: <AiFillBell />,
+      active: router.pathname === "/notifications",
+      icon:
+        router.pathname === "/notifications" ? (
+          <AiFillBell />
+        ) : (
+          <AiOutlineBell />
+        ),
     },
     {
       name: "Profile",
-      link: `/${session?.user?.id}/${session?.user?.name}`,
+      link: `/${session?.user?.id}/${session?.user?.name?.replace(/\s/g, "")}`,
       hidden: true,
-      icon: <BiUser />,
+      active:
+        router.asPath ===
+        `/${session?.user?.id}/${session?.user?.name?.replace(/\s/g, "")}`,
+      icon:
+        router.asPath ===
+        `/${session?.user?.id}/${session?.user?.name?.replace(/\s/g, "")}` ? (
+          <RiUserFill />
+        ) : (
+          <RiUserLine />
+        ),
     },
     {
       name: "Bookmarks",
       link: `/bookmarks`,
       hidden: true,
-      icon: <BiBookmark />,
+      active: router.pathname === "/bookmarks",
+      icon:
+        router.pathname === "/bookmarks" ? (
+          <IoBookmark />
+        ) : (
+          <IoBookmarkOutline />
+        ),
     },
     {
-      name:"Lists",
-      link:`/list/${session?.user?.id}`,
-      hidden:true,
-      icon:<IoIosListBox />
-    }
+      name: "Lists",
+      link: `/list/${session?.user?.id}`,
+      active: router.asPath === `/list/${session?.user?.id}`,
+      hidden: true,
+      icon:
+        router.asPath === `/list/${session?.user?.id}` ? (
+          <RiFileListFill />
+        ) : (
+          <RiFileListLine />
+        ),
+    },
   ];
+
   const { setModal } = useCreateModal();
   return (
-    <div className="fixed top-0 flex z-[9999]  min-h-[200vh] w-14 flex-col items-center space-y-4  xs:w-20  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
+    <div className="fixed top-0 z-[9999] flex  min-h-[200vh] w-14 flex-col items-center space-y-4  xs:w-20  xl:w-80 xl:items-start  xl:py-3 xl:pl-16 xl:pr-8">
       <div className="mb-2 grid h-12 w-12 cursor-pointer place-items-center  rounded-full transition-all duration-200 ease-in-out  hover:bg-base-300">
         <Link href="/">
           <BsTwitter className="text-xl text-primary md:text-2xl lg:text-3xl" />
         </Link>
       </div>
-      <ul className="flex flex-col  py-2 items-center space-y-2 px-4 xl:items-start">
+      <ul className="flex flex-col  items-center space-y-2 py-2 px-4 xl:items-start">
         {links.map((link) => (
           <>
             {link.hidden ? (
@@ -80,7 +131,13 @@ const Sidebar = () => {
                     <Link href={link?.link}>
                       <div className="flex items-center gap-x-4 text-sm xs:text-xl md:text-2xl">
                         <span>{link.icon}</span>
-                        <span className="hidden xl:block ">{link.name}</span>
+                        <span
+                          className={`hidden xl:block ${
+                            link.active ? "font-bold" : null
+                          }`}
+                        >
+                          {link.name}
+                        </span>
                       </div>
                     </Link>
                   </li>
@@ -94,17 +151,20 @@ const Sidebar = () => {
                 <Link href={link?.link}>
                   <div className="flex items-center gap-x-4 text-sm xs:text-xl md:text-2xl">
                     <span>{link.icon}</span>
-                    <span className="hidden xl:block ">{link.name}</span>
+                    <span
+                      className={`hidden xl:block ${
+                        link.active ? "font-bold" : null
+                      }`}
+                    >
+                      {link.name}
+                    </span>
                   </div>
                 </Link>
               </li>
             )}
           </>
         ))}
-        {status === "authenticated" ? (
-          <MoreDropdownSidebar />
-
-        ) : null}
+        {status === "authenticated" ? <MoreDropdownSidebar /> : null}
 
         {!matches ? (
           <>
