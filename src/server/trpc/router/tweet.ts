@@ -445,7 +445,7 @@ export const tweetRouter = router({
         case "likes":
           return ctx.prisma.tweet.findMany({
             where: {
-              userId: input.userId,
+          
               likes: {
                 some: {
                   userId: input.userId,
