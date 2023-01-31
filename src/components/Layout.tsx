@@ -33,7 +33,7 @@ import ReplyModal from "./ReplyModal";
 import RetweetsListModal from "./RetweetsListModal";
 import Right from "./Right";
 import Sidebar from "./Sidebar";
-import { AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from "framer-motion";
 interface IProps {
   children: React.ReactNode;
 }
@@ -84,34 +84,45 @@ const Layout = ({ children }: IProps) => {
     retweetsModal,
     handleModal,
     listModal,
-    editListModal
+    editListModal,
   ]);
   const phone = useMediaQuery("(min-width:768px)");
 
   return (
-    <AnimatePresence
-    // Disable any initial animations on children that
-    // are present when the component is first rendered
-    initial={false}
-    // Only render one component at a time.
-    // The exiting component will finish its exit
-    // animation before entering component is rendered
-    exitBeforeEnter={true}
-    // Fires when all exiting nodes have completed animating out
-    onExitComplete={() => null}
->
-<main className="relative mx-auto  min-h-[200vh] max-w-screen-2xl  bg-base-100 text-neutral">
+    <main className="relative mx-auto  min-h-[200vh] max-w-screen-2xl  bg-base-100 text-neutral">
       {!phone ? <>{mobileDrawer ? <MobileDrawer /> : null}</> : null}
-      {replyModal ? <ReplyModal /> : null}
-      {retweetsModal ? <RetweetsListModal /> : null}
-      {loginModal ? <LoginModal /> : null}
-      {createModal ? <CreateModal /> : null}
-      {profileModal ? <EditProfileModal /> : null}
-      {displayModal ? <DisplayModal /> : null}
-      {likesModal ? <LikesListModal /> : null}
-      {handleModal ? <HandleModal /> : null}
-      {listModal ? <CreateListModal /> : null}
-      {editListModal ? <EditListModal /> : null}
+
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {replyModal ? <ReplyModal /> : null}
+      </AnimatePresence>
+
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {retweetsModal ? <RetweetsListModal /> : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {loginModal ? <LoginModal /> : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {createModal ? <CreateModal /> : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {displayModal ? <DisplayModal /> : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {profileModal ? <EditProfileModal /> : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {likesModal ? <LikesListModal /> : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {handleModal ? <HandleModal /> : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {listModal ? <CreateListModal /> : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {editListModal ? <EditListModal /> : null}
+      </AnimatePresence>
 
       {router.pathname !== "/auth/signin" ? (
         <>
@@ -134,8 +145,6 @@ const Layout = ({ children }: IProps) => {
         <>{status === "unauthenticated" ? <Footer /> : null}</>
       ) : null}
     </main>
-</AnimatePresence>
-   
   );
 };
 

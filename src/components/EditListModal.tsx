@@ -133,7 +133,7 @@ const EditListModal = () => {
         <header className="flex items-center justify-between gap-x-1 p-4 xs:gap-x-2 sm:gap-x-4">
           <IoMdClose
             className="cursor-pointer text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl"
-            // onClick={() => setModal(false)}
+            onClick={() => setModal(false)}
           />
           <p className="mr-auto whitespace-nowrap text-xs font-semibold xs:text-sm sm:text-base md:text-lg lg:text-xl">
             Edit list

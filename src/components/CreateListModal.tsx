@@ -9,6 +9,7 @@ import { useCreateListModal } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import Backdrop from "./Backdrop";
 import Modal from "./Modal";
+import { AnimatePresence } from 'framer-motion'
 
 const CreateListModal = () => {
   const modalRef = useRef<HTMLFormElement>(null);
@@ -79,14 +80,15 @@ const CreateListModal = () => {
 
   }
   return (
-    <Modal>
+
+<Modal>
       <form
         ref={modalRef}
         onSubmit={(e)=>{
           e.preventDefault()
           handleSubmit()
         }}
-        
+        className="mx-auto h-[500px] w-3/4 overflow-y-scroll rounded-2xl  bg-base-100 sm:w-1/2"
       >
         <header className="flex items-center justify-between gap-x-1 p-4 xs:gap-x-2 sm:gap-x-4">
           <IoMdClose
@@ -147,6 +149,7 @@ const CreateListModal = () => {
         </div>
       </form>
     </Modal>
+    
   );
 };
 

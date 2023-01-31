@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Backdrop from "./Backdrop";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 const Modal = ({ children }: { children: React.ReactNode }) => {
   const dropIn = {
     hidden: {
@@ -24,17 +24,18 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <Backdrop>
-      <motion.div
-        variants={dropIn}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        // className="mx-auto h-[500px] w-3/4 overflow-y-scroll rounded-2xl  bg-base-100 sm:w-1/2"
-      >
-        {children}
-      </motion.div>
-    </Backdrop>
+
+      <Backdrop>
+        <motion.div
+          variants={dropIn}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          // className="mx-auto h-[500px] w-3/4 overflow-y-scroll rounded-2xl  bg-base-100 sm:w-1/2"
+        >
+          {children}
+        </motion.div>
+      </Backdrop>
   );
 };
 
