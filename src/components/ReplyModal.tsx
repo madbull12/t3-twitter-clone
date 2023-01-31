@@ -16,6 +16,7 @@ import Backdrop from "./Backdrop";
 import Button from "./Button";
 import Loader from "./Loader";
 import MediaTools from "./MediaTools";
+import Modal from "./Modal";
 import ReplyForm from "./ReplyForm";
 import TweetComponent from "./TweetComponent";
 
@@ -42,7 +43,7 @@ const ReplyModal = () => {
   // 👇️ convert ms to hours                  min  sec   ms
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
   return (
-    <Backdrop>
+    <Modal>
       <div
         ref={modalRef}
         className="relative mx-auto max-h-[500px] max-w-xs md:max-w-lg overflow-y-scroll rounded-2xl  bg-base-100 p-4 "
@@ -91,7 +92,7 @@ const ReplyModal = () => {
           </>
         )}
       </div>
-    </Backdrop>
+    </Modal>
   );
 };
 

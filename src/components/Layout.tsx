@@ -33,7 +33,7 @@ import ReplyModal from "./ReplyModal";
 import RetweetsListModal from "./RetweetsListModal";
 import Right from "./Right";
 import Sidebar from "./Sidebar";
-
+import { AnimatePresence } from 'framer-motion'
 interface IProps {
   children: React.ReactNode;
 }
@@ -89,7 +89,18 @@ const Layout = ({ children }: IProps) => {
   const phone = useMediaQuery("(min-width:768px)");
 
   return (
-    <main className="relative mx-auto  min-h-[200vh] max-w-screen-2xl  bg-base-100 text-neutral">
+    <AnimatePresence
+    // Disable any initial animations on children that
+    // are present when the component is first rendered
+    initial={false}
+    // Only render one component at a time.
+    // The exiting component will finish its exit
+    // animation before entering component is rendered
+    exitBeforeEnter={true}
+    // Fires when all exiting nodes have completed animating out
+    onExitComplete={() => null}
+>
+<main className="relative mx-auto  min-h-[200vh] max-w-screen-2xl  bg-base-100 text-neutral">
       {!phone ? <>{mobileDrawer ? <MobileDrawer /> : null}</> : null}
       {replyModal ? <ReplyModal /> : null}
       {retweetsModal ? <RetweetsListModal /> : null}
@@ -123,6 +134,8 @@ const Layout = ({ children }: IProps) => {
         <>{status === "unauthenticated" ? <Footer /> : null}</>
       ) : null}
     </main>
+</AnimatePresence>
+   
   );
 };
 

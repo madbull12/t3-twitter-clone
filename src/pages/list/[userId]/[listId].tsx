@@ -61,7 +61,7 @@ const ListDetails = () => {
       }),
       {
         loading: "Unfollowing  list",
-        success: "List followed",
+        success: "List unfollowed",
         error: (err) => `Oops... something went wrong ` + err,
       }
     );
@@ -164,7 +164,7 @@ const ListDetails = () => {
               <button
                 onClick={handleUnfollowList}
                 disabled={unfollowLoading || followLoading}
-                className=" border-red-600 border rounded-full px-4 py-2 font-semibold text-white"
+                className=" border-red-600 border rounded-full px-4 py-2 font-semibold "
               >
                 Unfollow
               </button>
@@ -172,7 +172,7 @@ const ListDetails = () => {
               <button
                 onClick={handleFollowList}
                 disabled={unfollowLoading || followLoading}
-                className="rounded-full bg-primary px-4 py-2 font-semibold text-white"
+                className="rounded-full bg-primary px-4 py-2 font-semibold "
               >
                 Follow
               </button>

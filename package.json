@@ -22,6 +22,7 @@
     "@uiball/loaders": "^1.2.6",
     "daisyui": "^2.46.1",
     "emoji-mart": "^5.5.2",
+    "framer-motion": "^8.5.5",
     "javascript-time-ago": "^2.5.9",
     "moment": "^2.29.4",
     "next": "13.0.2",

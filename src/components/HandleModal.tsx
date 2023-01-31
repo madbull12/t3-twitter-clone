@@ -6,6 +6,7 @@ import { useDebounce, useOnClickOutside } from "usehooks-ts";
 import { useHandleModal } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import Backdrop from "./Backdrop";
+import Modal from "./Modal";
 
 interface Error {
   isError: boolean;
@@ -123,7 +124,7 @@ const HandleModal = () => {
   };
 
   return (
-    <Backdrop>
+    <Modal>
       <div
         ref={modalRef}
         className="mx-auto h-[500px] w-3/4 space-y-3 overflow-y-scroll rounded-2xl  bg-base-100 p-4 sm:w-1/2"
@@ -169,7 +170,7 @@ const HandleModal = () => {
           interact with you
         </p>
       </div>
-    </Backdrop>
+    </Modal>
   );
 };
 

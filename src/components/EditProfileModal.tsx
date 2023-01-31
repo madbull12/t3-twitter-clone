@@ -12,6 +12,7 @@ import { SubmitHandler } from "react-hook-form/dist/types";
 import { trpc } from "../utils/trpc";
 import useMediaUpload from "../../hooks/useMediaUpload";
 import { toast } from "react-hot-toast";
+import Modal from "./Modal";
 
 type Profile = {
   name: string;
@@ -137,7 +138,7 @@ const EditProfileModal = () => {
   console.log(imagePreview);
 
   return (
-    <Backdrop>
+    <Modal>
       <form
         onSubmit={handleSubmit(onSubmit)}
         ref={modalRef}
@@ -232,7 +233,7 @@ const EditProfileModal = () => {
           />
         </div>
       </form>
-    </Backdrop>
+    </Modal>
   );
 };
 

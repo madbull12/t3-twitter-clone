@@ -11,6 +11,7 @@ import { useEditListModal } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import Backdrop from "./Backdrop";
 import Loader from "./Loader";
+import Modal from "./Modal";
 
 type List = {
   name: string;
@@ -123,7 +124,7 @@ const EditListModal = () => {
   };
 
   return (
-    <Backdrop>
+    <Modal>
       <form
         ref={modalRef}
         onSubmit={handleSubmit(onSubmit)}
@@ -201,7 +202,7 @@ const EditListModal = () => {
           </button>
         </div>
       </form>
-    </Backdrop>
+    </Modal>
   );
 };
 

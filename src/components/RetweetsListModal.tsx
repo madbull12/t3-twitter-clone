@@ -5,6 +5,7 @@ import useOnClickOutside from '../../hooks/useOutsideClick';
 import { UserWithPayloads } from '../../interface';
 import { useRetweetsModal, useUserRetweets } from '../../lib/zustand';
 import Backdrop from './Backdrop'
+import Modal from './Modal';
 import PeopleComponent from './PeopleComponent';
 
 const RetweetsListModal = () => {
@@ -15,7 +16,7 @@ const RetweetsListModal = () => {
       setModal(false);
     });
   return (
-    <Backdrop>
+    <Modal>
     <div
       ref={modalRef}
       className="mx-auto h-[500px] w-3/4 space-y-3 overflow-y-scroll rounded-2xl  p-4 bg-base-100 sm:w-1/2"
@@ -30,7 +31,7 @@ const RetweetsListModal = () => {
           ))}
       </div>
     </div>
-  </Backdrop>
+  </Modal>
   )
 }
 
