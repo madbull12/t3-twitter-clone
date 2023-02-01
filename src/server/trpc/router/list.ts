@@ -273,16 +273,64 @@ export const listRouter = router({
       });
     }),
 
-    isMemberExist:publicProcedure.input(z.object({ memberId:z.string(),listId:z.string() })).query(({ ctx,input })=>{
-       return ctx.prisma.user.findFirst({
-        where:{
-          listMember:{  
-            some:{
-              id:input?.listId
-            }
+  isMemberExist: publicProcedure
+    .input(z.object({ memberId: z.string(), listId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.user.findFirst({
+        where: {
+          listMember: {
+            some: {
+              id: input?.listId,
+            },
           },
-          id:input?.memberId
-        }
-       })
-    })
+          id: input?.memberId,
+        },
+      });
+    }),
+
+  getTweetsByListMembers: publicProcedure
+    .input(z.object({ listId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const listMembers = await ctx.prisma.list.findUnique({
+        where: {
+          id: input?.listId,
+        },
+        select: {
+          members: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      });
+
+      // console.log(listMembers?.members?.map((member)=>member.id))
+      const memberIds = listMembers?.members?.map((member) => member.id);
+      return ctx.prisma.tweet.findMany({
+        where: {
+          userId: {
+            in: memberIds,
+          },
+        },
+        include: {
+          user: true,
+          originalTweet: {
+            include: {
+              user: true,
+            },
+          },
+          retweet: {
+            include: {
+              user: true,
+              likes: true,
+              replies: true,
+              retweets: true,
+            },
+          },
+          likes: true,
+          replies: true,
+          retweets: true,
+        },
+      });
+    }),
 });

@@ -58,6 +58,7 @@ const ManageModal = () => {
   const { data: userSuggestions } = trpc.list.getUserSuggestions.useQuery({
     listId: listId as string,
   });
+
   console.log(userSuggestions)
 
   return (

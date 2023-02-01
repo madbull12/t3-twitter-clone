@@ -109,7 +109,7 @@ const ListMember = ({ member }: { member: UserWithPayloads }) => {
       </div>
       {memberExist || isAdded ? (
         <button
-          className="rounded-full bg-primary px-4 py-2 text-white"
+          className="rounded-full bg-red-600 px-4 py-2 text-white"
           onClick={(e) => {
             e.stopPropagation();
             handleRemoveMember();

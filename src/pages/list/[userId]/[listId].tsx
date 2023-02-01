@@ -6,11 +6,13 @@ import { toast } from "react-hot-toast";
 import { IoIosLink } from "react-icons/io";
 import { IoShareOutline } from "react-icons/io5";
 import { useCopyToClipboard } from "usehooks-ts";
+import { TweetWithUser } from "../../../../interface";
 import { useEditListModal } from "../../../../lib/zustand";
 import Avatar from "../../../components/Avatar";
 import Body from "../../../components/Body";
 import Loader from "../../../components/Loader";
 import NavFeed from "../../../components/NavFeed";
+import TweetList from "../../../components/TweetList";
 import { trpc } from "../../../utils/trpc";
 
 const ListDetails = () => {
@@ -35,7 +37,18 @@ const ListDetails = () => {
     },
   });
   const { mutateAsync: unfollowList,isLoading:unfollowLoading } = trpc.follow.unfollowList.useMutation(
-    {}
+    {
+      onMutate: () => {
+        utils.list.getListDetails.invalidate({ listId: listId as string });
+        const optimisticUpdate = utils.list.getListDetails.getData();
+        if (optimisticUpdate) {
+          utils.list.getListDetails.setData(optimisticUpdate);
+        }
+      },
+      onSettled: () => {
+        utils.list.getListDetails.invalidate({ listId: listId as string });
+      },
+    }
   );
 
   const handleFollowList = async () => {
@@ -73,6 +86,10 @@ const ListDetails = () => {
   const followExist = listDetails?.followers.find(
     (follower) => follower.id === session?.user?.id
   );
+
+  const { data: tweetsByList } = trpc.list.getTweetsByListMembers.useQuery({
+    listId: listId as string,
+  });
   if (isLoading) return <Loader />;
   return (
     <Body>
@@ -127,7 +144,7 @@ const ListDetails = () => {
           />
         ) : null}
       </div>
-      <div className="mt-4 flex flex-col items-center gap-y-4">
+      <div className="my-4 flex flex-col items-center gap-y-4">
         <p className="font-bold">{listDetails?.name}</p>
         {listDetails?.description ? <p>{listDetails?.description}</p> : null}
         <div className="flex items-center gap-x-1 text-xs xs:text-sm">
@@ -180,6 +197,7 @@ const ListDetails = () => {
           </>
         )}
       </div>
+      <TweetList tweets={tweetsByList as TweetWithUser[]} />
     </Body>
   );
 };
