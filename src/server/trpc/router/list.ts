@@ -160,33 +160,129 @@ export const listRouter = router({
   searchUserSuggestions: publicProcedure
     .input(z.object({ name: z.string(), listId: z.string() }))
     .query(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+
       return ctx.prisma.user.findMany({
         where: {
           name: {
             contains: input?.name,
             mode: "insensitive",
           },
-          listMember: {
-            some: {
+          AND: [
+            {
               NOT: {
-                id: input?.listId,
+                listMember: {
+                  some: {
+                    id: input?.listId,
+                  },
+                },
               },
             },
-          },
+            {
+              NOT: {
+                id: userId,
+              },
+            },
+          ],
+        },
+        include: {
+          profile: true,
         },
       });
     }),
   getUserSuggestions: publicProcedure
     .input(z.object({ listId: z.string() }))
     .query(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
       return ctx.prisma.user.findMany({
-        where:{
-          listMember: {
-            some: {
-                id: input?.listId,
+        where: {
+          AND: [
+            {
+              NOT: {
+                listMember: {
+                  some: {
+                    id: input?.listId,
+                  },
+                },
+              },
             },
-          },
-        }
+            {
+              NOT: {
+                id: userId,
+              },
+            },
+          ],
+        },
+        include: {
+          profile: true,
+        },
       });
     }),
+
+  addMember: publicProcedure
+    .input(z.object({ listId: z.string(), userId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
+      const userId = ctx.session?.user?.id;
+
+      return ctx.prisma.list.update({
+        where: {
+          id_creatorId: {
+            id: input?.listId,
+            creatorId: userId as string,
+          },
+        },
+        data: {
+          members: {
+            connect: {
+              id: input?.userId as string,
+            },
+          },
+        },
+      });
+    }),
+
+  removeMember: publicProcedure
+    .input(z.object({ listId: z.string(), userId: z.string() }))
+    .mutation(({ ctx, input }) => {
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
+      const userId = ctx.session?.user?.id;
+
+      return ctx.prisma.list.update({
+        where: {
+          id_creatorId: {
+            id: input?.listId,
+            creatorId: userId as string,
+          },
+        },
+        data: {
+          members: {
+            disconnect: {
+              id: input?.userId as string,
+            },
+          },
+        },
+      });
+    }),
+
+    isMemberExist:publicProcedure.input(z.object({ memberId:z.string(),listId:z.string() })).query(({ ctx,input })=>{
+       return ctx.prisma.user.findFirst({
+        where:{
+          listMember:{  
+            some:{
+              id:input?.listId
+            }
+          },
+          id:input?.memberId
+        }
+       })
+    })
 });
