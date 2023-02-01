@@ -97,14 +97,13 @@ const CreateTweet = () => {
     setSelectedFile(e.currentTarget.files[0]);
   };
 
-  const onEmojiSelect = (e:any) => {
+  const onEmojiSelect = (e: any) => {
     let sym = e.unified.split("-");
-    let codesArray:any = [];
-    sym.forEach((el:any) => codesArray.push("0x" + el));
+    let codesArray: any = [];
+    sym.forEach((el: any) => codesArray.push("0x" + el));
     let emoji = String.fromCodePoint(...codesArray);
     setText(text + emoji);
-  }
-
+  };
 
   // const {
   //   // upload: imageUpload,
@@ -118,7 +117,10 @@ const CreateTweet = () => {
 
   return (
     <div className="mt-4 flex items-start gap-x-4 border-b border-base-300 p-2  ">
-      <Link href={`/${session?.user?.id}/${session?.user?.name}`} className="cursor-pointer">
+      <Link
+        href={`/${session?.user?.id}/${session?.user?.name}`}
+        className="cursor-pointer"
+      >
         <Avatar image={session?.user?.image || ""} width={40} height={40} />
       </Link>
       <form className="flex-1 space-y-3" onSubmit={handleSubmit}>
@@ -133,18 +135,20 @@ const CreateTweet = () => {
         {selectedFile && (
           <>
             {selectedFile.type === "video/mp4" ? (
-              <video controls className="relative h-full w-full rounded-2xl">
-                <source src={preview} type="video/mp4"></source>
-              </video>
-            ) : (
               <div className="relative">
-                <img src={preview} />
+                <video controls className="relative h-full w-full rounded-2xl">
+                  <source src={preview} type="video/mp4"></source>
+                </video>
                 <div
                   onClick={() => setSelectedFile(undefined)}
                   className="absolute top-4 right-4  grid h-8 w-8  cursor-pointer  place-items-center rounded-full bg-[#00000083] text-xl text-white"
                 >
                   <RiCloseLine />
                 </div>
+              </div>
+            ) : (
+              <div className="relative">
+                <img src={preview} />
               </div>
             )}
           </>
@@ -173,7 +177,10 @@ const CreateTweet = () => {
             <BiPoll />
             
           </div> */}
-          <MediaTools onEmojiSelect={onEmojiSelect} onSelectFile={onSelectFile} />
+          <MediaTools
+            onEmojiSelect={onEmojiSelect}
+            onSelectFile={onSelectFile}
+          />
           <div className="flex-[0.4]">
             <Button text="Tweet" />
           </div>

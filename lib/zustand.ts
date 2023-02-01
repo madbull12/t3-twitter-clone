@@ -111,6 +111,11 @@ export const useEditListModal = create<Modal>((set)=>({
   setModal: (value: boolean) => set(() => ({ modal: value })),
 
 }))
+export const useManageModal = create<Modal>((set)=>({
+  modal:false,
+  setModal: (value: boolean) => set(() => ({ modal: value })),
+
+}))
 
 export const useDebouncedBookmarks = create<UserBookmarks>((set)=>({
   bookmark:"",

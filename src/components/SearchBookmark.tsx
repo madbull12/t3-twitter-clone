@@ -43,7 +43,7 @@ const SearchBookmark = ({ placeholder }: IProps) => {
     >
       <BiSearch />
       <input
-        defaultValue={router.query.q}
+        
         onChange={handleChange}
         type="text"
         className="w-full bg-transparent outline-none"

@@ -185,7 +185,7 @@ const TweetComponent = ({
               ) : null}
 
               {tweet?.image ? (
-                <div className="relative  h-96 w-full md:w-3/4">
+                <div className="relative  h-96 w-full ">
                   {tweet?.image.includes("video") ? (
                     <video
                       controls
