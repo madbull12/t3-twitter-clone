@@ -38,8 +38,12 @@ interface UserRetweets {
 }
 
 interface UserBookmarks {
-  bookmark:string;
-  setBookmark:(value:string)=>void
+  bookmark: string;
+  setBookmark: (value: string) => void;
+}
+interface Name {
+  name: string;
+  setName: (value: string) => void;
 }
 
 export const usePreviewStore = create<Preview>((set) => ({
@@ -101,23 +105,24 @@ export const useMobileDrawer = create<Drawer>((set) => ({
   setDrawer: (value: boolean) => set(() => ({ drawer: value })),
 }));
 
-export const useCreateListModal = create<Modal>((set)=>({
-  modal:false,
+export const useCreateListModal = create<Modal>((set) => ({
+  modal: false,
   setModal: (value: boolean) => set(() => ({ modal: value })),
-
-}))
-export const useEditListModal = create<Modal>((set)=>({
-  modal:false,
+}));
+export const useEditListModal = create<Modal>((set) => ({
+  modal: false,
   setModal: (value: boolean) => set(() => ({ modal: value })),
-
-}))
-export const useManageModal = create<Modal>((set)=>({
-  modal:false,
+}));
+export const useManageModal = create<Modal>((set) => ({
+  modal: false,
   setModal: (value: boolean) => set(() => ({ modal: value })),
+}));
 
-}))
-
-export const useDebouncedBookmarks = create<UserBookmarks>((set)=>({
-  bookmark:"",
-  setBookmark:(value:string)=>set(()=>({ bookmark:value }))
+export const useDebouncedBookmarks = create<UserBookmarks>((set) => ({
+  bookmark: "",
+  setBookmark: (value: string) => set(() => ({ bookmark: value })),
+}));
+export const useDebouncedPeople = create<Name>((set) => ({
+  name: "",
+  setName: (value: string) => set(() => ({ name: value })),
 }));

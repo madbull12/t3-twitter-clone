@@ -13,7 +13,7 @@ import { trpc } from "../utils/trpc";
 import Backdrop from "./Backdrop";
 import Loader from "./Loader";
 import Modal from "./Modal";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import ManageModal from "./ManageModal";
 type List = {
   name: string;
@@ -131,9 +131,9 @@ const EditListModal = () => {
     <Modal>
       <div
         ref={modalRef}
-        className="relative mx-auto flex h-[500px] max-w-3xl gap-x-2  overflow-x-hidden overflow-y-scroll rounded-2xl  bg-base-100 "
+        className="relative mx-auto flex h-[550px] max-w-2xl gap-x-2  overflow-x-hidden overflow-y-scroll rounded-2xl  bg-base-100 "
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full">
           <header className="flex items-center justify-between gap-x-1 p-4 xs:gap-x-2 sm:gap-x-4">
             <IoMdClose
               className="cursor-pointer text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl"
@@ -205,7 +205,7 @@ const EditListModal = () => {
               type="button"
               className="flex items-center justify-between p-1 text-sm"
               onClick={() => {
-                setEditModal(false);
+                setManageModal(true);
               }}
             >
               <p className="label-text">Manage members</p>
@@ -220,7 +220,8 @@ const EditListModal = () => {
             </button>
           </div>
         </form>
-        <ManageModal />
+
+          <ManageModal />
       </div>
     </Modal>
   );

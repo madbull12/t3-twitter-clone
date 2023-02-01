@@ -1,38 +1,29 @@
+import React, { ChangeEvent, useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, useState } from "react";
+import { trpc } from "../utils/trpc";
 import { BiSearch } from "react-icons/bi";
 import { useDebounce } from "usehooks-ts";
-import { trpc } from "../utils/trpc";
-import { useEffect } from "react";
-import { useDebouncedBookmarks } from "../../lib/zustand";
-import { Bookmark } from "@prisma/client";
-import { BookmarksWithPayloads } from "../../interface";
+import { useDebouncedPeople } from "../../lib/zustand";
 
-interface IProps {
-  placeholder: string;
-}
-const SearchBookmark = ({ placeholder }: IProps) => {
+const SearchMember = () => {
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const router = useRouter();
-
+  const { listId } = router.query
   const [value, setValue] = useState<string>("");
+  const { setName } = useDebouncedPeople();
   const debouncedValue = useDebounce<string>(value, 500);
-  const { setBookmark } = useDebouncedBookmarks();
-  // const { data: bookmarks, refetch } =
-  //   trpc.bookmark.searchUserBookmarks.useQuery({ term: debouncedValue });
-  //   console.log(bookmarks)
+  const { data: members, refetch } =
+    trpc.list.searchUserSuggestions.useQuery({ name: debouncedValue,listId:listId as string });
+  console.log(members);
   useEffect(() => {
     // Do fetch here...
-    // refetch();
-    
-    setBookmark(debouncedValue);
-
+    refetch();
+    setName(debouncedValue);
   }, [debouncedValue]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
   };
-
   return (
     <form
       onFocus={() => setIsFocused(true)}
@@ -43,14 +34,13 @@ const SearchBookmark = ({ placeholder }: IProps) => {
     >
       <BiSearch />
       <input
-        
+        placeholder="Search people"
         onChange={handleChange}
         type="text"
         className="w-full bg-transparent outline-none"
-        placeholder={placeholder}
       />
     </form>
   );
 };
 
-export default SearchBookmark;
+export default SearchMember;

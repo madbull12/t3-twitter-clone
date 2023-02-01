@@ -23,7 +23,7 @@ export const listRouter = router({
   createList: publicProcedure
     .input(
       z.object({
-        name: z.string().min(4,"Name should have at least 4 characters"),
+        name: z.string().min(4, "Name should have at least 4 characters"),
         description: z.string().optional(),
         isPrivate: z.boolean(),
         coverPhoto: z.string().optional().nullable(),
@@ -58,10 +58,10 @@ export const listRouter = router({
         description: z.string().optional(),
         isPrivate: z.boolean().optional(),
         coverPhoto: z.string().optional().nullable(),
-        listId:z.string()
+        listId: z.string(),
       })
     )
-    .mutation(({ ctx,input })=>{
+    .mutation(({ ctx, input }) => {
       if (!ctx.session) {
         throw new Error(
           "You have to be logged in in order to perform this action!"
@@ -70,28 +70,27 @@ export const listRouter = router({
       const userId = ctx.session.user?.id;
 
       return ctx.prisma.list.update({
-        where:{
-          id_creatorId:{
-            id:input?.listId,
-            creatorId:userId as string
-          }
+        where: {
+          id_creatorId: {
+            id: input?.listId,
+            creatorId: userId as string,
+          },
         },
-        data:{
-          name:input?.name as string,
-          description:input?.description as string,
-          isPrivate:input?.isPrivate as boolean,
-          coverPhoto:input?.coverPhoto as string
-        }
-      })
+        data: {
+          name: input?.name as string,
+          description: input?.description as string,
+          isPrivate: input?.isPrivate as boolean,
+          coverPhoto: input?.coverPhoto as string,
+        },
+      });
     }),
-    deleteList:publicProcedure
+  deleteList: publicProcedure
     .input(
       z.object({
-   
-        listId:z.string()
+        listId: z.string(),
       })
     )
-    .mutation(({ ctx,input })=>{
+    .mutation(({ ctx, input }) => {
       if (!ctx.session) {
         throw new Error(
           "You have to be logged in in order to perform this action!"
@@ -99,14 +98,13 @@ export const listRouter = router({
       }
       const userId = ctx.session.user?.id;
       return ctx.prisma.list.delete({
-        where:{
-          id_creatorId:{
-            id:input?.listId,
-            creatorId:userId as string
-          }
+        where: {
+          id_creatorId: {
+            id: input?.listId,
+            creatorId: userId as string,
+          },
         },
- 
-      })
+      });
     }),
 
   getListDetails: publicProcedure
@@ -133,6 +131,62 @@ export const listRouter = router({
             },
           },
         },
+      });
+    }),
+
+  getListMembers: publicProcedure
+    .input(z.object({ listId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.list.findUnique({
+        where: {
+          id: input?.listId,
+        },
+        select: {
+          members: {
+            include: {
+              profile: true,
+            },
+          },
+        },
+        // include: {
+        //   members: {
+        //     include: {
+        //       profile: true,
+        //     },
+        //   },
+        // },
+      });
+    }),
+  searchUserSuggestions: publicProcedure
+    .input(z.object({ name: z.string(), listId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.user.findMany({
+        where: {
+          name: {
+            contains: input?.name,
+            mode: "insensitive",
+          },
+          listMember: {
+            some: {
+              NOT: {
+                id: input?.listId,
+              },
+            },
+          },
+        },
+      });
+    }),
+  getUserSuggestions: publicProcedure
+    .input(z.object({ listId: z.string() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.user.findMany({
+        where:{
+          listMember: {
+            some: {
+                id: input?.listId,
+            },
+          },
+        }
       });
     }),
 });
