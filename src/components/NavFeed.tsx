@@ -11,7 +11,7 @@ import MobileDrawerToggle from "./MobileDrawerToggle";
 const NavFeed = ({
   title,
   children,
-  subtitle
+  subtitle,
 }: {
   title: string;
   children?: React.ReactNode;
@@ -29,6 +29,8 @@ const NavFeed = ({
   const handleClose = () => {
     setIsOpen(false);
   };
+
+  const exceptionLinks = ["/","/following"]
   return (
     <nav className="sticky top-0 z-50  w-full  bg-base-100/30 p-3  backdrop-blur-lg  md:gap-x-4">
       <div className="flex items-center gap-x-8">
@@ -40,7 +42,7 @@ const NavFeed = ({
           </>
         ) : null}
 
-        {router.pathname !== "/" ? (
+        {(!exceptionLinks.includes(router.pathname)) ? (
           <BsArrowLeft
             className="cursor-pointer text-xl"
             onClick={() => router.back()}

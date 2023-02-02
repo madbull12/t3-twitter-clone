@@ -7,7 +7,7 @@ import Button from "./Button";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import useFollow from "../../hooks/useFollow";
-
+import { GoVerified } from 'react-icons/go'
 interface IProps {
   user: UserWithPayloads;
 }
@@ -29,12 +29,19 @@ const PeopleComponent = ({ user }: IProps) => {
       <div className="flex cursor-pointer items-start justify-between gap-x-4 px-2 py-6 transition-all duration-100 ease-in-out hover:bg-base-200">
         <Avatar image={user.image || ""} width={40} height={40} />
         <div className="mr-auto truncate ">
+          <div className="flex items-center gap-x-1">
           <Link
             className="text-lg font-semibold  hover:underline"
             href={`/${user.id}/${user.name}`}
           >
             {user.name}
           </Link>
+          {user?.isVerified ? (
+          <GoVerified className="text-primary" />
+
+          ):null}
+          </div>
+     
           {user.handle ? (
           <p className="text-gray-500 text-sm truncate">@{user.handle}</p>
 

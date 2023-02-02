@@ -19,6 +19,7 @@ import Head from "next/head";
 import useFollow from "../../../../hooks/useFollow";
 import { toast } from "react-hot-toast";
 import { useCopyToClipboard } from "usehooks-ts";
+import { GoVerified } from "react-icons/go";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -112,7 +113,7 @@ const ProfilePage = () => {
             Edit profile
           </button>
         ) : (
-          <div className="flex items-center mt-4 ">
+          <div className="mt-4 flex items-center ">
             <div className="dropdown-bottom dropdown-end dropdown">
               <label
                 tabIndex={0}
@@ -145,10 +146,7 @@ const ProfilePage = () => {
                   </button>
                 </li>
                 <li>
-                  <button
-           
-                    className="flex items-center gap-x-2 rounded-xl p-2 font-bold "
-                  >
+                  <button className="flex items-center gap-x-2 rounded-xl p-2 font-bold ">
                     <IoIosListBox />
                     <Link href={`/list/${userId}`}>View User's list</Link>
                   </button>
@@ -185,7 +183,13 @@ const ProfilePage = () => {
         )}
       </div>
       <div className="p-2 md:p-4">
-        <p className="text-lg font-bold md:text-2xl">{userProfile?.name}</p>
+        <div className="flex items-center gap-x-1">
+          <p className="text-lg font-bold md:text-2xl">{userProfile?.name}</p>
+          {userProfile?.isVerified ? (
+          <GoVerified className="text-primary" />
+
+          ):null}
+        </div>
         {userProfile?.handle ? (
           <p className="mb-2 text-sm text-gray-400">@{userProfile?.handle}</p>
         ) : null}

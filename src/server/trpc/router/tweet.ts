@@ -251,6 +251,73 @@ export const tweetRouter = router({
       });
     }),
 
+  getFollowingInfiniteTweets: publicProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().nullish(),
+        skip: z.number().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      if (!ctx.session) {
+        throw new Error("You have to be logged in to perform this action!");
+      }
+      const userId = ctx.session?.user?.id;
+      const followingUsers = await ctx.prisma.user.findUnique({
+        where: {
+          id: userId as string,
+        },
+        select: {
+          followings: {
+            select: {
+              followerId: true,
+            },
+          },
+        },
+      });
+
+      console.log(followingUsers);
+      const followingIds = followingUsers?.followings.map(
+        (user) => user.followerId
+      );
+
+      const { limit, skip, cursor } = input;
+
+      const followingTweets = await ctx.prisma.tweet.findMany({
+        where: {
+          userId: {
+            in: followingIds,
+          },
+        },
+        take: limit + 1,
+        skip: skip,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          user: true,
+          originalTweet: {
+            include: {
+              user: true,
+            },
+          },
+          likes: true,
+          replies: true,
+          retweets: true,
+        },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (followingTweets.length > limit) {
+        const nextItem = followingTweets.pop(); // return the last item from the array
+        nextCursor = nextItem?.id;
+      }
+      return {
+        followingTweets,
+        nextCursor,
+      };
+    }),
   getInfiniteTweets: publicProcedure
     .input(
       z.object({
@@ -445,7 +512,6 @@ export const tweetRouter = router({
         case "likes":
           return ctx.prisma.tweet.findMany({
             where: {
-          
               likes: {
                 some: {
                   userId: input.userId,
