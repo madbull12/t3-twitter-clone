@@ -13,7 +13,7 @@ const NavFeed = ({
   children,
   subtitle,
 }: {
-  title: string;
+  title?: string;
   children?: React.ReactNode;
   subtitle?:string;
 }) => {

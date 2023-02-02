@@ -37,8 +37,8 @@ const Sidebar = () => {
       name: "Home",
       link: "/",
       hidden: false,
-      active: router.pathname === "/",
-      icon: router.pathname === "/" ? <AiFillHome /> : <AiOutlineHome />,
+      active: router.pathname === "/" || router.pathname === "/following",
+      icon: router.pathname === "/" || router.pathname === "/following" ? <AiFillHome /> : <AiOutlineHome />,
     },
     {
       name: "Explore",

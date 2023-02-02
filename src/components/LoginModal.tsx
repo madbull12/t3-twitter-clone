@@ -6,6 +6,7 @@ import { IoClose } from "react-icons/io5";
 import useOnClickOutside from "../../hooks/useOutsideClick";
 import { useLoginModal } from "../../lib/zustand";
 import Backdrop from "./Backdrop";
+import Modal from "./Modal";
 
 const LoginModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -17,6 +18,7 @@ const LoginModal = () => {
 
   return (
     <Backdrop>
+      <Modal>
       <div
         ref={modalRef}
         className="relative mx-auto max-h-[500px] max-w-lg overflow-y-scroll rounded-2xl  bg-white p-4 text-black"
@@ -39,6 +41,8 @@ const LoginModal = () => {
           </button>
         </div>
       </div>
+      </Modal>
+     
     </Backdrop>
   );
 };
