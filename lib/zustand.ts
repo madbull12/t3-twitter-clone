@@ -17,6 +17,10 @@ interface Modal {
   modal: boolean;
   setModal: (value: boolean) => void;
 }
+interface PollingIsOpen {
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void;
+}
 
 interface TweetIdStore {
   tweetId: string;
@@ -117,6 +121,10 @@ export const useManageModal = create<Modal>((set) => ({
   modal: false,
   setModal: (value: boolean) => set(() => ({ modal: value })),
 }));
+export const useOpenPolling = create<PollingIsOpen>((set) => ({
+  isOpen: false,
+  setIsOpen: (value: boolean) => set(() => ({ isOpen: value })),
+}));
 
 export const useDebouncedBookmarks = create<UserBookmarks>((set) => ({
   bookmark: "",
@@ -126,3 +134,4 @@ export const useDebouncedPeople = create<Name>((set) => ({
   name: "",
   setName: (value: string) => set(() => ({ name: value })),
 }));
+

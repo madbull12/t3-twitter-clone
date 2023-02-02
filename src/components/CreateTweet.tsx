@@ -5,12 +5,13 @@ import { RiCloseLine, RiEarthFill } from "react-icons/ri";
 import { BiPoll } from "react-icons/bi";
 import Button from "./Button";
 import Image from "next/image";
-import { usePreviewStore } from "../../lib/zustand";
+import { useOpenPolling, usePreviewStore } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import { toast } from "react-hot-toast";
 import MediaTools from "./MediaTools";
 import Avatar from "./Avatar";
 import Link from "next/link";
+import PollingSection from "./PollingSection";
 // import { useForm } from "react-hook-form";
 // import useCreateTweet from "../../hooks/useCreateTweet";
 // import useMediaUpload from "../../hooks/useMediaUpload";
@@ -106,6 +107,9 @@ const CreateTweet = () => {
     setText(text + emoji);
   };
 
+
+  const { setIsOpen, isOpen: isPollingOpen } = useOpenPolling();
+
   // const {
   //   // upload: imageUpload,
   //   onSelectFile,
@@ -133,6 +137,8 @@ const CreateTweet = () => {
           placeholder="What's happening?"
           className={`w-full resize-none overflow-hidden bg-transparent text-neutral outline-none placeholder:text-gray-600 md:text-xl `}
         />
+        {isPollingOpen ? <PollingSection /> : null}
+        
         {selectedFile && (
           <>
             {selectedFile.type === "video/mp4" ? (
@@ -189,7 +195,13 @@ const CreateTweet = () => {
             onSelectFile={onSelectFile}
           />
           <div className="flex-[0.4]">
-            <Button text="Tweet" />
+            <button
+              type="submit"
+              disabled={text === ""}
+              className={`w-full rounded-full bg-primary px-2 py-1  font-semibold text-white md:px-4 md:py-2 ${text==="" ? "bg-blue-400" : null}`}
+            >
+              Tweet
+            </button>
           </div>
         </div>
       </form>

@@ -40,6 +40,7 @@ const useCreateTweet = () => {
   // console.log(text.split(" ").filter((word)=>word.startsWith("#")).map((word)=>word.slice(1)))
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    
     let hashtags = text
       .split(" ")
       .filter((word) => word.startsWith("#"))

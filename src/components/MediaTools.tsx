@@ -7,6 +7,7 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { useReadLocalStorage } from "usehooks-ts";
 import useOnClickOutside from "../../hooks/useOutsideClick";
 import useMediaQuery from "../../hooks/useMediaQuery";
+import { useOpenPolling } from "../../lib/zustand";
 
 interface IProps {
   onSelectFile: (e: React.FormEvent<HTMLInputElement>) => void;
@@ -17,15 +18,19 @@ const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
   const theme = useReadLocalStorage("theme");
   const phone = useMediaQuery("(min-width:640px)");
 
+  const { setIsOpen,isOpen:isPollingOpen } = useOpenPolling();
 
-  const pickerRef = useRef<HTMLDivElement>(null)
+  const pickerRef = useRef<HTMLButtonElement>(null)
   useOnClickOutside(pickerRef,()=>{
     setIsPickerOpen(false)
-  })
+  });
+
+
 
   return (
     <div className=" flex flex-[0.5] items-center gap-x-4 text-base text-primary md:text-lg">
-      <div>
+      {!isPollingOpen ? (
+        <button type="button" >
         <input
           className=""
           id="imageSelect"
@@ -37,7 +42,9 @@ const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
         <label htmlFor="imageSelect" className="cursor-pointer">
           <AiOutlinePicture />
         </label>
-      </div>
+      </button>
+      ):null}
+      
       {phone ? (
         <div className="relative" >
         <BsEmojiSmile
@@ -47,13 +54,13 @@ const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
         />
 
         {isPickerOpen ? (
-          <div ref={pickerRef} className="absolute   z-[999999]" onClick={(e)=>e.stopPropagation()}>
+          <button ref={pickerRef} className="absolute   z-[999999]" onClick={(e)=>e.stopPropagation()}>
             <Picker
               onEmojiSelect={onEmojiSelect}
               data={data}
               theme={theme === "default" ? "light" : "dark"}
             />
-          </div>
+          </button>
         ) : null}
       </div>
       ):null}
@@ -61,7 +68,10 @@ const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
       
 
       <AiOutlineFileGif />
-      <BiPoll />
+      <button type="button" onClick={()=>setIsOpen(true)}>
+        <BiPoll className="cursor-pointer"  />
+
+      </button>
     </div>
   );
 };
