@@ -144,7 +144,7 @@ const TweetComponent = ({
                   )}
                 </p>
               </div>
-              <p className="text-xs xs:text-sm md:text-base">
+              <p className="text-xs xs:text-sm md:text-base  break-words max-w-lg  ">
                 {tweet.text?.split(" ").map((word: string) =>
                   word.startsWith("#") ? (
                     <span
@@ -166,12 +166,12 @@ const TweetComponent = ({
                           }
                         );
                       }}
-                      className="text-primary hover:underline"
+                      className="text-primary truncate hover:underline"
                     >
                       {word + " "}
                     </span>
                   ) : (
-                    <span>{word + " "}</span>
+                    <span className="">{word + " "}</span>
                   )
                 )}
               </p>
