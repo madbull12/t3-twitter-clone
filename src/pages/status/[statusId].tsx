@@ -35,6 +35,7 @@ import Loader from "../../components/Loader";
 import NavFeed from "../../components/NavFeed";
 import ReplyForm from "../../components/ReplyForm";
 import TweetComponent from "../../components/TweetComponent";
+import TweetContent from "../../components/TweetContent";
 import { trpc } from "../../utils/trpc";
 
 const StatusPage = () => {
@@ -113,7 +114,7 @@ const StatusPage = () => {
             </p>
           ) : null}
 
-          <p className="text-lg md:text-2xl">{tweetDetails?.text}</p>
+          <TweetContent text={tweetDetails?.text as string} />
           {tweetDetails?.image ? (
             <div className="relative  h-96 w-full md:w-3/4">
               {tweetDetails?.image.includes("video") ? (

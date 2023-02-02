@@ -31,6 +31,7 @@ import useLikeTweet from "../../hooks/useLikeTweet";
 import useRetweet from "../../hooks/useRetweet";
 import { FaRetweet } from "react-icons/fa";
 import ShareDropdown from "./ShareDropdown";
+import TweetContent from "./TweetContent";
 
 interface IProps {
   tweet: TweetWithUser;
@@ -78,6 +79,9 @@ const TweetComponent = ({
 
   const _isYourRetweet = (tweet.userId as string) === session?.user?.id;
   const _retweetUsername = tweet.user.name;
+
+
+
   return (
     <>
       {tweet.retweet ? (
@@ -144,37 +148,7 @@ const TweetComponent = ({
                   )}
                 </p>
               </div>
-              <p className="text-xs xs:text-sm md:text-base  break-words max-w-lg  ">
-                {tweet.text?.split(" ").map((word: string) =>
-                  word.startsWith("#") ? (
-                    <span
-                      key={v4()}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        router.replace(
-                          {
-                            pathname: "/search",
-                            query: {
-                              ...router.query, // list all the queries here
-                              f: router.query.q ? router.query.f : "top",
-                              q: word,
-                            },
-                          },
-                          undefined,
-                          {
-                            shallow: true,
-                          }
-                        );
-                      }}
-                      className="text-primary truncate hover:underline"
-                    >
-                      {word + " "}
-                    </span>
-                  ) : (
-                    <span className="">{word + " "}</span>
-                  )
-                )}
-              </p>
+              <TweetContent text={tweet?.text as string} />
               {tweet?.originalTweet ? (
                 <p className="text-sm text-gray-500 md:text-base">
                   Replying to{" "}

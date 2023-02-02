@@ -149,6 +149,12 @@ const CreateTweet = () => {
             ) : (
               <div className="relative">
                 <img src={preview} />
+                <div
+                  onClick={() => setSelectedFile(undefined)}
+                  className="absolute top-4 right-4  grid h-8 w-8  cursor-pointer  place-items-center rounded-full bg-[#00000083] text-xl text-white"
+                >
+                  <RiCloseLine />
+                </div>
               </div>
             )}
           </>
