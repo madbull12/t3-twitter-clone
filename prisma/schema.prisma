@@ -69,6 +69,7 @@ model User {
   listFollowing List[]     @relation("followers")
   listMember    List[]     @relation("members")
   lists         List[]
+  isVerified    Boolean?   @default(false)
 }
 
 model VerificationToken {
@@ -131,11 +132,20 @@ model Tweet {
 }
 
 model Poll {
-  id      String   @id @default(uuid())
-  options String[]
-  votes   Int[]
-  tweet   Tweet    @relation(fields: [tweetId], references: [id])
-  tweetId String   @unique
+  id        String   @id @default(uuid())
+  expiredAt DateTime 
+  
+  options   Option[]
+  tweet     Tweet    @relation(fields: [tweetId], references: [id])
+  tweetId   String   @unique
+}
+
+model Option {
+  id      String  @id @default(uuid())
+  text    String
+  votes   Int     @default(0)
+  poll    Poll    @relation(fields: [pollId], references: [id])
+  pollId  String
 }
 
 model Profile {
@@ -169,7 +179,7 @@ model List {
   isPrivate   Boolean @default(false)
   coverPhoto  String?
 
-  @@unique([id,creatorId])
+  @@unique([id, creatorId])
 }
 
 // model Retweet {
