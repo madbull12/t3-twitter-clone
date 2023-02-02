@@ -89,7 +89,6 @@ const EditProfileModal = () => {
     ).then((res) => res.json());
 
     imageUrl = res.secure_url;
-    console.log(imageUrl);
   };
 
   const coverPhotoUpload = async () => {
@@ -135,7 +134,6 @@ const EditProfileModal = () => {
     setModal(false);
   };
 
-  console.log(imagePreview);
 
   return (
     <Modal>

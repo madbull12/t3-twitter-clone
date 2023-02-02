@@ -16,7 +16,6 @@ import { trpc } from "../utils/trpc";
 const BookmarkPage = () => {
   const { bookmarks: data, isLoading } = useBookmark();
   const bookmarks = data?.map((bookmark) => bookmark.tweet);
-  console.log(bookmarks);
   const { bookmark: bookmarkValue } = useDebouncedBookmarks();
 
   const { data: searchBookmarks, isLoading: searchLoading } =

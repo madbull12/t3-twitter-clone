@@ -71,7 +71,6 @@ const useRetweet = (tweetId?: string) => {
   const { data: alreadyRetweeted } = trpc.tweet.userAlreadyRetweet.useQuery({
     tweetId: tweetId as string,
   });
-  console.log(alreadyRetweeted);
 
   // const retweetsMapped = userRetweets?.map((retweet)=>retweet.retweets);
   // const alreadyRetweeted = retweetsMapped?.find((retweet)=>retweet.id)

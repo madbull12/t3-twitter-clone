@@ -58,7 +58,6 @@ const TweetComponent = ({
     isRetweeting,
     isUndoingRetweet,
   } = useRetweet(tweet.id);
-  console.log(alreadyRetweeted);
 
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
 

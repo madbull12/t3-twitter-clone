@@ -13,7 +13,6 @@ import { trpc } from "../utils/trpc";
 
 const FollowingOnlyTweetsPage = () => {
   const scrollPosition = useScrollPosition();
-  console.log(scrollPosition);
   const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
     trpc.tweet.getFollowingInfiniteTweets.useInfiniteQuery(
       {
@@ -30,7 +29,6 @@ const FollowingOnlyTweetsPage = () => {
     }
   }, [scrollPosition, isFetching, hasNextPage, fetchNextPage]);
 
-  console.log(data);
   const tweets = data?.pages.flatMap((page) => page.followingTweets) ?? [];
   const router = useRouter();
   const { data: session, status } = useSession();

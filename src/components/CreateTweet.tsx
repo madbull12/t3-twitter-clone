@@ -88,6 +88,7 @@ const CreateTweet = () => {
     return () => URL.revokeObjectURL(objectUrl);
   }, [selectedFile]);
   const onSelectFile = (e: React.FormEvent<HTMLInputElement>) => {
+    console.log(e.currentTarget.files);
     if (!e.currentTarget.files || e.currentTarget.files.length === 0) {
       setSelectedFile(undefined);
       return;

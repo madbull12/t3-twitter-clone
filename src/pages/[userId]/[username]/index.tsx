@@ -73,7 +73,6 @@ const ProfilePage = () => {
   } = useFollow(userId as string);
   if (isLoadingUserProfile) return <Loader />;
 
-  console.log(userProfile);
 
   return (
     <Body>

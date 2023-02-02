@@ -59,7 +59,6 @@ const ManageModal = () => {
     listId: listId as string,
   });
 
-  console.log(userSuggestions)
 
   return (
     <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>

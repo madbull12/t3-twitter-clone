@@ -20,7 +20,6 @@ const FollowerPage = () => {
       userId: userId as string,
     });
 
-  console.log(userFollowers);
   if (isLoading) return <Loader />;
 
   return (

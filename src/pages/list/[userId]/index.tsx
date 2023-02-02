@@ -19,7 +19,6 @@ const ListPage = () => {
     userId: userId as string,
   });
   const { data: session } = useSession();
-  console.log(userLists);
   const { setModal } = useCreateListModal();
   return (
     <Body>

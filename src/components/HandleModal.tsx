@@ -21,7 +21,6 @@ const HandleModal = () => {
   const { data: user } = trpc.user.getUser.useQuery({
     userId:session?.user?.id as string
   });
-  console.log(user);
 
   const utils = trpc.useContext();
   useOnClickOutside(modalRef, () => {

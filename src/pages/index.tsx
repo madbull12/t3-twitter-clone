@@ -20,7 +20,6 @@ import HomeNav from "../components/HomeNav";
 
 const Home: NextPage = () => {
   const scrollPosition = useScrollPosition();
-  console.log(scrollPosition);
   const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
     trpc.tweet.getInfiniteTweets.useInfiniteQuery(
       {
@@ -37,7 +36,6 @@ const Home: NextPage = () => {
     }
   }, [scrollPosition, isFetching, hasNextPage, fetchNextPage]);
 
-  console.log(data);
   const tweets = data?.pages.flatMap((page) => page.tweets) ?? [];
   const router = useRouter();
   const { data: session, status } = useSession();

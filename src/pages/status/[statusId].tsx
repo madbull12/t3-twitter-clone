@@ -49,7 +49,6 @@ const StatusPage = () => {
     }
   );
 
-  console.log(tweetDetails?.retweets);
 
   const { data: replies } = trpc?.tweet.getTweetReplies.useQuery({
     tweetId: statusId,
@@ -57,7 +56,6 @@ const StatusPage = () => {
 
   const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet,isRetweeting,isUndoingRetweet } =
     useRetweet(tweetDetails?.id as string);
-  console.log(alreadyRetweeted);
 
   const {
     handleLike,

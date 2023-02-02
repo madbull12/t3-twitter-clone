@@ -24,7 +24,6 @@ const SearchPage = () => {
       term,
     });
 
-  // console.log(searchResults);
   return (
     <Body>
       <Head>

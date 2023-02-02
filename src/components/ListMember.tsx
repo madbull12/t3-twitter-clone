@@ -17,7 +17,6 @@ const ListMember = ({ member }: { member: UserWithPayloads }) => {
     memberId: member.id,
   });
 
-  console.log(memberExist);
 
   const { mutateAsync: addMember } = trpc.list.addMember.useMutation({
     onMutate: () => {

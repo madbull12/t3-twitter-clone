@@ -14,7 +14,6 @@ const SearchMember = () => {
   const debouncedValue = useDebounce<string>(value, 500);
   const { data: members, refetch } =
     trpc.list.searchUserSuggestions.useQuery({ name: debouncedValue,listId:listId as string });
-  console.log(members);
   useEffect(() => {
     // Do fetch here...
     refetch();

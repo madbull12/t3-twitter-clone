@@ -9,7 +9,6 @@ import { trpc } from "../utils/trpc";
 
 const ExplorePage = () => {
   const { data } = trpc.hashtag.getTopHashtags.useQuery();
-  console.log(data);
   return (
     <Body>
       <Head>

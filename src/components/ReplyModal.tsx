@@ -34,7 +34,6 @@ const ReplyModal = () => {
     tweetId,
   });
 
-  console.log(tweetReply);
 
   const now = new Date();
   const msBetweenDates =

@@ -15,7 +15,6 @@ interface IProps {
 const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const theme = useReadLocalStorage("theme");
-  console.log(theme);
   const phone = useMediaQuery("(min-width:640px)");
 
 
@@ -23,9 +22,7 @@ const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
   useOnClickOutside(pickerRef,()=>{
     setIsPickerOpen(false)
   })
-  useEffect(()=>{
-    console.log(isPickerOpen)
-  },[isPickerOpen])
+
   return (
     <div className=" flex flex-[0.5] items-center gap-x-4 text-base text-primary md:text-lg">
       <div>

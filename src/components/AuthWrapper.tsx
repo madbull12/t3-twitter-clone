@@ -8,7 +8,6 @@ const authRoutes = ["/following",'/status/[statusId]','/[userId]/[username]','/[
 const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
   const session = useSession()
   const router = useRouter()
-  console.log(session)
 
   if (session.status === 'loading') return null
 

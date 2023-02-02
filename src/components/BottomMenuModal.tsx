@@ -25,7 +25,6 @@ const BottomMenuModal = ({ tweetId }: { tweetId: string }) => {
   });
 
   //   const isYourTweet = !!singleTweet;
-  console.log(singleTweet);
   const handleDeleteTweet = async () => {
     toast.promise(deleteTweet({ tweetId }), {
       success: "Tweet deleted",
