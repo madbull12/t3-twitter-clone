@@ -5,13 +5,14 @@ import { RiCloseLine, RiEarthFill } from "react-icons/ri";
 import { BiPoll } from "react-icons/bi";
 import Button from "./Button";
 import Image from "next/image";
-import { useOpenPolling, usePreviewStore } from "../../lib/zustand";
+import { useDisableTweet, useOpenPolling, usePreviewStore } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import { toast } from "react-hot-toast";
 import MediaTools from "./MediaTools";
 import Avatar from "./Avatar";
 import Link from "next/link";
 import PollingSection from "./PollingSection";
+import usePolling from "../../hooks/usePolling";
 // import { useForm } from "react-hook-form";
 // import useCreateTweet from "../../hooks/useCreateTweet";
 // import useMediaUpload from "../../hooks/useMediaUpload";
@@ -19,6 +20,11 @@ import PollingSection from "./PollingSection";
 const CreateTweet = () => {
   const { data: session, status } = useSession();
   const utils = trpc.useContext();
+  const { isDisabled } = useDisableTweet();
+
+  const { choices,handleChange } = usePolling();
+
+
 
   const { mutateAsync: createTweet } = trpc.tweet.createTweet.useMutation({
     onMutate: () => {
@@ -108,7 +114,7 @@ const CreateTweet = () => {
   };
 
 
-  const { setIsOpen, isOpen: isPollingOpen } = useOpenPolling();
+  const {  isOpen: isPollingOpen } = useOpenPolling();
 
   // const {
   //   // upload: imageUpload,
@@ -134,7 +140,7 @@ const CreateTweet = () => {
           value={text}
           ref={textRef}
           onChange={(e) => setText(e.target.value)}
-          placeholder="What's happening?"
+          placeholder={isPollingOpen ? "Ask a question" : "What's happening"}
           className={`w-full resize-none overflow-hidden bg-transparent text-neutral outline-none placeholder:text-gray-600 md:text-xl `}
         />
         {isPollingOpen ? <PollingSection /> : null}
@@ -197,7 +203,7 @@ const CreateTweet = () => {
           <div className="flex-[0.4]">
             <button
               type="submit"
-              disabled={text === ""}
+              disabled={text === "" || isDisabled}
               className={`w-full rounded-full bg-primary px-2 py-1  font-semibold text-white md:px-4 md:py-2 ${text==="" ? "bg-blue-400" : null}`}
             >
               Tweet
