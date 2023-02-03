@@ -50,6 +50,11 @@ interface Name {
   setName: (value: string) => void;
 }
 
+interface DisableTweet {
+  isDisabled:boolean;
+  setIsDisabled:(value: boolean) => void
+}
+
 export const usePreviewStore = create<Preview>((set) => ({
   preview: "",
   setPreview: (objectUrl: string) => set(() => ({ preview: objectUrl })),
@@ -124,6 +129,10 @@ export const useManageModal = create<Modal>((set) => ({
 export const useOpenPolling = create<PollingIsOpen>((set) => ({
   isOpen: false,
   setIsOpen: (value: boolean) => set(() => ({ isOpen: value })),
+}));
+export const useDisableTweet = create<DisableTweet>((set) => ({
+  isDisabled: false,
+  setIsDisabled: (value: boolean) => set(() => ({ isDisabled: value })),
 }));
 
 export const useDebouncedBookmarks = create<UserBookmarks>((set) => ({

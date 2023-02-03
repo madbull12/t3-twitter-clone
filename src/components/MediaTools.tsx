@@ -1,13 +1,13 @@
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
-import React, { useState,useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AiOutlineFileGif, AiOutlinePicture } from "react-icons/ai";
 import { BiPoll } from "react-icons/bi";
 import { BsEmojiSmile } from "react-icons/bs";
 import { useReadLocalStorage } from "usehooks-ts";
 import useOnClickOutside from "../../hooks/useOutsideClick";
 import useMediaQuery from "../../hooks/useMediaQuery";
-import { useOpenPolling } from "../../lib/zustand";
+import { useDisableTweet, useOpenPolling } from "../../lib/zustand";
 
 interface IProps {
   onSelectFile: (e: React.FormEvent<HTMLInputElement>) => void;
@@ -18,59 +18,57 @@ const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
   const theme = useReadLocalStorage("theme");
   const phone = useMediaQuery("(min-width:640px)");
 
-  const { setIsOpen,isOpen:isPollingOpen } = useOpenPolling();
+  const { setIsOpen, isOpen: isPollingOpen } = useOpenPolling();
 
-  const pickerRef = useRef<HTMLButtonElement>(null)
-  useOnClickOutside(pickerRef,()=>{
-    setIsPickerOpen(false)
+  const pickerRef = useRef<HTMLButtonElement>(null);
+  useOnClickOutside(pickerRef, () => {
+    setIsPickerOpen(false);
   });
-
-
 
   return (
     <div className=" flex flex-[0.5] items-center gap-x-4 text-base text-primary md:text-lg">
       {!isPollingOpen ? (
-        <button type="button" >
-        <input
-          className=""
-          id="imageSelect"
-          hidden
-          type="file"
-          onChange={onSelectFile}
-          accept="image/png, image/gif, image/jpeg,video/mp4,video/x-m4v,video/*"
-        />
-        <label htmlFor="imageSelect" className="cursor-pointer">
-          <AiOutlinePicture />
-        </label>
-      </button>
-      ):null}
-      
+        <button type="button">
+          <input
+            className=""
+            id="imageSelect"
+            hidden
+            type="file"
+            onChange={onSelectFile}
+            accept="image/png, image/gif, image/jpeg,video/mp4,video/x-m4v,video/*"
+          />
+          <label htmlFor="imageSelect" className="cursor-pointer">
+            <AiOutlinePicture />
+          </label>
+        </button>
+      ) : null}
+
       {phone ? (
-        <div className="relative" >
-        <BsEmojiSmile
-          className="cursor-pointer"
-          onClick={() => setIsPickerOpen(true)}
-          
-        />
+        <div className="relative">
+          <BsEmojiSmile
+            className="cursor-pointer"
+            onClick={() => setIsPickerOpen(true)}
+          />
 
-        {isPickerOpen ? (
-          <button ref={pickerRef} className="absolute   z-[999999]" onClick={(e)=>e.stopPropagation()}>
-            <Picker
-              onEmojiSelect={onEmojiSelect}
-              data={data}
-              theme={theme === "default" ? "light" : "dark"}
-            />
-          </button>
-        ) : null}
-      </div>
-      ):null}
-
-      
+          {isPickerOpen ? (
+            <button
+              ref={pickerRef}
+              className="absolute   z-[999999]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Picker
+                onEmojiSelect={onEmojiSelect}
+                data={data}
+                theme={theme === "default" ? "light" : "dark"}
+              />
+            </button>
+          ) : null}
+        </div>
+      ) : null}
 
       <AiOutlineFileGif />
-      <button type="button" onClick={()=>setIsOpen(true)}>
-        <BiPoll className="cursor-pointer"  />
-
+      <button type="button" onClick={() => setIsOpen(true)}>
+        <BiPoll className="cursor-pointer" />
       </button>
     </div>
   );

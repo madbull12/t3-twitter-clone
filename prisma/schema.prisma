@@ -133,7 +133,7 @@ model Tweet {
 
 model Poll {
   id        String   @id @default(uuid())
-  expiredAt DateTime 
+  expiredAt DateTime? 
   
   options   Option[]
   tweet     Tweet    @relation(fields: [tweetId], references: [id])
