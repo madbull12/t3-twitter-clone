@@ -5,7 +5,11 @@ import { RiCloseLine, RiEarthFill } from "react-icons/ri";
 import { BiPoll } from "react-icons/bi";
 import Button from "./Button";
 import Image from "next/image";
-import { useDisableTweet, useOpenPolling, usePreviewStore } from "../../lib/zustand";
+import {
+  useDisableTweet,
+  useOpenPolling,
+  usePreviewStore,
+} from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import { toast } from "react-hot-toast";
 import MediaTools from "./MediaTools";
@@ -20,11 +24,26 @@ import usePolling from "../../hooks/usePolling";
 const CreateTweet = () => {
   const { data: session, status } = useSession();
   const utils = trpc.useContext();
-  const { isDisabled } = useDisableTweet();
+  const { isDisabled,setIsDisabled } = useDisableTweet();
+  const { isOpen: isPollingOpen,setIsOpen:setPollingOpen } = useOpenPolling();
 
-  const { choices,handleChange } = usePolling();
 
 
+  const { choices,handleChange,setChoices } = usePolling();
+  console.log(choices)
+
+  const { mutateAsync: createPoll } = trpc.tweet.createPoll.useMutation({
+    onMutate: () => {
+      utils.tweet.getInfiniteTweets.cancel();
+      const optimisticUpdate = utils.tweet.getInfiniteTweets.getData();
+      if (optimisticUpdate) {
+        utils.tweet.getInfiniteTweets.setData(optimisticUpdate);
+      }
+    },
+    onSettled: () => {
+      utils.tweet.getInfiniteTweets.invalidate();
+    },
+  });
 
   const { mutateAsync: createTweet } = trpc.tweet.createTweet.useMutation({
     onMutate: () => {
@@ -47,40 +66,60 @@ const CreateTweet = () => {
   // console.log(text.split(" ").filter((word)=>word.startsWith("#")).map((word)=>word.slice(1)))
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    let mediaUrl = null;
-    let hashtags = text
+
+    if (isPollingOpen) {
+      let hashtags = text
       .split(" ")
       .filter((word) => word.startsWith("#"))
       .map((word) => word.slice(1));
+      
+      const options = choices?.map((choice)=>choice.choice)
+      
 
-    //upload image
-    if (selectedFile) {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-      formData.append("upload_preset", "xap2a5k4");
-      // formData.append("file", );
+      await toast.promise(createPoll({ text, options, hashtags }), {
+        success: "Poll created",
+        loading: "Creating poll",
+        error: (err) => "Oops.. something went wrong " + err,
+      });
 
-      const res = await fetch(
-        `https://api.cloudinary.com/v1_1/dem2vt6lj/${
-          selectedFile.type === "video/mp4" ? "video" : "image"
-        }/upload`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      ).then((res) => res.json());
+      setPollingOpen(false)
 
-      mediaUrl = res.secure_url;
+    } else {
+      let mediaUrl = null;
+      let hashtags = text
+        .split(" ")
+        .filter((word) => word.startsWith("#"))
+        .map((word) => word.slice(1));
+
+      //upload image
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+        formData.append("upload_preset", "xap2a5k4");
+        // formData.append("file", );
+
+        const res = await fetch(
+          `https://api.cloudinary.com/v1_1/dem2vt6lj/${
+            selectedFile.type === "video/mp4" ? "video" : "image"
+          }/upload`,
+          {
+            method: "POST",
+            body: formData,
+          }
+        ).then((res) => res.json());
+
+        mediaUrl = res.secure_url;
+       
+      }
+      toast.promise(createTweet({ text, mediaUrl, hashtags }), {
+        success: "Tweet created",
+        loading: "Creating tweet",
+        error: (err) => "Oops.. something went wrong " + err,
+      });
+
+      textRef!.current!.value = "";
+      setSelectedFile(undefined);
     }
-
-    toast.promise(createTweet({ text, mediaUrl, hashtags }), {
-      success: "Tweet created",
-      loading: "Creating tweet",
-      error: (err) => "Oops.. something went wrong " + err,
-    });
-
-    textRef!.current!.value = "";
-    setSelectedFile(undefined);
   };
   useEffect(() => {
     if (!selectedFile) {
@@ -113,9 +152,6 @@ const CreateTweet = () => {
     setText(text + emoji);
   };
 
-
-  const {  isOpen: isPollingOpen } = useOpenPolling();
-
   // const {
   //   // upload: imageUpload,
   //   onSelectFile,
@@ -143,8 +179,8 @@ const CreateTweet = () => {
           placeholder={isPollingOpen ? "Ask a question" : "What's happening"}
           className={`w-full resize-none overflow-hidden bg-transparent text-neutral outline-none placeholder:text-gray-600 md:text-xl `}
         />
-        {isPollingOpen ? <PollingSection /> : null}
-        
+        {isPollingOpen ? <PollingSection  /> : null}
+
         {selectedFile && (
           <>
             {selectedFile.type === "video/mp4" ? (
@@ -203,8 +239,10 @@ const CreateTweet = () => {
           <div className="flex-[0.4]">
             <button
               type="submit"
-              disabled={text === "" || isDisabled}
-              className={`w-full rounded-full bg-primary px-2 py-1  font-semibold text-white md:px-4 md:py-2 ${text==="" ? "bg-blue-400" : null}`}
+              disabled={!isPollingOpen ? text==="" : text === "" || isDisabled}
+              className={`w-full rounded-full bg-primary px-2 py-1  font-semibold text-white md:px-4 md:py-2 ${
+                (!isPollingOpen ? text === "" : text === "" || isDisabled) ? "bg-blue-400" : null
+              }`}
             >
               Tweet
             </button>

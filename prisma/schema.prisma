@@ -125,27 +125,28 @@ model Tweet {
   retweetId       String?
   retweets        Tweet[]    @relation("retweets")
   isPinned        Boolean
-  poll            Poll?
+  poll            Poll?      @relation(fields: [pollId], references: [id])
+  pollId          String?    @unique
 
   @@unique([id, userId])
   @@unique([retweetId, userId])
 }
 
 model Poll {
-  id        String   @id @default(uuid())
-  expiredAt DateTime? 
-  
-  options   Option[]
-  tweet     Tweet    @relation(fields: [tweetId], references: [id])
-  tweetId   String   @unique
+  id        String    @id @default(uuid())
+  expiredAt DateTime?
+
+  options Option[]
+
+  tweet Tweet?
 }
 
 model Option {
-  id      String  @id @default(uuid())
-  text    String
-  votes   Int     @default(0)
-  poll    Poll    @relation(fields: [pollId], references: [id])
-  pollId  String
+  id     String @id @default(uuid())
+  text   String
+  votes  Int    @default(0)
+  poll   Poll   @relation(fields: [pollId], references: [id])
+  pollId String
 }
 
 model Profile {

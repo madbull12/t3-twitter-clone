@@ -1,13 +1,14 @@
 import React,{ useState,useEffect } from 'react'
 import { IoMdAdd } from 'react-icons/io'
 import usePolling from '../../hooks/usePolling';
-import { useDisableTweet, useOpenPolling } from '../../lib/zustand';
+import { useChoices, useDisableTweet, useOpenPolling } from '../../lib/zustand';
 
 
 const PollingSection = () => {
-  const { choices,handleChange,setChoices } = usePolling();
+  const { choices,handleChange } = usePolling();
 
-  const { setIsOpen } = useOpenPolling()
+  const { setIsOpen } = useOpenPolling();
+  const { incChoices } = useChoices()
 
   return (
     
@@ -19,7 +20,7 @@ const PollingSection = () => {
         {choices.map((choice,i)=>(
             <div className='flex items-center gap-x-2'>
                 <input onChange={(e)=>handleChange(e,i)} placeholder={`Choice ${i+1}`} className='input  input-primary w-full max-w-xs' />
-                <IoMdAdd onClick={()=>setChoices([...choices,{ choice:"" }])} className='text-xl cursor-pointer hover:text-primary ' />
+                <IoMdAdd onClick={incChoices} className='text-xl cursor-pointer hover:text-primary ' />
             </div>
             
         )).slice(-1)}

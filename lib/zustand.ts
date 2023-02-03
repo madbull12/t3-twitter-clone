@@ -51,8 +51,18 @@ interface Name {
 }
 
 interface DisableTweet {
-  isDisabled:boolean;
-  setIsDisabled:(value: boolean) => void
+  isDisabled: boolean;
+  setIsDisabled: (value: boolean) => void;
+}
+
+interface ChoiceState {
+  choices: Choice[];
+  incChoices: () => void;
+  setChoices:(value:Choice[]) => void
+}
+
+interface Choice {
+  choice:string;
 }
 
 export const usePreviewStore = create<Preview>((set) => ({
@@ -144,3 +154,17 @@ export const useDebouncedPeople = create<Name>((set) => ({
   setName: (value: string) => set(() => ({ name: value })),
 }));
 
+export const useChoices = create<ChoiceState>((set) => ({
+  choices: [
+    {
+      choice: "",
+    },
+    {
+      choice: "",
+    },
+  ],
+  incChoices: () =>
+    set((state) => ({ choices: [...state.choices, { choice: "" }] })),
+  
+  setChoices:(value:Choice[])=>set(()=>({ choices:value }))
+}));

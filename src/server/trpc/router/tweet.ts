@@ -9,7 +9,6 @@ export const tweetRouter = router({
         text: z.string(),
         mediaUrl: z.string().nullable(),
         hashtags: z.string().array().nullable(),
-     
       })
     )
     .mutation(({ input, ctx }) => {
@@ -40,9 +39,61 @@ export const tweetRouter = router({
               },
             })),
           },
-     
         },
       });
+    }),
+  createPoll: publicProcedure
+    .input(
+      z.object({
+        text: z.string(),
+        hashtags: z.string().array().nullable(),
+        options:z.string().array()
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const userId = ctx?.session?.user?.id;
+      if (!ctx.session) {
+        throw new Error(
+          "You have to be logged in in order to perform this action!"
+        );
+      }
+      return ctx.prisma.tweet.create({
+        data:{
+          text:input?.text,
+          isPinned: false,
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          hashtags: {
+            connectOrCreate: input?.hashtags?.map((name) => ({
+              where: {
+                name,
+              },
+              create: {
+                name,
+              },
+            })),
+          },
+       
+          poll:{
+            create:{
+              options:{
+                createMany:{
+                  data:input?.options.map((option)=>({
+                    text:option,
+                    votes:0
+                  }))
+                }
+              },
+              expiredAt:new Date()
+            },
+          
+          }
+        }
+      })
+
     }),
   deleteTweet: publicProcedure
 
@@ -70,7 +121,9 @@ export const tweetRouter = router({
           id_userId: {
             id: input?.tweetId,
             userId: userId as string,
+            
           },
+          
         },
       });
     }),
@@ -218,6 +271,11 @@ export const tweetRouter = router({
           },
           retweets: true,
           likes: true,
+          poll:{
+            include:{
+              options:true
+            }
+          },
           replies: true,
         },
         orderBy: {
@@ -308,6 +366,11 @@ export const tweetRouter = router({
           likes: true,
           replies: true,
           retweets: true,
+          poll:{
+            include:{
+              options:true
+            }
+          },
         },
       });
       let nextCursor: typeof cursor | undefined = undefined;
@@ -352,6 +415,11 @@ export const tweetRouter = router({
           likes: true,
           replies: true,
           retweets: true,
+          poll:{
+            include:{
+              options:true
+            }
+          },
         },
       });
       let nextCursor: typeof cursor | undefined = undefined;
@@ -446,6 +514,11 @@ export const tweetRouter = router({
               likes: true,
               replies: true,
               retweets: true,
+                  poll:{
+            include:{
+              options:true
+            }
+          },
             },
             orderBy: {
               createdAt: "desc",
@@ -475,6 +548,11 @@ export const tweetRouter = router({
               likes: true,
               replies: true,
               retweets: true,
+                  poll:{
+            include:{
+              options:true
+            }
+          },
             },
             orderBy: {
               createdAt: "desc",
@@ -506,6 +584,11 @@ export const tweetRouter = router({
               likes: true,
               replies: true,
               retweets: true,
+                  poll:{
+            include:{
+              options:true
+            }
+          },
             },
             orderBy: {
               createdAt: "desc",
@@ -542,6 +625,11 @@ export const tweetRouter = router({
               likes: true,
               replies: true,
               retweets: true,
+                  poll:{
+            include:{
+              options:true
+            }
+          },
             },
             orderBy: {
               createdAt: "desc",
@@ -586,6 +674,11 @@ export const tweetRouter = router({
         },
         include: {
           user: true,
+          poll:{
+            include:{
+              options:true
+            }
+          },
 
           originalTweet: {
             include: {
