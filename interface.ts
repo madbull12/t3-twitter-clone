@@ -93,6 +93,11 @@ export type TweetWithUser = Prisma.TweetGetPayload<{
       };
       likes: true;
       replies:true;
+      poll:{
+        include:{
+          options:true
+        }
+      },
       retweets:{
         include:{
           user:{

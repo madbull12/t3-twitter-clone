@@ -32,6 +32,7 @@ import useRetweet from "../../hooks/useRetweet";
 import { FaRetweet } from "react-icons/fa";
 import ShareDropdown from "./ShareDropdown";
 import TweetContent from "./TweetContent";
+import PollComponent from "./PollComponent";
 
 interface IProps {
   tweet: TweetWithUser;
@@ -156,6 +157,15 @@ const TweetComponent = ({
                   </span>
                 </p>
               ) : null}
+
+              {tweet?.poll ? (
+                <div className="gap-y-2 flex flex-col">
+                  {tweet.poll?.options?.map((option)=>(
+                    <PollComponent option={option} />
+                  ))}
+                </div>
+                  
+              ):null}
 
               {tweet?.image ? (
                 <div className="relative  h-96 w-full ">
