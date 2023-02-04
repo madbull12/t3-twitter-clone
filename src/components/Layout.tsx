@@ -89,7 +89,7 @@ const Layout = ({ children }: IProps) => {
     handleModal,
     listModal,
     editListModal,
-    photoViewModal
+    photoViewModal,
   ]);
   const phone = useMediaQuery("(min-width:768px)");
 
@@ -99,6 +99,9 @@ const Layout = ({ children }: IProps) => {
 
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
         {replyModal ? <ReplyModal /> : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {photoViewModal ? <PhotoViewModal /> : null}
       </AnimatePresence>
 
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
@@ -127,9 +130,6 @@ const Layout = ({ children }: IProps) => {
       </AnimatePresence>
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
         {editListModal ? <EditListModal /> : null}
-      </AnimatePresence>
-      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
-        {photoViewModal ? <PhotoViewModal /> : null}
       </AnimatePresence>
 
       {router.pathname !== "/auth/signin" ? (
