@@ -25,13 +25,13 @@ import usePolling from "../../hooks/usePolling";
 const CreateTweet = () => {
   const { data: session, status } = useSession();
   const utils = trpc.useContext();
-  const { isDisabled,setIsDisabled } = useDisableTweet();
-  const { isOpen: isPollingOpen,setIsOpen:setPollingOpen } = useOpenPolling();
+  const { isDisabled, setIsDisabled } = useDisableTweet();
+  const { isOpen: isPollingOpen, setIsOpen: setPollingOpen } = useOpenPolling();
 
-  const { setModal } = useCreateModal()
+  const { setModal } = useCreateModal();
 
-  const { choices,handleChange,setChoices } = usePolling();
-  console.log(choices)
+  const { choices, handleChange, setChoices } = usePolling();
+  console.log(choices);
 
   const { mutateAsync: createPoll } = trpc.tweet.createPoll.useMutation({
     onMutate: () => {
@@ -67,15 +67,14 @@ const CreateTweet = () => {
   // console.log(text.split(" ").filter((word)=>word.startsWith("#")).map((word)=>word.slice(1)))
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setModal(false)
+    setModal(false);
     if (isPollingOpen) {
       let hashtags = text
-      .split(" ")
-      .filter((word) => word.startsWith("#"))
-      .map((word) => word.slice(1));
-      
-      const options = choices?.map((choice)=>choice.choice)
-      
+        .split(" ")
+        .filter((word) => word.startsWith("#"))
+        .map((word) => word.slice(1));
+
+      const options = choices?.map((choice) => choice.choice);
 
       await toast.promise(createPoll({ text, options, hashtags }), {
         success: "Poll created",
@@ -83,8 +82,7 @@ const CreateTweet = () => {
         error: (err) => "Oops.. something went wrong " + err,
       });
 
-      setPollingOpen(false)
-
+      setPollingOpen(false);
     } else {
       let mediaUrl = null;
       let hashtags = text
@@ -110,7 +108,6 @@ const CreateTweet = () => {
         ).then((res) => res.json());
 
         mediaUrl = res.secure_url;
-       
       }
       toast.promise(createTweet({ text, mediaUrl, hashtags }), {
         success: "Tweet created",
@@ -180,7 +177,7 @@ const CreateTweet = () => {
           placeholder={isPollingOpen ? "Ask a question" : "What's happening"}
           className={`w-full resize-none overflow-hidden bg-transparent text-neutral outline-none placeholder:text-gray-600 md:text-xl `}
         />
-        {isPollingOpen ? <PollingSection  /> : null}
+        {isPollingOpen ? <PollingSection /> : null}
 
         {selectedFile && (
           <>
@@ -240,9 +237,13 @@ const CreateTweet = () => {
           <div className="flex-[0.4]">
             <button
               type="submit"
-              disabled={!isPollingOpen ? text==="" : text === "" || isDisabled}
+              disabled={
+                !isPollingOpen ? text === "" : text === "" || isDisabled
+              }
               className={`w-full rounded-full bg-primary px-2 py-1  font-semibold text-white md:px-4 md:py-2 ${
-                (!isPollingOpen ? text === "" : text === "" || isDisabled) ? "bg-blue-400" : null
+                (!isPollingOpen ? text === "" : text === "" || isDisabled)
+                  ? "bg-blue-400"
+                  : null
               }`}
             >
               Tweet

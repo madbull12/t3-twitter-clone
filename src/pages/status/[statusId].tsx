@@ -58,7 +58,7 @@ const StatusPage = () => {
 
 
   const { data: replies } = trpc?.tweet.getTweetReplies.useQuery({
-    tweetId: statusId,
+    tweetId: statusId
   });
 
   const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet,isRetweeting,isUndoingRetweet } =

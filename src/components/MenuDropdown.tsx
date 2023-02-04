@@ -95,14 +95,14 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
                 </button>
               </li>
             ) : (
-              <li>
+              <li className="overflow-hidden">
                 <button
                   disabled={followingUser || unfollowingUser}
                   onClick={() => handleFollow()}
                   className="flex w-[90%] items-center gap-x-2 whitespace-nowrap font-bold"
                 >
                   <RiUserFollowLine />
-                  <p className="w-full truncate">Follow {tweet.user.name}</p>
+                  <p className="w-full truncate ">Follow {tweet.user.name}</p>
                 </button>
               </li>
             )}

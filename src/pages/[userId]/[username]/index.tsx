@@ -99,7 +99,7 @@ const ProfilePage = () => {
               layout="fill"
               onClick={() => {
                 setPhotoViewModal(true);
-                setSrc(userProfile.profile?.coverPhoto || "" as string);
+                setSrc(userProfile.profile?.coverPhoto || ("" as string));
                 setSize("medium");
               }}
             />
@@ -107,7 +107,14 @@ const ProfilePage = () => {
         </div>
       </div>
       <div className="flex items-start justify-between px-2 md:px-4 ">
-        <div className="-mt-16 ">
+        <div
+          className="-mt-16 "
+          onClick={() => {
+            setPhotoViewModal(true);
+            setSrc(userProfile?.image as string);
+            setSize("medium");
+          }}
+        >
           <Avatar
             image={userProfile?.image as string}
             width={140}

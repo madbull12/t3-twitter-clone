@@ -19,11 +19,7 @@ const Avatar = ({ image, height, width }: IProps) => {
         width={width}
         height={height}
         objectFit="cover"
-        onClick={()=>{
-          setModal(true)
-          setSrc(image)
-          setSize("medium")
-        }}
+ 
       />
 
     // {/* </div> */}
