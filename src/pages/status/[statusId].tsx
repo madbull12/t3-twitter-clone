@@ -24,6 +24,8 @@ import {
 } from "../../../interface";
 import {
   useLikesModal,
+  usePhotoView,
+  usePhotoViewModal,
   useReplyModal,
   useRetweetsModal,
   useTweetId,
@@ -50,6 +52,9 @@ const StatusPage = () => {
       tweetId: statusId,
     }
   );
+
+  const { setModal:setPhotoModal } = usePhotoViewModal();
+  const { setSrc,setSize } = usePhotoView()
 
 
   const { data: replies } = trpc?.tweet.getTweetReplies.useQuery({
@@ -133,8 +138,13 @@ const StatusPage = () => {
                   objectFit="cover"
                   alt={tweetDetails?.text ?? ""}
                   src={tweetDetails?.image}
-                  className="rounded-2xl"
+                  className="rounded-2xl cursor-pointer "
                   layout="fill"
+                  onClick={()=>{
+                    setPhotoModal(true)
+                    setSrc(tweetDetails?.image || "" as string)
+                    setSize("large")
+                  }}
                 />
               )}
             </div>

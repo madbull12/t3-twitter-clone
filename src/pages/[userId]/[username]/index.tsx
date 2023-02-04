@@ -2,7 +2,11 @@ import { useSession } from "next-auth/react";
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { useEditProfileModal } from "../../../../lib/zustand";
+import {
+  useEditProfileModal,
+  usePhotoView,
+  usePhotoViewModal,
+} from "../../../../lib/zustand";
 import Avatar from "../../../components/Avatar";
 import Body from "../../../components/Body";
 import NavFeed from "../../../components/NavFeed";
@@ -26,6 +30,8 @@ const ProfilePage = () => {
   const { data: session, status } = useSession();
   const { setModal } = useEditProfileModal();
   const [_link, setLink] = useState<string>("");
+  const { setModal: setPhotoViewModal } = usePhotoViewModal();
+  const { setSrc, setSize } = usePhotoView();
 
   const tweetLinks = [
     {
@@ -73,7 +79,6 @@ const ProfilePage = () => {
   } = useFollow(userId as string);
   if (isLoadingUserProfile) return <Loader />;
 
-
   return (
     <Body>
       <Head>
@@ -92,6 +97,11 @@ const ProfilePage = () => {
               objectFit="cover"
               src={userProfile.profile.coverPhoto}
               layout="fill"
+              onClick={() => {
+                setPhotoViewModal(true);
+                setSrc(userProfile.profile?.coverPhoto || "" as string);
+                setSize("medium");
+              }}
             />
           ) : null}
         </div>
@@ -185,9 +195,8 @@ const ProfilePage = () => {
         <div className="flex items-center gap-x-1">
           <p className="text-lg font-bold md:text-2xl">{userProfile?.name}</p>
           {userProfile?.isVerified ? (
-          <GoVerified className="text-primary" />
-
-          ):null}
+            <GoVerified className="text-primary" />
+          ) : null}
         </div>
         {userProfile?.handle ? (
           <p className="mb-2 text-sm text-gray-400">@{userProfile?.handle}</p>

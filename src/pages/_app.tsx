@@ -16,8 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-
-  const theme = useReadLocalStorage('theme')
+  const theme = useReadLocalStorage("theme");
   const [showChild, setShowChild] = useState(false);
   useEffect(() => {
     setShowChild(true);
@@ -28,22 +27,22 @@ const MyApp: AppType<{ session: Session | null }> = ({
   }
 
   return (
-    <div data-theme={theme} >
+    <div data-theme={theme}>
       <SessionProvider session={session}>
         <AuthWrapper>
-          <Layout>
-            <Toaster
-              position="bottom-center"
-              toastOptions={{
-                style:{
-                  background:"#1D9BF0",
-                  color:"#fff"
-                }
-              }}
-            />
+            <Layout>
+              <Toaster
+                position="bottom-center"
+                toastOptions={{
+                  style: {
+                    background: "#1D9BF0",
+                    color: "#fff",
+                  },
+                }}
+              />
 
-            <Component {...pageProps} />
-          </Layout>
+              <Component {...pageProps} />
+            </Layout>
         </AuthWrapper>
       </SessionProvider>
     </div>

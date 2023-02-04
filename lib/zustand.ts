@@ -65,6 +65,14 @@ interface Choice {
   choice:string;
 }
 
+interface PhotoView {
+  src:string;
+  setSrc:(value:string)=>void
+  size:"medium" | "large",
+  setSize:(value:"medium"|"large")=>void
+
+}
+
 export const usePreviewStore = create<Preview>((set) => ({
   preview: "",
   setPreview: (objectUrl: string) => set(() => ({ preview: objectUrl })),
@@ -136,6 +144,12 @@ export const useManageModal = create<Modal>((set) => ({
   modal: false,
   setModal: (value: boolean) => set(() => ({ modal: value })),
 }));
+
+export const usePhotoViewModal = create<Modal>((set)=>({
+  modal:false,
+  setModal:(value:boolean)=>set(()=>({ modal:value }))
+}))
+
 export const useOpenPolling = create<PollingIsOpen>((set) => ({
   isOpen: false,
   setIsOpen: (value: boolean) => set(() => ({ isOpen: value })),
@@ -153,6 +167,13 @@ export const useDebouncedPeople = create<Name>((set) => ({
   name: "",
   setName: (value: string) => set(() => ({ name: value })),
 }));
+
+export const usePhotoView = create<PhotoView>((set)=>({
+  src:"",
+  setSrc:(value:string)=>set(()=>({ src:value })),
+  size:"medium",
+  setSize:(value:"medium"|"large")=>set(()=>({ size:value }))
+}))
 
 export const useChoices = create<ChoiceState>((set) => ({
   choices: [

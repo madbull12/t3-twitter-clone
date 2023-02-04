@@ -14,6 +14,7 @@ import {
   useLikesModal,
   useLoginModal,
   useMobileDrawer,
+  usePhotoViewModal,
   useReplyModal,
   useRetweetsModal,
 } from "../../lib/zustand";
@@ -34,6 +35,7 @@ import RetweetsListModal from "./RetweetsListModal";
 import Right from "./Right";
 import Sidebar from "./Sidebar";
 import { AnimatePresence } from "framer-motion";
+import PhotoViewModal from "./PhotoViewModal";
 interface IProps {
   children: React.ReactNode;
 }
@@ -49,6 +51,7 @@ const Layout = ({ children }: IProps) => {
   const { modal: retweetsModal } = useRetweetsModal();
   const { drawer: mobileDrawer } = useMobileDrawer();
   const { modal: editListModal } = useEditListModal();
+  const { modal: photoViewModal } = usePhotoViewModal();
 
   const router = useRouter();
   const { status } = useSession();
@@ -66,7 +69,8 @@ const Layout = ({ children }: IProps) => {
       retweetsModal ||
       handleModal ||
       listModal ||
-      editListModal
+      editListModal ||
+      photoViewModal
     ) {
       window.scrollTo(0, 0);
       document.body.style.overflow = "hidden";
@@ -85,6 +89,7 @@ const Layout = ({ children }: IProps) => {
     handleModal,
     listModal,
     editListModal,
+    photoViewModal
   ]);
   const phone = useMediaQuery("(min-width:768px)");
 
@@ -122,6 +127,9 @@ const Layout = ({ children }: IProps) => {
       </AnimatePresence>
       <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
         {editListModal ? <EditListModal /> : null}
+      </AnimatePresence>
+      <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
+        {photoViewModal ? <PhotoViewModal /> : null}
       </AnimatePresence>
 
       {router.pathname !== "/auth/signin" ? (
