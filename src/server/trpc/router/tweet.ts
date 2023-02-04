@@ -83,7 +83,7 @@ export const tweetRouter = router({
                 createMany:{
                   data:input?.options.map((option)=>({
                     text:option,
-                    votes:0
+                    
                   }))
                 }
               },

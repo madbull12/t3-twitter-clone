@@ -15,7 +15,7 @@ const CreateModal = () => {
   return (
     <Modal>
         
-      <div ref={modalRef} className="relative mx-auto max-h-[500px] max-w-xs md:max-w-lg overflow-y-scroll rounded-2xl  bg-base-100 p-4 text-black">
+      <div ref={modalRef} className="relative mx-auto max-h-[500px] max-w-xs md:max-w-lg overflow-y-scroll rounded-2xl  bg-base-100 p-4 ">
         <CreateTweet />
       </div>
     </Modal>
