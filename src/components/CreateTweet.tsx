@@ -6,6 +6,7 @@ import { BiPoll } from "react-icons/bi";
 import Button from "./Button";
 import Image from "next/image";
 import {
+  useCreateModal,
   useDisableTweet,
   useOpenPolling,
   usePreviewStore,
@@ -27,7 +28,7 @@ const CreateTweet = () => {
   const { isDisabled,setIsDisabled } = useDisableTweet();
   const { isOpen: isPollingOpen,setIsOpen:setPollingOpen } = useOpenPolling();
 
-
+  const { setModal } = useCreateModal()
 
   const { choices,handleChange,setChoices } = usePolling();
   console.log(choices)
@@ -66,7 +67,7 @@ const CreateTweet = () => {
   // console.log(text.split(" ").filter((word)=>word.startsWith("#")).map((word)=>word.slice(1)))
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-
+    setModal(false)
     if (isPollingOpen) {
       let hashtags = text
       .split(" ")

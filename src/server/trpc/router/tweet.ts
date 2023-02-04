@@ -81,7 +81,7 @@ export const tweetRouter = router({
             create:{
               options:{
                 createMany:{
-                  data:input?.options.map((option)=>({
+                  data:input?.options.filter((option)=>option !== "").map((option)=>({
                     text:option,
                     
                   }))
