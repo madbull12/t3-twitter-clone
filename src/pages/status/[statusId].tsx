@@ -39,6 +39,7 @@ import NavFeed from "../../components/NavFeed";
 import ReplyForm from "../../components/ReplyForm";
 import TweetComponent from "../../components/TweetComponent";
 import TweetContent from "../../components/TweetContent";
+import TweetList from "../../components/TweetList";
 import VoteComponentList from "../../components/VoteComponentList";
 import { trpc } from "../../utils/trpc";
 
@@ -233,11 +234,12 @@ const StatusPage = () => {
             {/* <AiOutlineHeart className="cursor-pointer hover:text-primary " /> */}
           </div>
           <ReplyForm tweetId={tweetDetails?.id || ""} />
-          <div>
+          {/* <div>
             {replies?.map((reply) => (
               <TweetComponent tweet={reply as TweetWithUser} key={v4()} />
             ))}
-          </div>
+          </div> */}
+          <TweetList tweets={replies as TweetWithUser[]} />
         </div>
       )}
     </Body>
