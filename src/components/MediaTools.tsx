@@ -55,6 +55,7 @@ const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
               ref={pickerRef}
               className="absolute   z-[999999]"
               onClick={(e) => e.stopPropagation()}
+              type="button"
             >
               <Picker
                 onEmojiSelect={onEmojiSelect}
