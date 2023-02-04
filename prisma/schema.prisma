@@ -70,6 +70,9 @@ model User {
   listMember    List[]     @relation("members")
   lists         List[]
   isVerified    Boolean?   @default(false)
+
+  option   Option? @relation("votes", fields: [optionId], references: [id])
+  optionId String?
 }
 
 model VerificationToken {
@@ -125,7 +128,7 @@ model Tweet {
   retweetId       String?
   retweets        Tweet[]    @relation("retweets")
   isPinned        Boolean
-  poll            Poll?      @relation(fields: [pollId], references: [id])
+  poll            Poll?      @relation(fields: [pollId], references: [id], onDelete: Cascade)
   pollId          String?    @unique
 
   @@unique([id, userId])
@@ -144,7 +147,7 @@ model Poll {
 model Option {
   id     String @id @default(uuid())
   text   String
-  votes  Int    @default(0)
+  votes  User[] @relation("votes")
   poll   Poll   @relation(fields: [pollId], references: [id])
   pollId String
 }

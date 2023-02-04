@@ -273,7 +273,11 @@ export const tweetRouter = router({
           likes: true,
           poll:{
             include:{
-              options:true
+              options:{
+                include:{
+                  votes:true
+                }
+              }
             }
           },
           replies: true,
@@ -368,7 +372,11 @@ export const tweetRouter = router({
           retweets: true,
           poll:{
             include:{
-              options:true
+              options:{
+                include:{
+                  votes:true
+                }
+              }
             }
           },
         },
@@ -417,7 +425,11 @@ export const tweetRouter = router({
           retweets: true,
           poll:{
             include:{
-              options:true
+              options:{
+                include:{
+                  votes:true
+                }
+              }
             }
           },
         },
@@ -516,7 +528,11 @@ export const tweetRouter = router({
               retweets: true,
                   poll:{
             include:{
-              options:true
+              options:{
+                include:{
+                  votes:true
+                }
+              }
             }
           },
             },
@@ -550,7 +566,11 @@ export const tweetRouter = router({
               retweets: true,
                   poll:{
             include:{
-              options:true
+              options:{
+                include:{
+                  votes:true
+                }
+              }
             }
           },
             },
@@ -586,7 +606,11 @@ export const tweetRouter = router({
               retweets: true,
                   poll:{
             include:{
-              options:true
+              options:{
+                include:{
+                  votes:true
+                }
+              }
             }
           },
             },
@@ -627,7 +651,11 @@ export const tweetRouter = router({
               retweets: true,
                   poll:{
             include:{
-              options:true
+              options:{
+                include:{
+                  votes:true
+                }
+              }
             }
           },
             },
@@ -676,7 +704,11 @@ export const tweetRouter = router({
           user: true,
           poll:{
             include:{
-              options:true
+              options:{
+                include:{
+                  votes:true
+                }
+              }
             }
           },
 

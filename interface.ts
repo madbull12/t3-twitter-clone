@@ -113,3 +113,9 @@ export type TweetWithUser = Prisma.TweetGetPayload<{
   interface IProps {
     tweet: TweetWithUser;
   }
+
+export type OptionWithPayload = Prisma.OptionGetPayload<{
+  include:{
+    votes:true
+  }
+}>

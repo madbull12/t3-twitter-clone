@@ -9,6 +9,7 @@ import { profileRouter } from "./profile";
 import { searchRouter } from "./search";
 import { tweetRouter } from "./tweet";
 import { userRouter } from "./user";
+import { voteRouter } from "./vote";
 // import { exampleRouter } from "./example";
 
 export const appRouter = router({
@@ -23,7 +24,8 @@ export const appRouter = router({
   follow:followRouter,
   // retweet:retweetRouter
   // reply:replyRouter
-  list:listRouter
+  list:listRouter,
+  vote:voteRouter,
 });
 
 // export type definition of API

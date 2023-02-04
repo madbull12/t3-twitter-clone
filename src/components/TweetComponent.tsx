@@ -1,7 +1,7 @@
 import { Tweet, User } from "@prisma/client";
 import Image from "next/legacy/image";
 import React, { useState } from "react";
-import { TweetWithUser } from "../../interface";
+import { OptionWithPayload, TweetWithUser } from "../../interface";
 import moment from "moment";
 import ReactTimeAgo from "react-time-ago";
 import { IoAnalyticsOutline, IoShareOutline } from "react-icons/io5";
@@ -33,6 +33,8 @@ import { FaRetweet } from "react-icons/fa";
 import ShareDropdown from "./ShareDropdown";
 import TweetContent from "./TweetContent";
 import PollComponent from "./PollComponent";
+import { motion } from "framer-motion";
+import PollComponentList from "./PollComponentList";
 
 interface IProps {
   tweet: TweetWithUser;
@@ -47,6 +49,7 @@ const TweetComponent = ({
   isYourRetweet,
   retweetUsername,
 }: IProps) => {
+
   const now = new Date();
   const { data: session, status } = useSession();
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
@@ -95,6 +98,7 @@ const TweetComponent = ({
         </>
       ) : (
         <div
+  
           onClick={() => {
             status === "authenticated"
               ? router.push(`/status/${tweet.id}`, undefined, {
@@ -160,9 +164,8 @@ const TweetComponent = ({
 
               {tweet?.poll ? (
                 <div className="gap-y-2 flex flex-col">
-                  {tweet.poll?.options?.map((option)=>(
-                    <PollComponent option={option} />
-                  ))}
+                  <PollComponentList options={tweet.poll.options as OptionWithPayload[]} />
+               
                 </div>
                   
               ):null}
