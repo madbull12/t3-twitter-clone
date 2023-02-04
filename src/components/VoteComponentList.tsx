@@ -2,12 +2,12 @@ import { Option } from "@prisma/client";
 import React from "react";
 import { v4 } from "uuid";
 import { OptionWithPayload } from "../../interface";
-import PollComponent from "./PollComponent";
+import VoteComponent from "./VoteComponent";
 
 interface IProps {
   options: OptionWithPayload[];
 }
-const PollComponentList = ({ options }: IProps) => {
+const VoteComponentList = ({ options }: IProps) => {
     const totalVotes = options.reduce((acc,cur)=>acc + cur.votes?.length,0);
 
     
@@ -15,10 +15,10 @@ const PollComponentList = ({ options }: IProps) => {
   return (
     <>
       {options?.map((option) => (
-        <PollComponent key={v4()} option={option} totalVotes={totalVotes} />
+        <VoteComponent key={v4()} option={option} totalVotes={totalVotes} />
       ))}
     </>
   );
 };
 
-export default PollComponentList;
+export default VoteComponentList;

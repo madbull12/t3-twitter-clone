@@ -18,6 +18,7 @@ import useLikeTweet from "../../../hooks/useLikeTweet";
 import useRetweet from "../../../hooks/useRetweet";
 import {
   LikesWithPayloads,
+  OptionWithPayload,
   RetweetsWithPayloads,
   TweetWithUser,
 } from "../../../interface";
@@ -36,6 +37,7 @@ import NavFeed from "../../components/NavFeed";
 import ReplyForm from "../../components/ReplyForm";
 import TweetComponent from "../../components/TweetComponent";
 import TweetContent from "../../components/TweetContent";
+import VoteComponentList from "../../components/VoteComponentList";
 import { trpc } from "../../utils/trpc";
 
 const StatusPage = () => {
@@ -113,6 +115,13 @@ const StatusPage = () => {
           ) : null}
 
           <TweetContent text={tweetDetails?.text as string} />
+          {tweetDetails?.poll ? (
+                <div className="gap-y-2 flex flex-col">
+                  <VoteComponentList options={tweetDetails.poll.options as OptionWithPayload[]} />
+               
+                </div>
+                  
+              ):null}
           {tweetDetails?.image ? (
             <div className="relative  h-96 w-full md:w-3/4">
               {tweetDetails?.image.includes("video") ? (
