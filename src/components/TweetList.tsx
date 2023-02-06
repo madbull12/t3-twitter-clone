@@ -6,12 +6,14 @@ import TweetComponent from "../components/TweetComponent";
 import { Tweet } from "@prisma/client";
 import { TweetWithUser } from "../../interface";
 import { useRouter } from "next/router";
+import { useMediaQuery } from "usehooks-ts";
 
 const TweetList = ({ tweets }: { tweets: Tweet[] }) => {
   const [itemCount, setItemCount] = useState(5);
   const router = useRouter();
+  const phone = useMediaQuery("(min-width:768px)");
   return (
-    <div className="w-full">
+    <div className={`w-full ${phone ?  null:"pb-16" } `}>
       <>
         {router.pathname === "/" ? (
           <>
@@ -51,7 +53,7 @@ const TweetList = ({ tweets }: { tweets: Tweet[] }) => {
           {tweets?.length > 5 ? (
             <div className="grid place-items-center">
               <button
-                className="my-4  justify-center  rounded-lg bg-base-200 px-4 py-2 font-bold text-primary shadow-md "
+                className={`my-8  justify-center  rounded-lg bg-base-200 px-4 py-2 ${phone ? "" : "text-sm"} font-bold text-primary shadow-md `}
                 onClick={() => {
                   itemCount >= tweets?.length
                     ? setItemCount((prev) => prev - 5)

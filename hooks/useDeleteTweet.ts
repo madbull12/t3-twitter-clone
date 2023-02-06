@@ -7,7 +7,7 @@ const useDeleteTweet = (tweet: TweetWithUser) => {
   const { data: session } = trpc.auth.getSession.useQuery();
   const utils = trpc.useContext();
   const router = useRouter();
-  const { q,f } = router.query
+  const { q,f,statusId } = router.query
   const { mutateAsync: deleteTweet } = trpc.tweet.deleteTweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
@@ -20,8 +20,8 @@ const useDeleteTweet = (tweet: TweetWithUser) => {
       utils.tweet.getTweets.invalidate();
       utils.tweet.getInfiniteTweets.invalidate();
       if (router.pathname === "/status/[statusId]") {
-        utils.tweet.getTweetReplies.invalidate({ tweetId:tweet.id as string });
-        utils.tweet.getSingleTweet.invalidate({ tweetId:tweet.id as string });
+        utils.tweet.getTweetReplies.invalidate({ tweetId:statusId as string });
+        utils.tweet.getSingleTweet.invalidate({ tweetId:statusId as string });
       } 
       if (router.pathname === "/search") {
         utils.tweet.searchTweets.invalidate({ term:q as string,filtering:f as string });

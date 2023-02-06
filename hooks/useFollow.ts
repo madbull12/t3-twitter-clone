@@ -5,29 +5,29 @@ import { useRouter } from "next/router";
 const useFollow = (userId: string) => {
   const utils = trpc.useContext();
   const router = useRouter();
-  const { f, q } = router.query;
+  const { f, q,userId:_userId } = router.query;
 
   const { mutateAsync: followUser, isLoading: followingUser } =
     trpc.follow.followUser.useMutation({
-      onMutate: () => {
-        utils.user.getUserProfile.cancel();
-        const optimisticUpdate = utils.user.getUserProfile.getData();
-        if (optimisticUpdate) {
-          utils.user.getUserProfile.setData(optimisticUpdate);
-        }
-      },
+      // onMutate: () => {
+      //   utils.user.getUserProfile.cancel();
+      //   const optimisticUpdate = utils.user.getUserProfile.getData({ userId:_userId });
+      //   if (optimisticUpdate) {
+      //     utils.user.getUserProfile.setData(optimisticUpdate);
+      //   }
+      // },
       onSettled: () => {
         utils.follow.getFollowersRecommendation.invalidate();
         utils.follow.getSingleFollower.invalidate({
           followingId: userId as string,
         });
         if (router.pathname === "/[userId]/[username]/followers") {
-          utils.follow.getUserFollowers.invalidate();
+          utils.follow.getUserFollowers.invalidate({ userId:_userId as string });
         }
         if (router.pathname === "/[userId]/[username]/following") {
-          utils.follow.getUserFollowing.invalidate();
+          utils.follow.getUserFollowing.invalidate({ userId:_userId as string });
         }
-        utils.user.getUserProfile.invalidate();
+        utils.user.getUserProfile.invalidate({ userId:userId as string });
       },
     });
   const { mutateAsync: unfollowUser, isLoading: unfollowingUser } =
@@ -45,12 +45,12 @@ const useFollow = (userId: string) => {
           followingId: userId as string,
         });
         if (router.pathname === "/[userId]/[username]/followers") {
-          utils.follow.getUserFollowers.invalidate({ userId });
+          utils.follow.getUserFollowers.invalidate({ userId:_userId as string });
         }
         if (router.pathname === "/[userId]/[username]/following") {
-          utils.follow.getUserFollowing.invalidate({ userId });
+          utils.follow.getUserFollowing.invalidate({ userId:_userId as string });
         }
-        utils.user.getUserProfile.invalidate({ userId });
+        utils.user.getUserProfile.invalidate({ userId:_userId as string });
       },
     });
   const { data: alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({
@@ -58,7 +58,8 @@ const useFollow = (userId: string) => {
   });
   const [followed, setFollowed] = useState<boolean>();
 
-  const handleFollow = async () => {
+  const handleFollow = async (e:React.SyntheticEvent) => {
+    e.stopPropagation()
     setFollowed(true);
     await toast.promise(followUser({ followingId: userId }), {
       success: "Following user",
@@ -66,7 +67,8 @@ const useFollow = (userId: string) => {
       error: (err) => `Oops something went wrong ` + err,
     });
   };
-  const handleUnfollow = async () => {
+  const handleUnfollow = async (e:React.SyntheticEvent) => {
+    e.stopPropagation()
     setFollowed(false);
     await toast.promise(unfollowUser({ followingId: userId }), {
       success: "User unfollowed",

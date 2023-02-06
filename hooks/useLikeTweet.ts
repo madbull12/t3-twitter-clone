@@ -8,8 +8,9 @@ import { useLoginModal } from "../lib/zustand";
 const useLikeTweet = (tweetId: string) => {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const { f, q, userId } = router.query;
+  const { f, q, userId,statusId } = router.query;
   const utils = trpc.useContext();
+  
   const { mutateAsync: likeTweet, isLoading: likeLoading } =
     trpc.like.likeTweet.useMutation({
       onMutate: () => {
@@ -21,20 +22,23 @@ const useLikeTweet = (tweetId: string) => {
       },
       onSettled: () => {
         if (router.pathname === "/search") {
-          utils.tweet.searchTweets.invalidate();
+          utils.tweet.searchTweets.invalidate({
+            term: q as string,
+            filtering: f as string,
+          });
         }
         utils.tweet.getTweets.invalidate();
         utils.like.userLikeTweet.invalidate({ tweetId });
 
         utils.tweet.getInfiniteTweets.invalidate();
         if (router.pathname === "/status/[statusId]") {
-          utils.tweet.getSingleTweet.invalidate({ tweetId });
-          utils.tweet.getTweetReplies.invalidate({ tweetId });
+          utils.tweet.getSingleTweet.invalidate({ tweetId:statusId as string });
+          utils.tweet.getTweetReplies.invalidate({ tweetId:statusId as string });
         }
         if (router.pathname === "/[userId]/[username]") {
           utils.tweet.getUserTweets.invalidate({
             userId: (userId as string) ?? "",
-            link: "tweets",
+            link: "",
           });
         }
       },
@@ -59,13 +63,13 @@ const useLikeTweet = (tweetId: string) => {
         utils.tweet.getTweets.invalidate();
         utils.tweet.getInfiniteTweets.invalidate();
         if (router.pathname === "/status/[statusId]") {
-          utils.tweet.getSingleTweet.invalidate({ tweetId });
-          utils.tweet.getTweetReplies.invalidate({ tweetId });
+          utils.tweet.getSingleTweet.invalidate({ tweetId:statusId as string });
+          utils.tweet.getTweetReplies.invalidate({ tweetId:statusId as string });
         }
         if (router.pathname === "/[userId]/[username]") {
           utils.tweet.getUserTweets.invalidate({
             userId: (userId as string) ?? "",
-            link: "tweets",
+            link: "",
           });
         }
       },

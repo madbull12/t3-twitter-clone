@@ -2,7 +2,7 @@ import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
 
 export const bookmarkRouter = router({
-  getUserBookmarks: publicProcedure.query(({ ctx, input }) => {
+  getUserBookmarks: publicProcedure.query(({ ctx }) => {
     const userId = ctx.session?.user?.id;
 
     return ctx.prisma.bookmark.findMany({

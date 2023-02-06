@@ -12,7 +12,7 @@ const useRetweet = (tweetId?: string) => {
   const { data: bookmarks } = trpc.bookmark.getUserBookmarks.useQuery();
   const utils = trpc.useContext();
   const { setModal: setLoginModal } = useLoginModal();
-  const { userId } = router.query
+  const { userId,statusId,f, q, } = router.query
   const { mutateAsync: retweet, isLoading: isRetweeting } =
     trpc.tweet.createRetweet.useMutation({
       onMutate: () => {
@@ -24,7 +24,10 @@ const useRetweet = (tweetId?: string) => {
       },
       onSettled: () => {
         if (router.pathname === "/search") {
-          utils.tweet.searchTweets.invalidate();
+          utils.tweet.searchTweets.invalidate({
+            term: q as string,
+            filtering: f as string,
+          });
         }
         utils.tweet.getTweets.invalidate();
         utils.tweet.getInfiniteTweets.invalidate();
@@ -33,11 +36,11 @@ const useRetweet = (tweetId?: string) => {
         });
 
         if (router.pathname === "/status/[statusId]") {
-          utils.tweet.getSingleTweet.invalidate({ tweetId:tweetId as string });
-          utils.tweet.getTweetReplies.invalidate({ tweetId:tweetId as string });
+          utils.tweet.getSingleTweet.invalidate({ tweetId:statusId as string });
+          utils.tweet.getTweetReplies.invalidate({ tweetId:statusId as string });
         }
         if (router.pathname === "/[userId]/[username]") {
-          utils.tweet.getUserTweets.invalidate({ userId:userId as string,link:"tweets" });
+          utils.tweet.getUserTweets.invalidate({ userId:userId as string,link:"" });
         }
       },
     });
@@ -52,7 +55,10 @@ const useRetweet = (tweetId?: string) => {
       },
       onSettled: () => {
         if (router.pathname === "/search") {
-          utils.tweet.searchTweets.invalidate();
+          utils.tweet.searchTweets.invalidate({
+            term: q as string,
+            filtering: f as string,
+          });
         }
         utils.tweet.userAlreadyRetweet.invalidate({
           tweetId: tweetId as string,
@@ -60,8 +66,8 @@ const useRetweet = (tweetId?: string) => {
         utils.tweet.getTweets.invalidate();
         utils.tweet.getInfiniteTweets.invalidate();
         if (router.pathname === "/status/[statusId]") {
-          utils.tweet.getSingleTweet.invalidate({ tweetId:tweetId as string });
-          utils.tweet.getTweetReplies.invalidate({ tweetId:tweetId as string });
+          utils.tweet.getSingleTweet.invalidate({ tweetId:statusId as string });
+          utils.tweet.getTweetReplies.invalidate({ tweetId:statusId as string });
         }
         if (router.pathname === "/[userId]/[username]") {
           utils.tweet.getUserTweets.invalidate({ userId:userId as string,link:"tweets" });
