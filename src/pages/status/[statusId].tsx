@@ -5,7 +5,7 @@ import Head from "next/head";
 import Image from "next/legacy/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React,{ useEffect } from "react";
 import {
   AiFillHeart,
   AiOutlineComment,
@@ -13,6 +13,7 @@ import {
   AiOutlineRetweet,
 } from "react-icons/ai";
 import { BsArrowLeft } from "react-icons/bs";
+import { useEffectOnce } from "usehooks-ts";
 import { v4 } from "uuid";
 import useLikeTweet from "../../../hooks/useLikeTweet";
 import useRetweet from "../../../hooks/useRetweet";
@@ -45,6 +46,8 @@ import { trpc } from "../../utils/trpc";
 
 const StatusPage = () => {
   const router: any = useRouter();
+
+
   const { status } = useSession();
   const { statusId } = router.query;
 
@@ -58,7 +61,7 @@ const StatusPage = () => {
   const { setSrc,setSize } = usePhotoView()
 
 
-  const { data: replies } = trpc?.tweet.getTweetReplies.useQuery({
+  const { data: replies} = trpc?.tweet.getTweetReplies.useQuery({
     tweetId: statusId
   });
 
