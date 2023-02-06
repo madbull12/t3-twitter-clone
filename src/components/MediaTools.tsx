@@ -8,6 +8,7 @@ import { useReadLocalStorage } from "usehooks-ts";
 import useOnClickOutside from "../../hooks/useOutsideClick";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { useDisableTweet, useOpenPolling } from "../../lib/zustand";
+import { useRouter } from "next/router";
 
 interface IProps {
   onSelectFile: (e: React.FormEvent<HTMLInputElement>) => void;
@@ -17,6 +18,7 @@ const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const theme = useReadLocalStorage("theme");
   const phone = useMediaQuery("(min-width:640px)");
+  const router = useRouter()
 
   const { setIsOpen, isOpen: isPollingOpen } = useOpenPolling();
 
@@ -68,9 +70,14 @@ const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
       ) : null}
 
       <AiOutlineFileGif />
-      <button type="button" onClick={() => setIsOpen(true)}>
+      {router.pathname === "/status/[statusId]" ? (
+        null
+      ):(
+        <button type="button" onClick={() => setIsOpen(true)}>
         <BiPoll className="cursor-pointer" />
       </button>
+      )}
+ 
     </div>
   );
 };

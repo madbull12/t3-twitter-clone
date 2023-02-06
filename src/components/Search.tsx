@@ -15,7 +15,7 @@ const Search = ({ placeholder }:IProps) => {
       {
         pathname: "/search",
         query: {
-          ...router.query, // list all the queries here
+          // ...router.query, // list all the queries here
           f: router.query.q ? router.query.f : "top",
           q: term,
         },

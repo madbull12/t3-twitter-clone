@@ -1,5 +1,7 @@
 import Image from "next/legacy/image";
+import { useRouter } from "next/router";
 import React, { useRef } from "react";
+import { BsTwitter } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 import { useOnClickOutside } from "usehooks-ts";
 import { usePhotoView, usePhotoViewModal } from "../../lib/zustand";
@@ -14,8 +16,9 @@ const PhotoViewModal = () => {
   useOnClickOutside(modalRef, () => {
     setModal(false);
   });
+
+  const router = useRouter()
   return (
-    <Backdrop>
       <Modal>
         <div
           ref={modalRef}
@@ -31,7 +34,7 @@ const PhotoViewModal = () => {
           />
         </div>
       </Modal>
-    </Backdrop>
+
   );
 };
 

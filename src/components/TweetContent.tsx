@@ -32,7 +32,7 @@ const TweetContent = ({ text }:{ text:string }) => {
           {word + " "}
         </span>
       ) : (
-        <span className="">{word + " "}</span>
+        <span key={v4()} className="">{word + " "}</span>
       )
     )}
   </p>

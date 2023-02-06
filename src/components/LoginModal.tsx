@@ -10,40 +10,37 @@ import Modal from "./Modal";
 
 const LoginModal = () => {
   const modalRef = useRef<HTMLDivElement>(null);
-  const router = useRouter()
+  const router = useRouter();
   const { setModal } = useLoginModal();
   useOnClickOutside(modalRef, () => {
     setModal(false);
   });
 
   return (
-    <Backdrop>
       <Modal>
-      <div
-        ref={modalRef}
-        className="relative text-neutral mx-auto max-h-[500px] max-w-lg overflow-y-scroll rounded-2xl  bg-white p-4 "
-      >
-        <IoClose
-          className="absolute top-4 left-4 cursor-pointer text-2xl"
-          onClick={() => setModal(false)}
-        />
-        <div className="flex flex-col items-center justify-center gap-y-2">
-          <BsTwitter className="text-3xl  text-primary" />
-          <h1 className="text-3xl font-bold">Login Twitter</h1>
-          <button
-            onClick={() =>{ 
-              router.push('/auth/signin')
-              setModal(false)
-          }}
-            className={`${"px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  text-black"}`}
-          >
-            Sign in
-          </button>
+        <div
+          ref={modalRef}
+          className="mx-auto relative h-[500px] w-3/4 space-y-3 overflow-y-scroll rounded-2xl  bg-base-100 p-4 sm:w-1/2"
+        >
+          <IoClose
+            className="absolute top-4 left-4 cursor-pointer text-2xl"
+            onClick={() => setModal(false)}
+          />
+          <div className="flex flex-col items-center justify-center gap-y-2">
+            <BsTwitter className="text-3xl  text-primary" />
+            <h1 className="text-3xl font-bold">Login Twitter</h1>
+            <button
+              onClick={() => {
+                router.push("/auth/signin");
+                setModal(false);
+              }}
+              className={`${"px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  text-black"}`}
+            >
+              Sign in
+            </button>
+          </div>
         </div>
-      </div>
       </Modal>
-     
-    </Backdrop>
   );
 };
 

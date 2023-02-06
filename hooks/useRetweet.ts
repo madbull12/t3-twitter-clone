@@ -12,7 +12,7 @@ const useRetweet = (tweetId?: string) => {
   const { data: bookmarks } = trpc.bookmark.getUserBookmarks.useQuery();
   const utils = trpc.useContext();
   const { setModal: setLoginModal } = useLoginModal();
-
+  const { userId } = router.query
   const { mutateAsync: retweet, isLoading: isRetweeting } =
     trpc.tweet.createRetweet.useMutation({
       onMutate: () => {
@@ -33,11 +33,11 @@ const useRetweet = (tweetId?: string) => {
         });
 
         if (router.pathname === "/status/[statusId]") {
-          utils.tweet.getSingleTweet.invalidate();
-          utils.tweet.getTweetReplies.invalidate();
+          utils.tweet.getSingleTweet.invalidate({ tweetId:tweetId as string });
+          utils.tweet.getTweetReplies.invalidate({ tweetId:tweetId as string });
         }
         if (router.pathname === "/[userId]/[username]") {
-          utils.tweet.getUserTweets.invalidate();
+          utils.tweet.getUserTweets.invalidate({ userId:userId as string,link:"tweets" });
         }
       },
     });
@@ -60,10 +60,11 @@ const useRetweet = (tweetId?: string) => {
         utils.tweet.getTweets.invalidate();
         utils.tweet.getInfiniteTweets.invalidate();
         if (router.pathname === "/status/[statusId]") {
-          utils.tweet.getSingleTweet.invalidate();
+          utils.tweet.getSingleTweet.invalidate({ tweetId:tweetId as string });
+          utils.tweet.getTweetReplies.invalidate({ tweetId:tweetId as string });
         }
         if (router.pathname === "/[userId]/[username]") {
-          utils.tweet.getUserTweets.invalidate();
+          utils.tweet.getUserTweets.invalidate({ userId:userId as string,link:"tweets" });
         }
       },
     });

@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 const useFollow = (userId: string) => {
   const utils = trpc.useContext();
   const router = useRouter();
+  const { f, q } = router.query;
+
   const { mutateAsync: followUser, isLoading: followingUser } =
     trpc.follow.followUser.useMutation({
       onMutate: () => {
@@ -43,12 +45,12 @@ const useFollow = (userId: string) => {
           followingId: userId as string,
         });
         if (router.pathname === "/[userId]/[username]/followers") {
-          utils.follow.getUserFollowers.invalidate();
+          utils.follow.getUserFollowers.invalidate({ userId });
         }
         if (router.pathname === "/[userId]/[username]/following") {
-          utils.follow.getUserFollowing.invalidate();
+          utils.follow.getUserFollowing.invalidate({ userId });
         }
-        utils.user.getUserProfile.invalidate();
+        utils.user.getUserProfile.invalidate({ userId });
       },
     });
   const { data: alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({

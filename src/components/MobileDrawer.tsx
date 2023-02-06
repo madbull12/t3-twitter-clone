@@ -12,8 +12,26 @@ import { trpc } from "../utils/trpc";
 import Avatar from "./Avatar";
 import Backdrop from "./Backdrop";
 import MoreDropdownSidebar from "./MoreDropdownSidebar";
-
+import { motion } from "framer-motion";
 const MobileDrawer = () => {
+  const slideIn = {
+    hidden: {
+      x: "-100vw",
+      opacity: 0,
+    },
+    visible: {
+      x: "0",
+      opacity: 1,
+      transition: {
+        duration: 0.1,
+        ease:'linear'
+      },
+    },
+    exit: {
+      x: "100vw",
+      opacity: 0,
+    },
+  };
   const drawerRef = useRef<HTMLDivElement>(null);
   const router = useRouter()
   const { setDrawer, drawer } = useMobileDrawer();
@@ -47,7 +65,11 @@ const MobileDrawer = () => {
   ];
   return (
     <Backdrop>
-      <div
+      <motion.div
+        variants={slideIn}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
         ref={drawerRef}
         className={`fixed top-0 left-0 space-y-4 p-4 transition-transform duration-150 ease-in-out ${
           drawer ? "translate-x-0" : "-translate-x-full"
@@ -68,7 +90,7 @@ const MobileDrawer = () => {
             height={30}
           />
           <p className="font-semibold">{session?.user?.name}</p>
-          <p className="text-gray-400">User Id: {session?.user?.id}</p>
+
         </div>
         <ul className="space-y-2">
           {links.map((link) => (
@@ -107,7 +129,7 @@ const MobileDrawer = () => {
             </>
       
         </button>
-      </div>
+      </motion.div>
     </Backdrop>
   );
 };
