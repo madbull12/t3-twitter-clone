@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
 import AuthWrapper from "../components/AuthWrapper";
 import { useLocalStorage, useReadLocalStorage } from "usehooks-ts";
+import { httpBatchLink } from "@trpc/client";
 
 TimeAgo.addDefaultLocale(en);
 const MyApp: AppType<{ session: Session | null }> = ({
