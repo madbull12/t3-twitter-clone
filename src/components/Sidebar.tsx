@@ -6,6 +6,8 @@ import {
   AiFillBell,
   AiOutlineHome,
   AiOutlineBell,
+  AiFillMail,
+  AiOutlineMail,
 } from "react-icons/ai";
 import {
   RiFileListFill,
@@ -68,6 +70,19 @@ const Sidebar = () => {
         ) : (
           <AiOutlineBell />
         ),
+    },
+    {
+      name:"Messages",
+      link:"/messages",
+      hidden: true,
+      active: router.pathname === "/messages",
+      icon:
+      router.asPath ===
+      `/${session?.user?.id}/${session?.user?.name?.replace(/\s/g, "")}` ? (
+        <AiFillMail/>
+      ) : (
+        <AiOutlineMail  />
+      ),
     },
     {
       name: "Profile",

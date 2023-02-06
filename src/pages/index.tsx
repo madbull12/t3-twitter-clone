@@ -20,6 +20,7 @@ import HomeNav from "../components/HomeNav";
 
 const Home: NextPage = () => {
   const scrollPosition = useScrollPosition();
+  
   const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
     trpc.tweet.getInfiniteTweets.useInfiniteQuery(
       {
