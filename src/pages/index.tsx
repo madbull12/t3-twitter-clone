@@ -17,6 +17,7 @@ import useScrollPosition from "../../hooks/useScrollPosition";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import HomeNav from "../components/HomeNav";
+import { TweetWithUser } from "../../interface";
 
 const Home: NextPage = () => {
   const scrollPosition = useScrollPosition();
@@ -54,12 +55,18 @@ const Home: NextPage = () => {
           <Loader />
         ) : (
           <>
-            <TweetList tweets={tweets as Tweet[]} />
+            <TweetList tweets={tweets as TweetWithUser[]} />
           </>
         )}
-        {isFetching && hasNextPage ? <Loader /> : null}
+       
+        {isFetching && hasNextPage ?(
+          <div className="pb-16">
+            <Loader />
+          </div>
+        )  : null}
+
         {!hasNextPage ? (
-          <p className="text-center text-gray-500">End of feed</p>
+          <p className="text-center text-gray-500 pb-16">End of feed</p>
         ) : null}
       </Body>
     </>

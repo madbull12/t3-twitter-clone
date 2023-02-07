@@ -9,13 +9,13 @@ const useFollow = (userId: string) => {
 
   const { mutateAsync: followUser, isLoading: followingUser } =
     trpc.follow.followUser.useMutation({
-      // onMutate: () => {
-      //   utils.user.getUserProfile.cancel();
-      //   const optimisticUpdate = utils.user.getUserProfile.getData({ userId:_userId });
-      //   if (optimisticUpdate) {
-      //     utils.user.getUserProfile.setData(optimisticUpdate);
-      //   }
-      // },
+      onMutate: () => {
+        utils.user.getUserProfile.cancel();
+        const optimisticUpdate = utils.user.getUserProfile.getData({ userId:_userId as string });
+        if (optimisticUpdate) {
+          utils.user.getUserProfile.setData(optimisticUpdate);
+        }
+      },
       onSettled: () => {
         utils.follow.getFollowersRecommendation.invalidate();
         utils.follow.getSingleFollower.invalidate({

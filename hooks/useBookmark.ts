@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { toast } from "react-hot-toast";
 import { trpc } from "../src/utils/trpc";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TweetWithUser } from "../interface";
 import { useLoginModal } from "../lib/zustand";
 import { useSession } from "next-auth/react";
@@ -11,8 +11,11 @@ const useBookmark = (tweetId?: string) => {
   const { setModal: setLoginModal } = useLoginModal();
 
   const { status } = useSession();
-  const { data: bookmarks, isLoading } =
+  const { data: bookmarks, isLoading,isSuccess } =
     trpc.bookmark.getUserBookmarks.useQuery();
+
+  
+
   const utils = trpc.useContext();
   const { mutateAsync: createBookmark, isLoading: createBookmarkLoading } =
     trpc.bookmark.createBookmark.useMutation({

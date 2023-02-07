@@ -36,7 +36,7 @@ const NavFeed = ({
       <div className="flex items-center gap-x-8">
         {!phone ? (
           <>
-            {router.pathname === "/" ? (
+            {exceptionLinks.includes(router.pathname) ? (
               <>{status === "authenticated" ? <MobileDrawerToggle /> : null}</>
             ) : null}
           </>

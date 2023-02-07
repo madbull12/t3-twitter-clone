@@ -8,12 +8,13 @@ import { TweetWithUser } from "../../interface";
 import { useRouter } from "next/router";
 import { useMediaQuery } from "usehooks-ts";
 
-const TweetList = ({ tweets }: { tweets: Tweet[] }) => {
+const TweetList = ({ tweets }: { tweets: TweetWithUser[] }) => {
   const [itemCount, setItemCount] = useState(5);
   const router = useRouter();
   const phone = useMediaQuery("(min-width:768px)");
+  const exceptionLinks = ["/","/following"]
   return (
-    <div className={`w-full ${phone ?  null:"pb-16" } `}>
+    <div className={`w-full ${router.pathname !== "/" ? phone ?  null:"pb-16" : null } `}>
       <>
         {router.pathname === "/" ? (
           <>
@@ -48,7 +49,7 @@ const TweetList = ({ tweets }: { tweets: Tweet[] }) => {
           </>
         )}
       </>
-      {router.pathname !== "/" ? (
+      {(!exceptionLinks.includes(router.pathname))? (
         <>
           {tweets?.length > 5 ? (
             <div className="grid place-items-center">

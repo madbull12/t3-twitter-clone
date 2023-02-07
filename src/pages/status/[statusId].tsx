@@ -66,7 +66,7 @@ const StatusPage = () => {
   });
 
   const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet,isRetweeting,isUndoingRetweet } =
-    useRetweet(tweetDetails?.id as string);
+    useRetweet(statusId as string);
 
   const {
     handleLike,
@@ -76,7 +76,7 @@ const StatusPage = () => {
     handleUnlike,
     likeLoading,
     unlikeLoading,
-  } = useLikeTweet(tweetDetails?.id as string);
+  } = useLikeTweet(statusId as string);
 
   const { setModal: setLikesModal } = useLikesModal();
   const { setModal: setRetweetsModal } = useRetweetsModal();

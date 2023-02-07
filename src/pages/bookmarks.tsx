@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/legacy/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { v4 } from "uuid";
 import useBookmark from "../../hooks/useBookmark";
 import { TweetWithUser } from "../../interface";
@@ -12,9 +12,9 @@ import NavFeed from "../components/NavFeed";
 import TweetComponent from "../components/TweetComponent";
 import TweetList from "../components/TweetList";
 import { trpc } from "../utils/trpc";
-
 const BookmarkPage = () => {
   const { bookmarks: data, isLoading } = useBookmark();
+  const utils = trpc.useContext()
 
   const bookmarks = data?.map((bookmark) => bookmark.tweet);
   const { bookmark: bookmarkValue } = useDebouncedBookmarks();

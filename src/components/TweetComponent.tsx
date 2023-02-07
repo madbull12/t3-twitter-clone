@@ -134,12 +134,15 @@ const TweetComponent = ({
             </div>
             <div className="flex flex-1  flex-col">
               <div className="flex items-center gap-x-2">
-                <Link
-                  href={`/${tweet?.user.id}/${tweet?.user.name}`}
-                  className="text-sm font-semibold hover:underline  xs:text-base md:text-lg"
-                >
-                  {tweet?.user.name}
-                </Link>
+                <div onClick={(e)=>e.stopPropagation()}>
+                  <Link
+                    href={`/${tweet?.user.id}/${tweet?.user.name}`}
+                    className="text-sm font-semibold hover:underline  xs:text-base md:text-lg"
+                  >
+                    {tweet?.user.name}
+                  </Link>
+                </div>
+      
                 <p className="text-xs text-gray-400 md:text-sm">
                   {hoursBetweenDates > 24 ? (
                     <span>{moment(tweet.createdAt as Date).format("ll")}</span>

@@ -18,16 +18,16 @@ const useCreateTweet = () => {
   console.log(selectedFile)
 
   const { mutateAsync: createTweet } = trpc.tweet.createTweet.useMutation({
-    onMutate: () => {
-      utils.tweet.getInfiniteTweets.cancel();
-      const optimisticUpdate = utils.tweet.getInfiniteTweets.getData();
-      if (optimisticUpdate) {
-        utils.tweet.getInfiniteTweets.setData(optimisticUpdate);
-      }
-    },
+    // onMutate: () => {
+    //   utils.tweet.getInfiniteTweets.cancel();
+    //   const optimisticUpdate = utils.tweet.getInfiniteTweets.getData();
+    //   if (optimisticUpdate) {
+    //     utils.tweet.getInfiniteTweets.setData(optimisticUpdate);
+    //   }
+    // },
     onSettled: () => {
       utils.tweet.getInfiniteTweets.invalidate();
-
+      
     },
 
    

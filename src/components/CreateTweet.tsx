@@ -57,6 +57,9 @@ const CreateTweet = () => {
     onSettled: () => {
       utils.tweet.getInfiniteTweets.invalidate();
     },
+    // onSuccess:()=>{
+    //   utils.tweet.getInfiniteTweets.invalidate()
+    // }
   });
   const [selectedFile, setSelectedFile] = useState<any>();
   const [preview, setPreview] = useState<string>();

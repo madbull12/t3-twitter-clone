@@ -8,6 +8,10 @@ const useDeleteTweet = (tweet: TweetWithUser) => {
   const utils = trpc.useContext();
   const router = useRouter();
   const { q,f,statusId } = router.query
+
+  const invalidateAllTweetQueries = () => {
+    
+  }
   const { mutateAsync: deleteTweet } = trpc.tweet.deleteTweet.useMutation({
     onMutate: () => {
       utils.tweet.getTweets.cancel();
