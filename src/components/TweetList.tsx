@@ -27,7 +27,7 @@ const TweetList = ({ tweets }: { tweets: TweetWithUser[] }) => {
             {router.pathname === "/[userId]/[username]" ? (
               <>
                 {tweets
-                  ?.slice(0, itemCount)
+                  // ?.slice(0, itemCount)
                   .filter((tweet) => tweet.isPinned === true)
                   .map((tweet) => (
                     <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />

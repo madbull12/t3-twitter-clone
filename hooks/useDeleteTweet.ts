@@ -7,29 +7,85 @@ const useDeleteTweet = (tweet: TweetWithUser) => {
   const { data: session } = trpc.auth.getSession.useQuery();
   const utils = trpc.useContext();
   const router = useRouter();
-  const { q,f,statusId } = router.query
+  const { q, f, statusId,userId } = router.query;
 
   const invalidateAllTweetQueries = () => {
-    
-  }
+    utils.tweet.getTweets.invalidate();
+    utils.tweet.getInfiniteTweets.invalidate();
+    if(router.pathname === "/[userId]/[username]") {
+      utils.tweet.getUserTweets.invalidate({ userId:userId as string,link:"" })
+    }
+    if (router.pathname === "/status/[statusId]") {
+      utils.tweet.getTweetReplies.invalidate({ tweetId: statusId as string });
+      utils.tweet.getSingleTweet.invalidate({ tweetId: statusId as string });
+    }
+    if (router.pathname === "/search") {
+      utils.tweet.searchTweets.invalidate({
+        term: q as string,
+        filtering: f as string,
+      });
+    }
+  };
+
+  const optimitizeQueries = () => {
+    utils.tweet.getTweets.cancel();
+    utils.tweet.getInfiniteTweets.cancel();
+    if (router.pathname === "/status/[statusId]") {
+      utils.tweet.getTweetReplies.cancel({ tweetId: statusId as string });
+      utils.tweet.getSingleTweet.cancel({ tweetId: statusId as string });
+    }
+
+    if(router.pathname === "/[userId]/[username]") {
+      utils.tweet.getUserTweets.cancel({ userId:userId as string,link:"" })
+    }
+    const getUserTweets =  utils.tweet.getUserTweets.getData({ userId:userId as string,link:"" })
+    const getTweets = utils.tweet.getTweets.getData();
+    const getInfiniteTweets = utils.tweet.getInfiniteTweets.getData();
+    const getTweetReplies = utils.tweet.getTweetReplies.getData({
+      tweetId: statusId as string,
+    });
+
+    const getSingleTweet = utils.tweet.getSingleTweet.getData({
+      tweetId: statusId as string,
+    });
+
+    const searchTweets = utils.tweet.searchTweets.getData({
+      term: q as string,
+      filtering: f as string,
+    })
+
+    if (getTweets) {
+      utils.tweet.getTweets.setData(getTweets);
+    }
+
+    if (getInfiniteTweets) {
+      utils.tweet.getInfiniteTweets.setData(getInfiniteTweets);
+    }
+
+    if(getTweetReplies) {
+      utils.tweet.getTweetReplies.setData(getTweetReplies);
+
+    }
+    if(getSingleTweet) {
+      utils.tweet.getSingleTweet.setData(getSingleTweet);
+
+    }
+    if(searchTweets) {
+      utils.tweet.searchTweets.setData(searchTweets);
+
+    }
+    if(getUserTweets) {
+      utils.tweet.searchTweets.setData(getUserTweets);
+
+    }
+  };
+
   const { mutateAsync: deleteTweet } = trpc.tweet.deleteTweet.useMutation({
     onMutate: () => {
-      utils.tweet.getTweets.cancel();
-      const optimisticUpdate = utils.tweet.getTweets.getData();
-      if (optimisticUpdate) {
-        utils.tweet.getTweets.setData(optimisticUpdate);
-      }
+      optimitizeQueries();
     },
     onSettled: () => {
-      utils.tweet.getTweets.invalidate();
-      utils.tweet.getInfiniteTweets.invalidate();
-      if (router.pathname === "/status/[statusId]") {
-        utils.tweet.getTweetReplies.invalidate({ tweetId:statusId as string });
-        utils.tweet.getSingleTweet.invalidate({ tweetId:statusId as string });
-      } 
-      if (router.pathname === "/search") {
-        utils.tweet.searchTweets.invalidate({ term:q as string,filtering:f as string });
-      }
+      invalidateAllTweetQueries();
     },
   });
 
