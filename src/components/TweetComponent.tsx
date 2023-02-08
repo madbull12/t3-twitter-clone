@@ -34,6 +34,8 @@ import ShareDropdown from "./ShareDropdown";
 import TweetContent from "./TweetContent";
 import { motion } from "framer-motion";
 import VoteComponentList from "./VoteComponentList";
+import ProfileDropdown from "./ProfileDropdown";
+import { CLOSING } from "ws";
 
 interface IProps {
   tweet: TweetWithUser;
@@ -48,11 +50,11 @@ const TweetComponent = ({
   isYourRetweet,
   retweetUsername,
 }: IProps) => {
-
   const now = new Date();
   const { data: session, status } = useSession();
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
   const router = useRouter();
+  const utils = trpc.useContext()
   const {
     // alreadyRetweeted,
     hasRetweeted,
@@ -65,11 +67,13 @@ const TweetComponent = ({
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
   const { data: alreadyRetweeted } = trpc.tweet.userAlreadyRetweet.useQuery({
     tweetId: tweet.id as string,
+  },{
+    refetchOnWindowFocus:false
   });
   const { modal, setModal } = useReplyModal();
   const { setModal: setLoginModal } = useLoginModal();
   const { data: alreadyLiked } = trpc.like.userLikeTweet.useQuery({
-    tweetId:tweet.id as string,
+    tweetId: tweet.id as string,
   });
   const { setTweetId } = useTweetId();
 
@@ -83,10 +87,9 @@ const TweetComponent = ({
     unlikeLoading,
   } = useLikeTweet(tweet.id);
 
+
   const _isYourRetweet = (tweet.userId as string) === session?.user?.id;
   const _retweetUsername = tweet.user.name;
-
-
 
   return (
     <>
@@ -101,7 +104,6 @@ const TweetComponent = ({
         </>
       ) : (
         <div
-  
           onClick={() => {
             status === "authenticated"
               ? router.push(`/status/${tweet.id}`, undefined, {
@@ -133,12 +135,16 @@ const TweetComponent = ({
           ) : null}
 
           <div className="flex items-start gap-x-2">
-            <div>
-              <Avatar image={tweet.user.image || ""} width={40} height={40} />
+            <div className="dropdown dropdown-right dropdown-hover">
+              <label tabIndex={5}>
+                <Avatar image={tweet.user.image || ""} width={40} height={40} />
+              </label>
+              <ProfileDropdown userId={tweet.userId} tabIndex={5} />
             </div>
+
             <div className="flex flex-1  flex-col">
               <div className="flex items-center gap-x-2">
-                <div onClick={(e)=>e.stopPropagation()}>
+                <div onClick={(e) => e.stopPropagation()}>
                   <Link
                     href={`/${tweet?.user.id}/${tweet?.user.name}`}
                     className="text-sm font-semibold hover:underline  xs:text-base md:text-lg"
@@ -146,7 +152,7 @@ const TweetComponent = ({
                     {tweet?.user.name}
                   </Link>
                 </div>
-      
+
                 <p className="text-xs text-gray-400 md:text-sm">
                   {hoursBetweenDates > 24 ? (
                     <span>{moment(tweet.createdAt as Date).format("ll")}</span>
@@ -169,12 +175,12 @@ const TweetComponent = ({
               ) : null}
 
               {tweet?.poll ? (
-                <div className="gap-y-2 flex flex-col">
-                  <VoteComponentList options={tweet.poll.options as OptionWithPayload[]} />
-               
+                <div className="flex flex-col gap-y-2">
+                  <VoteComponentList
+                    options={tweet.poll.options as OptionWithPayload[]}
+                  />
                 </div>
-                  
-              ):null}
+              ) : null}
 
               {tweet?.image ? (
                 <div className="relative  h-96 w-full ">

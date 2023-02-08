@@ -58,11 +58,11 @@ const VoteComponent = ({ option, totalVotes }: IProps) => {
         e.stopPropagation();
         handleVote();
       }}
-      className="w-full cursor-pointer gap-x-3  rounded-md border  border-gray-600"
+      className="w-full cursor-pointer gap-x-3 font-semibold  rounded-md border  border-gray-600"
     >
       <div
         style={{ width: `${votePercentage}%` }}
-        className={`h-8 text-neutral flex items-center justify-between rounded-md  bg-gray-400 px-2 text-sm transition-all duration-100 ease-linear `}
+        className={`h-8 text-neutral flex items-center justify-between rounded-md  bg-blue-400 px-2 text-sm transition-all duration-100 ease-linear `}
       >
         <p>{option?.text}</p>
         {votePercentage >= 10 ? <p>{votePercentage}%</p> : null}

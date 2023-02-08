@@ -65,7 +65,7 @@ const Home: NextPage = () => {
           </div>
         )  : null}
 
-        {!hasNextPage ? (
+        {(!hasNextPage && !isFetching) ? (
           <p className="text-center text-gray-500 pb-16">End of feed</p>
         ) : null}
       </Body>

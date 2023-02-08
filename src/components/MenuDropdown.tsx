@@ -45,13 +45,13 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
   return (
     <>
       <div className="dropdown-bottom dropdown-end dropdown ">
-        <label tabIndex={0} className=" relative  cursor-pointer ">
+        <label tabIndex={5} className=" relative  cursor-pointer ">
           <BiDotsHorizontal className="text-xl text-gray-400" />
         </label>
 
         {isYourTweet ? (
           <ul
-            tabIndex={0}
+            tabIndex={5}
             className="dropdown-content  menu rounded-box absolute  top-0 w-52 bg-base-100 p-2 shadow"
           >
             <li>

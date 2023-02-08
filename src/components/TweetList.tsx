@@ -16,7 +16,7 @@ const TweetList = ({ tweets }: { tweets: TweetWithUser[] }) => {
   return (
     <div className={`w-full ${router.pathname !== "/" ? phone ?  null:"pb-16" : null } `}>
       <>
-        {router.pathname === "/" ? (
+        {exceptionLinks.includes(router.pathname) ? (
           <>
             {tweets?.map((tweet) => (
               <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />

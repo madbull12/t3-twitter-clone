@@ -31,6 +31,7 @@ const FollowingOnlyTweetsPage = () => {
   }, [scrollPosition, isFetching, hasNextPage, fetchNextPage]);
 
   const tweets = data?.pages.flatMap((page) => page.followingTweets) ?? [];
+  console.log(tweets)
   const router = useRouter();
   const { data: session, status } = useSession();
   return (
@@ -50,7 +51,7 @@ const FollowingOnlyTweetsPage = () => {
           </>
         )}
         {isFetching && hasNextPage ? <Loader /> : null}
-        {!hasNextPage ? (
+        {(!hasNextPage && !isFetching) ? (
           <p className="text-center text-gray-500">End of feed</p>
         ) : null}
     </Body>

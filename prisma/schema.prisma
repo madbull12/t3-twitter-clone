@@ -71,8 +71,10 @@ model User {
   lists         List[]
   isVerified    Boolean?   @default(false)
 
-  option   Option? @relation("votes", fields: [optionId], references: [id])
-  optionId String?
+  option           Option?        @relation("votes", fields: [optionId], references: [id])
+  optionId         String?
+  notification     Notification[] @relation("sender")
+  notificationSent Notification[] @relation("recipient")
 }
 
 model VerificationToken {
@@ -148,7 +150,7 @@ model Option {
   id     String @id @default(uuid())
   text   String
   votes  User[] @relation("votes")
-  poll   Poll   @relation(fields: [pollId], references: [id])
+  poll   Poll   @relation(fields: [pollId], references: [id],onDelete: Cascade)
   pollId String
 }
 
@@ -184,6 +186,17 @@ model List {
   coverPhoto  String?
 
   @@unique([id, creatorId])
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  sender      User     @relation("sender", fields: [senderId], references: [id])
+  recipient   User     @relation("recipient", fields: [recipientId], references: [id])
+  text        String
+  redirectUrl String
+  senderId    String
+  recipientId String
 }
 
 // model Retweet {

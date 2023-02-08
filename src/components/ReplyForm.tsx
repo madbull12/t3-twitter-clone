@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useState,useRef,useEffect } from 'react'
 import toast from "react-hot-toast";
 import { RiCloseLine } from "react-icons/ri";
+import { useReplyModal } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import Avatar from "./Avatar";
 import Button from "./Button";
@@ -14,6 +15,8 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
   const [selectedFile, setSelectedFile] = useState<any>();
   const [preview, setPreview] = useState<string>();
   const utils = trpc.useContext();
+  const { setModal } = useReplyModal();
+
   const textRef = useRef<HTMLTextAreaElement>(null);
   const { mutateAsync: createReply } = trpc.tweet.createReply.useMutation({
     onMutate: () => {
@@ -32,6 +35,7 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    setModal(false)
     let mediaUrl = null;
     let hashtags = text
     .split(" ")

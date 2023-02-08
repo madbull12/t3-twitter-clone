@@ -14,17 +14,27 @@ const useBookmark = (tweetId?: string) => {
   const { data: bookmarks, isLoading,isSuccess } =
     trpc.bookmark.getUserBookmarks.useQuery();
 
-  
+  const optimizeMutation = () => {
+    utils.bookmark.getUserBookmarks.cancel();
+    utils.bookmark.userAlreadyBookmark.cancel({ bookmarkId:tweetId as string });
+    utils.follow.getSingleFollower.cancel();
+    const getUserBookmarks = utils.bookmark.getUserBookmarks.getData();
+    const userAlreadyBookmark = utils.bookmark.userAlreadyBookmark.getData({ bookmarkId:tweetId as string })
+    if(getUserBookmarks) {
+      utils.bookmark.getUserBookmarks.setData(getUserBookmarks)
+    }
+    if(userAlreadyBookmark) {
+      utils.bookmark.userAlreadyBookmark.setData(userAlreadyBookmark)
+
+    }
+  }
+
 
   const utils = trpc.useContext();
   const { mutateAsync: createBookmark, isLoading: createBookmarkLoading } =
     trpc.bookmark.createBookmark.useMutation({
       onMutate: () => {
-        utils.bookmark.getUserBookmarks.cancel();
-        const optimisticUpdate = utils.bookmark.getUserBookmarks.getData();
-        if (optimisticUpdate) {
-          utils.bookmark.getUserBookmarks.setData(optimisticUpdate);
-        }
+        optimizeMutation()
       },
       onSettled: () => {
         utils.bookmark.getUserBookmarks.invalidate();
@@ -33,11 +43,7 @@ const useBookmark = (tweetId?: string) => {
   const { mutateAsync: deleteBookmark, isLoading: deleteBookmarkLoading } =
     trpc.bookmark.deleteBookmark.useMutation({
       onMutate: () => {
-        utils.bookmark.getUserBookmarks.cancel();
-        const optimisticUpdate = utils.bookmark.getUserBookmarks.getData();
-        if (optimisticUpdate) {
-          utils.bookmark.getUserBookmarks.setData(optimisticUpdate);
-        }
+       optimizeMutation();
       },
       onSettled: () => {
         utils.bookmark.getUserBookmarks.invalidate();

@@ -73,6 +73,9 @@ const BookmarkPage = () => {
           )}
         </>
       )}
+      {/* {bookmarks?.map((bookmark)=>(
+        <p>{bookmark.text}</p>
+      ))} */}
 
       {/* {bookmarks?.map((bookmark) => (
         <TweetComponent key={v4()} tweet={bookmark.tweet as TweetWithUser} />
