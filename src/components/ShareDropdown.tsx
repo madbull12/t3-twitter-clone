@@ -6,6 +6,7 @@ import { useCopyToClipboard } from "usehooks-ts";
 import { toast } from "react-hot-toast";
 import useBookmark from "../../hooks/useBookmark";
 import { FiBookmark } from "react-icons/fi";
+import { trpc } from "../utils/trpc";
 const ShareDropdown = ({ tweetId }: { tweetId: string }) => {
   const tablet = useMediaQuery("(min-width:1110px)");
   const {
@@ -13,10 +14,14 @@ const ShareDropdown = ({ tweetId }: { tweetId: string }) => {
     handleCreateBookmark,
     handleDeleteBookmark,
     deleteBookmarkLoading,
-    isAdded,
+    // isAdded,
     bookmarkAddedState,
   } = useBookmark(tweetId);
   const [value, copy] = useCopyToClipboard();
+  // const isAdded = bookmarks?.find((bookmark) => bookmark.tweetId === tweetId);
+    const { data:bookmarkAdded } = trpc.bookmark.userAlreadyBookmark.useQuery({
+      bookmarkId:tweetId as string
+    })
   return (
     <>
 
@@ -48,7 +53,7 @@ const ShareDropdown = ({ tweetId }: { tweetId: string }) => {
               </button>
             </li>
 
-            {isAdded || bookmarkAddedState ? (
+            {bookmarkAdded || bookmarkAddedState ? (
               <li>
                 <button
                   disabled={createBookmarkLoading || deleteBookmarkLoading}

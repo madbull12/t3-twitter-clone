@@ -167,7 +167,7 @@ model Bookmark {
   user    User   @relation(fields: [userId], references: [id])
   userId  String
   tweetId String
-  tweet   Tweet  @relation(fields: [tweetId], references: [id])
+  tweet   Tweet  @relation(fields: [tweetId], references: [id], onDelete: Cascade)
 
   @@unique([userId, tweetId])
 }

@@ -46,8 +46,8 @@ import { trpc } from "../../utils/trpc";
 
 const StatusPage = () => {
   const router: any = useRouter();
-
-
+  const utils = trpc.useContext()
+  const { data:session } = useSession()
   const { status } = useSession();
   const { statusId } = router.query;
 
@@ -58,8 +58,9 @@ const StatusPage = () => {
   );
 
   const { setModal:setPhotoModal } = usePhotoViewModal();
-  const { setSrc,setSize } = usePhotoView()
+  const { setSrc,setSize } = usePhotoView();
 
+    // const alreadyRetweeted = tweetDetails?.retweets.find((retweet)=>retweet.userId === session?.user?.id)
 
   const { data: replies} = trpc?.tweet.getTweetReplies.useQuery({
     tweetId: statusId

@@ -9,74 +9,148 @@ import { useSession } from "next-auth/react";
 const useRetweet = (tweetId?: string) => {
   const router = useRouter();
   const { status, data: session } = useSession();
-  const { data: bookmarks } = trpc.bookmark.getUserBookmarks.useQuery();
   const utils = trpc.useContext();
   const { setModal: setLoginModal } = useLoginModal();
-  const { userId,statusId,f, q, } = router.query
+  const { userId,statusId,f, q,listId } = router.query;
+
+  const invalidateRetweetQueries = () => {
+    if (router.pathname === "/search") {
+      utils.tweet.searchTweets.invalidate({
+        term: q as string,
+        filtering: f as string,
+      });
+    }
+    utils.tweet.getTweets.invalidate();
+    utils.tweet.userAlreadyRetweet.invalidate({
+      tweetId: tweetId as string,
+    });
+    utils.tweet.getInfiniteTweets.invalidate();
+    if (router.pathname === "/status/[statusId]") {
+      utils.tweet.getSingleTweet.invalidate({ tweetId:statusId as string });
+      utils.tweet.getTweetReplies.invalidate({ tweetId:statusId as string });
+    }
+    if (router.pathname === "/[userId]/[username]") {
+      utils.tweet.getUserTweets.invalidate({
+        userId: (userId as string) ?? "",
+        link: "",
+      });
+    }
+
+    if(router.pathname === "/bookmarks") {
+      utils.bookmark.getUserBookmarks.invalidate();
+    }
+
+    if(router.pathname === "/list/[userId]/[listId]") {
+      utils.list.getListDetails.invalidate({ listId:listId as string })
+    }
+
+    if(router.pathname === '/following') {
+      utils.tweet.getFollowingInfiniteTweets.invalidate()
+    }
+  }
+
+  const optimizeMutation = () => {
+    utils.tweet.getTweets.cancel();
+    utils.tweet.getInfiniteTweets.cancel();
+ 
+    if (router.pathname === "/status/[statusId]") {
+      utils.tweet.getTweetReplies.cancel({ tweetId: statusId as string });
+      utils.tweet.getSingleTweet.cancel({ tweetId: statusId as string });
+    }
+
+    if(router.pathname === "/[userId]/[username]") {
+      utils.tweet.getUserTweets.cancel({ userId:userId as string,link:"" })
+    }
+    if(router.pathname === "/following") {
+      utils.tweet.getFollowingInfiniteTweets.cancel();
+
+    }
+    if(router.pathname === "/list/[userId]/[listId]") {
+      utils.list.getListDetails.cancel({ listId:listId as string })
+    }
+
+    const getUserTweets =  utils.tweet.getUserTweets.getData({ userId:userId as string,link:"" })
+    const getTweets = utils.tweet.getTweets.getData();
+    const getInfiniteTweets = utils.tweet.getInfiniteTweets.getData();
+    const getTweetReplies = utils.tweet.getTweetReplies.getData({
+      tweetId: statusId as string,
+    });
+
+    const getFollowingInfiniteTweets = utils.tweet.getFollowingInfiniteTweets.getData();
+    const getListDetails = utils.list.getListDetails.getData();
+
+    const getSingleTweet = utils.tweet.getSingleTweet.getData({
+      tweetId: statusId as string,
+    });
+
+    const searchTweets = utils.tweet.searchTweets.getData({
+      term: q as string,
+      filtering: f as string,
+    })
+
+    if (getTweets) {
+      utils.tweet.getTweets.setData(getTweets);
+    }
+
+    if (getInfiniteTweets) {
+      utils.tweet.getInfiniteTweets.setData(getInfiniteTweets);
+    }
+
+    if(getTweetReplies) {
+      utils.tweet.getTweetReplies.setData(getTweetReplies);
+
+    }
+    if(getSingleTweet) {
+      utils.tweet.getSingleTweet.setData(getSingleTweet);
+
+    }
+    if(searchTweets) {
+      utils.tweet.searchTweets.setData(searchTweets);
+
+    }
+    if(getUserTweets) {
+      utils.tweet.searchTweets.setData(getUserTweets);
+
+    }
+    if(getListDetails) {
+      utils.list.getListDetails.setData(getListDetails);
+
+    }
+
+    if(getFollowingInfiniteTweets) {
+      utils.tweet.getFollowingInfiniteTweets.setData(getFollowingInfiniteTweets)
+    }
+
+
+  }
+
   const { mutateAsync: retweet, isLoading: isRetweeting } =
     trpc.tweet.createRetweet.useMutation({
       onMutate: () => {
-        utils.tweet.getTweets.cancel();
-        const optimisticUpdate = utils.tweet.getTweets.getData();
-        if (optimisticUpdate) {
-          utils.tweet.getTweets.setData(optimisticUpdate);
-        }
+        optimizeMutation()
+        
       },
       onSettled: () => {
-        if (router.pathname === "/search") {
-          utils.tweet.searchTweets.invalidate({
-            term: q as string,
-            filtering: f as string,
-          });
-        }
-        utils.tweet.getTweets.invalidate();
-        utils.tweet.getInfiniteTweets.invalidate();
-        utils.tweet.userAlreadyRetweet.invalidate({
-          tweetId: tweetId as string,
-        });
-
-        if (router.pathname === "/status/[statusId]") {
-          utils.tweet.getSingleTweet.invalidate({ tweetId:statusId as string });
-          utils.tweet.getTweetReplies.invalidate({ tweetId:statusId as string });
-        }
-        if (router.pathname === "/[userId]/[username]") {
-          utils.tweet.getUserTweets.invalidate({ userId:userId as string,link:"" });
-        }
+        invalidateRetweetQueries()
       },
     });
   const { mutateAsync: undoRetweet, isLoading: isUndoingRetweet } =
     trpc.tweet.undoRetweet.useMutation({
       onMutate: () => {
-        utils.tweet.getTweets.cancel();
-        const optimisticUpdate = utils.tweet.getTweets.getData();
-        if (optimisticUpdate) {
-          utils.tweet.getTweets.setData(optimisticUpdate);
-        }
+        optimizeMutation()
+        
       },
       onSettled: () => {
-        if (router.pathname === "/search") {
-          utils.tweet.searchTweets.invalidate({
-            term: q as string,
-            filtering: f as string,
-          });
-        }
-        utils.tweet.userAlreadyRetweet.invalidate({
-          tweetId: tweetId as string,
-        });
-        utils.tweet.getTweets.invalidate();
-        utils.tweet.getInfiniteTweets.invalidate();
-        if (router.pathname === "/status/[statusId]") {
-          utils.tweet.getSingleTweet.invalidate({ tweetId:statusId as string });
-          utils.tweet.getTweetReplies.invalidate({ tweetId:statusId as string });
-        }
-        if (router.pathname === "/[userId]/[username]") {
-          utils.tweet.getUserTweets.invalidate({ userId:userId as string,link:"tweets" });
-        }
+        invalidateRetweetQueries()
       },
     });
 
   const { data: alreadyRetweeted } = trpc.tweet.userAlreadyRetweet.useQuery({
     tweetId: tweetId as string,
+  },{
+    onSettled:()=>{
+      utils.tweet.userAlreadyRetweet.cancel({ tweetId:tweetId as string });
+    }
   });
 
   // const retweetsMapped = userRetweets?.map((retweet)=>retweet.retweets);
@@ -109,7 +183,6 @@ const useRetweet = (tweetId?: string) => {
   };
 
   return {
-    bookmarks,
     handleRetweet,
     hasRetweeted,
     alreadyRetweeted,

@@ -45,7 +45,7 @@ const useBookmark = (tweetId?: string) => {
     });
 
   const [bookmarkAddedState, setAddBookmark] = useState(false);
-  const isAdded = bookmarks?.find((bookmark) => bookmark.tweetId === tweetId);
+  // const isAdded = bookmarks?.find((bookmark) => bookmark.tweetId === tweetId);
 
   const handleCreateBookmark = async (tweetId: string) => {
     if (status === "authenticated") {
@@ -82,7 +82,7 @@ const useBookmark = (tweetId?: string) => {
     bookmarks,
     handleCreateBookmark,
     bookmarkAddedState,
-    isAdded,
+    // isAdded,
     handleDeleteBookmark,
   };
 };

@@ -68,11 +68,14 @@ const ProfilePage = () => {
     userId: userId as string,
     link: "tweets&replies",
   });
+  const { data: alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({
+    followingId: userId as string,
+  });
   const [value, copy] = useCopyToClipboard();
   const {
     handleFollow,
     handleUnfollow,
-    alreadyFollowed,
+    // alreadyFollowed,
     followed,
     unfollowingUser,
     followingUser,

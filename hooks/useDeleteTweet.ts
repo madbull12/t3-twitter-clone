@@ -7,7 +7,7 @@ const useDeleteTweet = (tweet: TweetWithUser) => {
   const { data: session } = trpc.auth.getSession.useQuery();
   const utils = trpc.useContext();
   const router = useRouter();
-  const { q, f, statusId,userId } = router.query;
+  const { q, f, statusId,userId,listId } = router.query;
 
   const invalidateAllTweetQueries = () => {
     utils.tweet.getTweets.invalidate();
@@ -24,6 +24,13 @@ const useDeleteTweet = (tweet: TweetWithUser) => {
         term: q as string,
         filtering: f as string,
       });
+    }
+    if(router.pathname === "/list/[userId]/[listId]") {
+      utils.list.getListDetails.invalidate({ listId:listId as string })
+    }
+
+    if(router.pathname === '/following') {
+      utils.tweet.getFollowingInfiniteTweets.invalidate()
     }
   };
 

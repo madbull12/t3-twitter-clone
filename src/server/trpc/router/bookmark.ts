@@ -2,6 +2,18 @@ import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
 
 export const bookmarkRouter = router({
+  userAlreadyBookmark:publicProcedure.input(z.object({ bookmarkId:z.string() })).query(({ ctx,input })=>{
+    const userId = ctx.session?.user?.id;
+    return ctx.prisma.bookmark.findUnique({
+      where:{
+        userId_tweetId:{
+          userId:userId as string,
+          tweetId:input?.bookmarkId as string
+        }
+      }
+    })
+
+  }),
   getUserBookmarks: publicProcedure.query(({ ctx }) => {
     const userId = ctx.session?.user?.id;
 

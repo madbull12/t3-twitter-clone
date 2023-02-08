@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 const useFollow = (userId: string) => {
   const utils = trpc.useContext();
   const router = useRouter();
-  const { f, q,userId:_userId } = router.query;
+  const { f, q,userId:_userId,listId } = router.query;
 
   const { mutateAsync: followUser, isLoading: followingUser } =
     trpc.follow.followUser.useMutation({
@@ -50,12 +50,23 @@ const useFollow = (userId: string) => {
         if (router.pathname === "/[userId]/[username]/following") {
           utils.follow.getUserFollowing.invalidate({ userId:_userId as string });
         }
+        // if(router.pathname === "/list/[userId]/[listId]") {
+        //   utils.list.getListDetails.invalidate({ listId:listId as string })
+        // }
+    
+        // if(router.pathname === '/following') {
+        //   utils.tweet.getFollowingInfiniteTweets.invalidate()
+        // }
         utils.user.getUserProfile.invalidate({ userId:_userId as string });
       },
     });
-  const { data: alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({
-    followingId: userId as string,
-  });
+  // const { data: alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({
+  //   followingId: userId as string,
+  // },{
+  //   onSettled:()=>{
+  //     utils.follow.getSingleFollower.cancel({ followingId:userId as string });
+  //   }
+  // });
   const [followed, setFollowed] = useState<boolean>();
 
   const handleFollow = async (e:React.SyntheticEvent) => {
@@ -83,7 +94,7 @@ const useFollow = (userId: string) => {
     handleFollow,
     handleUnfollow,
     followed,
-    alreadyFollowed,
+    // alreadyFollowed,
     followingUser,
     unfollowingUser,
   };
