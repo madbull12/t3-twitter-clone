@@ -4,6 +4,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import useScrollPosition from "../../hooks/useScrollPosition";
+import { TweetWithUser } from "../../interface";
 import Body from "../components/Body";
 import CreateTweet from "../components/CreateTweet";
 import HomeNav from "../components/HomeNav";
@@ -45,7 +46,7 @@ const FollowingOnlyTweetsPage = () => {
           <Loader />
         ) : (
           <>
-            <TweetList tweets={tweets as Tweet[]} />
+            <TweetList tweets={tweets as TweetWithUser[]} />
           </>
         )}
         {isFetching && hasNextPage ? <Loader /> : null}

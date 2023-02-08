@@ -11,6 +11,7 @@ import NoResults from "../components/NoResults";
 import { v4 } from "uuid";
 import TweetList from "../components/TweetList";
 import Head from "next/head";
+import { TweetWithUser } from "../../interface";
 
 const SearchPage = () => {
   const router = useRouter();
@@ -44,7 +45,7 @@ const SearchPage = () => {
             <NoResults />
           ) : (
             <>
-              <TweetList key={v4()} tweets={searchResults as Tweet[]} />
+              <TweetList key={v4()} tweets={searchResults as TweetWithUser[]} />
             </>
           )}
         </>
