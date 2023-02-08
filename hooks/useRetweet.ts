@@ -145,13 +145,13 @@ const useRetweet = (tweetId?: string) => {
       },
     });
 
-  const { data: alreadyRetweeted } = trpc.tweet.userAlreadyRetweet.useQuery({
-    tweetId: tweetId as string,
-  },{
-    onSettled:()=>{
-      utils.tweet.userAlreadyRetweet.cancel({ tweetId:tweetId as string });
-    }
-  });
+  // const { data: alreadyRetweeted } = trpc.tweet.userAlreadyRetweet.useQuery({
+  //   tweetId: tweetId as string,
+  // },{
+  //   onSettled:()=>{
+  //     utils.tweet.userAlreadyRetweet.cancel({ tweetId:tweetId as string });
+  //   }
+  // });
 
   // const retweetsMapped = userRetweets?.map((retweet)=>retweet.retweets);
   // const alreadyRetweeted = retweetsMapped?.find((retweet)=>retweet.id)
@@ -185,7 +185,7 @@ const useRetweet = (tweetId?: string) => {
   return {
     handleRetweet,
     hasRetweeted,
-    alreadyRetweeted,
+    // alreadyRetweeted,
     handleUndoRetweet,
     isRetweeting,
     isUndoingRetweet,

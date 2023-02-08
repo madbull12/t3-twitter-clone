@@ -24,7 +24,7 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
     handleFollow,
     handleUnfollow,
     followed,
-    alreadyFollowed,
+    // alreadyFollowed,
     followingUser,
     unfollowingUser,
   } = useFollow(tweet.user.id);
@@ -39,7 +39,9 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
   //   console.log(isYourTweet);
 
   const tablet = useMediaQuery("(min-width:1110px)");
-
+  const { data: alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({
+    followingId: tweet.user.id as string,
+  });
   return (
     <>
       <div className="dropdown-bottom dropdown-end dropdown ">
@@ -87,7 +89,7 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
               <li className="">
                 <button
                   disabled={followingUser || unfollowingUser}
-                  onClick={() => handleUnfollow()}
+                  onClick={(e:React.SyntheticEvent) => handleUnfollow(e)}
                   className="flex w-[90%] items-center gap-x-2  whitespace-nowrap   font-bold text-red-500"
                 >
                   <RiUserUnfollowLine />
@@ -98,7 +100,7 @@ const MenuDropdown = ({ tweet }: { tweet: TweetWithUser }) => {
               <li className="overflow-hidden">
                 <button
                   disabled={followingUser || unfollowingUser}
-                  onClick={() => handleFollow()}
+                  onClick={(e:React.SyntheticEvent) => handleFollow(e)}
                   className="flex w-[90%] items-center gap-x-2 whitespace-nowrap font-bold"
                 >
                   <RiUserFollowLine />

@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import useFollow from "../../hooks/useFollow";
 import { GoVerified } from 'react-icons/go'
+import { trpc } from "../utils/trpc";
 interface IProps {
   user: UserWithPayloads;
 }
@@ -18,12 +19,15 @@ const PeopleComponent = ({ user }: IProps) => {
   const {
     handleFollow,
     handleUnfollow,
-    alreadyFollowed,
+    // alreadyFollowed,
     followed,
     followingUser,
     unfollowingUser,
   } = useFollow(user.id as string);
-
+  
+  const { data: alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({
+    followingId: user.id as string,
+  });
   return (
     <div onClick={() => router.push(`/${user.id}/${user.name}`)}>
       <div className="flex cursor-pointer items-start justify-between gap-x-4 px-2 py-6 transition-all duration-100 ease-in-out hover:bg-base-200">

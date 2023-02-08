@@ -142,13 +142,9 @@ const useLikeTweet = (tweetId: string) => {
 
   const { setModal: setLoginModal } = useLoginModal();
 
-  const { data: alreadyLiked } = trpc.like.userLikeTweet.useQuery({
-    tweetId,
-  },{
-    onSettled:()=>{
-      utils.like.userLikeTweet.cancel({ tweetId });
-    }
-  });
+  // const { data: alreadyLiked } = trpc.like.userLikeTweet.useQuery({
+  //   tweetId,
+  // });
 
   const handleLike = async () => {
     setHasLiked(true);
@@ -182,7 +178,7 @@ const useLikeTweet = (tweetId: string) => {
     hasLiked,
     handleUnlike,
     setHasLiked,
-    alreadyLiked,
+    // alreadyLiked,
     likeLoading,
     unlikeLoading,
   };

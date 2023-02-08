@@ -60,18 +60,25 @@ const StatusPage = () => {
   const { setModal:setPhotoModal } = usePhotoViewModal();
   const { setSrc,setSize } = usePhotoView();
 
+  const { data: alreadyRetweeted } = trpc.tweet.userAlreadyRetweet.useQuery({
+    tweetId: statusId as string,
+  });
+
+  const { data: alreadyLiked } = trpc.like.userLikeTweet.useQuery({
+    tweetId:statusId as string,
+  });
     // const alreadyRetweeted = tweetDetails?.retweets.find((retweet)=>retweet.userId === session?.user?.id)
 
   const { data: replies} = trpc?.tweet.getTweetReplies.useQuery({
     tweetId: statusId
   });
 
-  const { alreadyRetweeted, hasRetweeted, handleUndoRetweet, handleRetweet,isRetweeting,isUndoingRetweet } =
+  const {  hasRetweeted, handleUndoRetweet, handleRetweet,isRetweeting,isUndoingRetweet } =
     useRetweet(statusId as string);
 
   const {
     handleLike,
-    alreadyLiked,
+    // alreadyLiked,
     setHasLiked,
     hasLiked,
     handleUnlike,

@@ -54,7 +54,7 @@ const TweetComponent = ({
   const msBetweenDates = tweet?.createdAt?.getTime() - now.getTime();
   const router = useRouter();
   const {
-    alreadyRetweeted,
+    // alreadyRetweeted,
     hasRetweeted,
     handleUndoRetweet,
     handleRetweet,
@@ -63,16 +63,20 @@ const TweetComponent = ({
   } = useRetweet(tweet.id);
 
   const hoursBetweenDates = msBetweenDates / (60 * 60 * 1000);
-
+  const { data: alreadyRetweeted } = trpc.tweet.userAlreadyRetweet.useQuery({
+    tweetId: tweet.id as string,
+  });
   const { modal, setModal } = useReplyModal();
   const { setModal: setLoginModal } = useLoginModal();
-
+  const { data: alreadyLiked } = trpc.like.userLikeTweet.useQuery({
+    tweetId:tweet.id as string,
+  });
   const { setTweetId } = useTweetId();
 
   const {
     handleLike,
     handleUnlike,
-    alreadyLiked,
+    // alreadyLiked,
     setHasLiked,
     hasLiked,
     likeLoading,
