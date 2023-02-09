@@ -35,7 +35,6 @@ import TweetContent from "./TweetContent";
 import { motion } from "framer-motion";
 import VoteComponentList from "./VoteComponentList";
 import ProfileDropdown from "./ProfileDropdown";
-import { CLOSING } from "ws";
 
 interface IProps {
   tweet: TweetWithUser;

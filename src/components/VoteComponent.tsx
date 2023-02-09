@@ -65,7 +65,7 @@ const VoteComponent = ({ option, totalVotes }: IProps) => {
         className={`h-8 text-neutral flex items-center justify-between rounded-md  bg-blue-400 px-2 text-sm transition-all duration-100 ease-linear `}
       >
         <p>{option?.text}</p>
-        {votePercentage >= 10 ? <p>{votePercentage}%</p> : null}
+        {votePercentage >= 10 ? <p>{votePercentage.toFixed(0)}%</p> : null}
       </div>
     </div>
   );

@@ -47,7 +47,7 @@ export const tweetRouter = router({
       z.object({
         text: z.string(),
         hashtags: z.string().array().nullable(),
-        options:z.string().array()
+        options: z.string().array(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -58,8 +58,8 @@ export const tweetRouter = router({
         );
       }
       return ctx.prisma.tweet.create({
-        data:{
-          text:input?.text,
+        data: {
+          text: input?.text,
           isPinned: false,
           user: {
             connect: {
@@ -76,24 +76,23 @@ export const tweetRouter = router({
               },
             })),
           },
-       
-          poll:{
-            create:{
-              options:{
-                createMany:{
-                  data:input?.options.filter((option)=>option !== "").map((option)=>({
-                    text:option,
-                    
-                  }))
-                }
-              },
-              expiredAt:new Date()
-            },
-          
-          }
-        }
-      })
 
+          poll: {
+            create: {
+              options: {
+                createMany: {
+                  data: input?.options
+                    .filter((option) => option !== "")
+                    .map((option) => ({
+                      text: option,
+                    })),
+                },
+              },
+              expiredAt: new Date(),
+            },
+          },
+        },
+      });
     }),
   deleteTweet: publicProcedure
 
@@ -121,9 +120,7 @@ export const tweetRouter = router({
           id_userId: {
             id: input?.tweetId,
             userId: userId as string,
-            
           },
-          
         },
       });
     }),
@@ -271,14 +268,14 @@ export const tweetRouter = router({
           },
           retweets: true,
           likes: true,
-          poll:{
-            include:{
-              options:{
-                include:{
-                  votes:true
-                }
-              }
-            }
+          poll: {
+            include: {
+              options: {
+                include: {
+                  votes: true,
+                },
+              },
+            },
           },
           replies: true,
         },
@@ -381,14 +378,14 @@ export const tweetRouter = router({
           likes: true,
           replies: true,
           retweets: true,
-          poll:{
-            include:{
-              options:{
-                include:{
-                  votes:true
-                }
-              }
-            }
+          poll: {
+            include: {
+              options: {
+                include: {
+                  votes: true,
+                },
+              },
+            },
           },
         },
       });
@@ -426,7 +423,7 @@ export const tweetRouter = router({
         },
         include: {
           user: true,
-          
+
           originalTweet: {
             include: {
               user: true,
@@ -435,14 +432,14 @@ export const tweetRouter = router({
           likes: true,
           replies: true,
           retweets: true,
-          poll:{
-            include:{
-              options:{
-                include:{
-                  votes:true
-                }
-              }
-            }
+          poll: {
+            include: {
+              options: {
+                include: {
+                  votes: true,
+                },
+              },
+            },
           },
         },
       });
@@ -538,15 +535,15 @@ export const tweetRouter = router({
               likes: true,
               replies: true,
               retweets: true,
-                  poll:{
-            include:{
-              options:{
-                include:{
-                  votes:true
-                }
-              }
-            }
-          },
+              poll: {
+                include: {
+                  options: {
+                    include: {
+                      votes: true,
+                    },
+                  },
+                },
+              },
             },
             orderBy: {
               createdAt: "desc",
@@ -576,15 +573,15 @@ export const tweetRouter = router({
               likes: true,
               replies: true,
               retweets: true,
-                  poll:{
-            include:{
-              options:{
-                include:{
-                  votes:true
-                }
-              }
-            }
-          },
+              poll: {
+                include: {
+                  options: {
+                    include: {
+                      votes: true,
+                    },
+                  },
+                },
+              },
             },
             orderBy: {
               createdAt: "desc",
@@ -616,15 +613,15 @@ export const tweetRouter = router({
               likes: true,
               replies: true,
               retweets: true,
-                  poll:{
-            include:{
-              options:{
-                include:{
-                  votes:true
-                }
-              }
-            }
-          },
+              poll: {
+                include: {
+                  options: {
+                    include: {
+                      votes: true,
+                    },
+                  },
+                },
+              },
             },
             orderBy: {
               createdAt: "desc",
@@ -661,15 +658,15 @@ export const tweetRouter = router({
               likes: true,
               replies: true,
               retweets: true,
-                  poll:{
-            include:{
-              options:{
-                include:{
-                  votes:true
-                }
-              }
-            }
-          },
+              poll: {
+                include: {
+                  options: {
+                    include: {
+                      votes: true,
+                    },
+                  },
+                },
+              },
             },
             orderBy: {
               createdAt: "desc",
@@ -714,14 +711,14 @@ export const tweetRouter = router({
         },
         include: {
           user: true,
-          poll:{
-            include:{
-              options:{
-                include:{
-                  votes:true
-                }
-              }
-            }
+          poll: {
+            include: {
+              options: {
+                include: {
+                  votes: true,
+                },
+              },
+            },
           },
 
           originalTweet: {
@@ -730,6 +727,15 @@ export const tweetRouter = router({
               likes: true,
               retweets: true,
               replies: true,
+              poll: {
+                include: {
+                  options: {
+                    include: {
+                      votes: true,
+                    },
+                  },
+                },
+              },
             },
           },
 
@@ -750,6 +756,7 @@ export const tweetRouter = router({
               },
             },
           },
+          
           retweets: {
             include: {
               user: {

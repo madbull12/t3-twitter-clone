@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useState,useRef,useEffect } from 'react'
+import { useState, useRef, useEffect } from "react";
 import toast from "react-hot-toast";
 import { RiCloseLine } from "react-icons/ri";
 import { TweetWithUser } from "../../interface";
@@ -10,22 +10,25 @@ import Avatar from "./Avatar";
 import Button from "./Button";
 import MediaTools from "./MediaTools";
 
-const ReplyForm = ({ tweet }: { tweet: TweetWithUser}) => {
+const ReplyForm = ({ tweet }: { tweet: TweetWithUser }) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const [newReply,setNewReply] = useState<TweetWithUser | null>(null)
+  const [newReply, setNewReply] = useState<TweetWithUser | null>(null);
   const [text, setText] = useState("");
   const [selectedFile, setSelectedFile] = useState<any>();
   const [preview, setPreview] = useState<string>();
   const utils = trpc.useContext();
   const { setModal } = useReplyModal();
-  const { mutateAsync:sendNotification } = trpc.notification.sendNotification.useMutation();
+  const { mutateAsync: sendNotification } =
+    trpc.notification.sendNotification.useMutation();
 
   const textRef = useRef<HTMLTextAreaElement>(null);
   const { mutateAsync: createReply } = trpc.tweet.createReply.useMutation({
     onMutate: () => {
-      utils.tweet.getTweetReplies.cancel()
-      const optimisticUpdate = utils.tweet.getTweetReplies.getData({ tweetId:tweet.id });
+      utils.tweet.getTweetReplies.cancel();
+      const optimisticUpdate = utils.tweet.getTweetReplies.getData({
+        tweetId: tweet.id,
+      });
 
       if (optimisticUpdate) {
         utils.tweet.getTweetReplies.setData(optimisticUpdate);
@@ -36,15 +39,14 @@ const ReplyForm = ({ tweet }: { tweet: TweetWithUser}) => {
     },
   });
 
-
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    setModal(false)
+    setModal(false);
     let mediaUrl = null;
     let hashtags = text
-    .split(" ")
-    .filter((word) => word.startsWith("#"))
-    .map((word) => word.slice(1));
+      .split(" ")
+      .filter((word) => word.startsWith("#"))
+      .map((word) => word.slice(1));
 
     //upload image
     if (selectedFile) {
@@ -52,7 +54,6 @@ const ReplyForm = ({ tweet }: { tweet: TweetWithUser}) => {
       formData.append("file", selectedFile);
       formData.append("upload_preset", "xap2a5k4");
       // formData.append("file", );
-  
 
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/dem2vt6lj/${
@@ -67,18 +68,28 @@ const ReplyForm = ({ tweet }: { tweet: TweetWithUser}) => {
       mediaUrl = res.secure_url;
     }
 
-   await toast.promise(createReply({ text, mediaUrl, tweetId:tweet.id ,hashtags }),{
-    loading:"Replying tweet",
-    success:"Tweet replied",
-    error:(err)=>`Oops something went wrong ${err}`
-   }).then((data) => sendNotification({ text:`${session?.user?.name} just replied on your tweet`,redirectUrl:`/status/${data.id}`,recipientId:tweet.userId }));
-
-   
+    await toast
+      .promise(createReply({ text, mediaUrl, tweetId: tweet.id, hashtags }), {
+        loading: "Replying tweet",
+        success: "Tweet replied",
+        error: (err) => `Oops something went wrong ${err}`,
+      })
+      .then((data) => {
+        if (tweet.userId !== session?.user?.id) {
+          sendNotification({
+            text: `${session?.user?.name} just replied on your tweet`,
+            redirectUrl: `/status/${data.id}`,
+            recipientId: tweet.userId,
+          });
+        } else {
+          return data;
+        }
+      });
 
     // textRef!.current!.value = "";
-    setText("")
+    setText("");
     setSelectedFile(undefined);
-    
+
     await router.push(`/status/${tweet.id}`);
   };
   useEffect(() => {
@@ -103,13 +114,13 @@ const ReplyForm = ({ tweet }: { tweet: TweetWithUser}) => {
     setSelectedFile(e.target.files[0]);
   };
 
-  const onEmojiSelect = (e:any) => {
+  const onEmojiSelect = (e: any) => {
     let sym = e.unified.split("-");
-    let codesArray:any = [];
-    sym.forEach((el:any) => codesArray.push("0x" + el));
+    let codesArray: any = [];
+    sym.forEach((el: any) => codesArray.push("0x" + el));
     let emoji = String.fromCodePoint(...codesArray);
     setText(text + emoji);
-  }
+  };
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
@@ -120,7 +131,7 @@ const ReplyForm = ({ tweet }: { tweet: TweetWithUser}) => {
           cols={50}
           value={text || ""}
           onChange={(e) => setText(e.target.value)}
-          className="flex-1 resize-none bg-transparent text-base md:text-xl outline-none"
+          className="flex-1 resize-none bg-transparent text-base outline-none md:text-xl"
           placeholder="Tweet your reply"
         />
       </div>
@@ -143,13 +154,11 @@ const ReplyForm = ({ tweet }: { tweet: TweetWithUser}) => {
           )}
         </>
       )}
-      <div className="mt-4 flex justify-between items-center gap-x-2  ">
-            
+      <div className="mt-4 flex items-center justify-between gap-x-2  ">
         <MediaTools onSelectFile={onSelectFile} onEmojiSelect={onEmojiSelect} />
-            <div className="flex-[0.5]">
-              <Button text="Reply" />
-
-            </div>
+        <div className="flex-[0.5]">
+          <Button text="Reply" />
+        </div>
       </div>
     </form>
   );
