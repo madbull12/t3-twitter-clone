@@ -1,4 +1,5 @@
 import { Notification } from "@prisma/client";
+import moment from "moment";
 import Link from "next/link";
 import React, { useRef } from "react";
 import { BsTwitter } from "react-icons/bs";
@@ -26,7 +27,12 @@ const NotificationComponent = ({ notification }: IProps) => {
       className="flex cursor-pointer items-center gap-x-4 p-4 hover:bg-base-200 "
     >
       <BsTwitter className="text-2xl text-primary" />
-      <p className="text-sm text-gray-500">{notification.text}</p>
+      <div>
+        <p className=" text-neutral">{notification.text}</p>
+        <p className="text-xs text-gray-500">
+        {moment(notification.createdAt as Date).format("lll")}
+        </p>
+      </div>
       {isHover ? (
         <button
           onClick={(e) => {

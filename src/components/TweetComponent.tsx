@@ -111,7 +111,7 @@ const TweetComponent = ({
                 })
               : setLoginModal(true);
           }}
-          className="relative  cursor-pointer   p-2 transition-all duration-100 ease-in-out hover:bg-base-200 md:gap-x-4 md:p-4"
+          className="relative  cursor-pointer border-b border-gray-500 border-opacity-20  p-2 transition-all duration-100 ease-in-out hover:bg-base-200 md:gap-x-4 md:p-4"
         >
           {isRetweet ? (
             <p className="mb-2 flex items-center gap-x-2 font-semibold text-gray-400">

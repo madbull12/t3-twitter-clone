@@ -11,7 +11,7 @@ const FollowRecommendations = () => {
   const { data: session } = useSession();
   const router = useRouter()
   return (
-    <div className="rounded-xl overflow-hidden bg-base-250">
+    <div className="rounded-xl overflow-hidden bg-base-250 border border-gray-300 border-opacity-20">
       <h1 className="p-4 text-2xl font-bold text-neutral">Who to follow</h1>
       {data
         ?.filter((user) => user.id !== session?.user?.id)
