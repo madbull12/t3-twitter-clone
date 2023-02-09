@@ -13,8 +13,10 @@ import { useRouter } from "next/router";
 interface IProps {
   onSelectFile: (e: React.FormEvent<HTMLInputElement>) => void;
   onEmojiSelect: (e: React.FormEvent<HTMLInputElement>) => void;
+  selectedFile?:File | undefined;
 }
-const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
+const MediaTools = ({ onSelectFile, onEmojiSelect,selectedFile }: IProps) => {
+  console.log(selectedFile)
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const theme = useReadLocalStorage("theme");
   const phone = useMediaQuery("(min-width:640px)");
@@ -70,7 +72,7 @@ const MediaTools = ({ onSelectFile, onEmojiSelect }: IProps) => {
       ) : null}
 
       <AiOutlineFileGif />
-      {router.pathname === "/status/[statusId]" ? (
+      {(router.pathname === "/status/[statusId]" || selectedFile !== undefined ) ? (
         null
       ):(
         <button type="button" onClick={() => setIsOpen(true)}>
