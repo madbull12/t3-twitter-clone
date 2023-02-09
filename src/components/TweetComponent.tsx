@@ -85,7 +85,7 @@ const TweetComponent = ({
     hasLiked,
     likeLoading,
     unlikeLoading,
-  } = useLikeTweet(tweet.id);
+  } = useLikeTweet(tweet);
 
 
   const _isYourRetweet = (tweet.userId as string) === session?.user?.id;

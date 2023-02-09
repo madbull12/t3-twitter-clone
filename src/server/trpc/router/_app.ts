@@ -5,6 +5,7 @@ import { followRouter } from "./follow";
 import { hashtagRouter } from "./hashtag";
 import { likeRouter } from "./like";
 import { listRouter } from "./list";
+import { notificationRouter } from "./notification";
 import { pollRouter } from "./poll";
 import { profileRouter } from "./profile";
 import { searchRouter } from "./search";
@@ -27,7 +28,8 @@ export const appRouter = router({
   // reply:replyRouter
   list:listRouter,
   vote:voteRouter,
-  poll:pollRouter
+  poll:pollRouter,
+  notification:notificationRouter
 });
 
 // export type definition of API

@@ -9,6 +9,7 @@ import { IoClose } from "react-icons/io5";
 import { RiCloseLine } from "react-icons/ri";
 import ReactTimeAgo from "react-time-ago";
 import useOnClickOutside from "../../hooks/useOutsideClick";
+import { TweetWithUser } from "../../interface";
 import { useReplyModal, useTweetId } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import Avatar from "./Avatar";
@@ -87,7 +88,7 @@ const ReplyModal = () => {
                 </p>
               </div>
             </div>
-            <ReplyForm tweetId={tweetReply?.id as string} />
+            <ReplyForm tweet={tweetReply as unknown as TweetWithUser} />
           </>
         )}
       </div>

@@ -20,7 +20,7 @@ const LoginModal = () => {
       <Modal>
         <div
           ref={modalRef}
-          className="mx-auto relative h-[500px] w-3/4 space-y-3 overflow-y-scroll rounded-2xl  bg-base-100 p-4 sm:w-1/2"
+          className="mx-auto relative h-[200px] w-3/4 space-y-3  rounded-2xl  bg-base-100 p-4 sm:w-1/2"
         >
           <IoClose
             className="absolute top-4 left-4 cursor-pointer text-2xl"
@@ -34,7 +34,7 @@ const LoginModal = () => {
                 router.push("/auth/signin");
                 setModal(false);
               }}
-              className={`${"px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  text-black"}`}
+              className={`${"px-y mt-4 flex w-full items-center justify-center gap-x-2  rounded-full border border-primary py-2 font-semibold  text-neutral"}`}
             >
               Sign in
             </button>

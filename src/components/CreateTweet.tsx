@@ -61,7 +61,7 @@ const CreateTweet = () => {
     //   utils.tweet.getInfiniteTweets.invalidate()
     // }
   });
-  const [selectedFile, setSelectedFile] = useState<any>();
+  const [selectedFile, setSelectedFile] = useState<File | undefined>();
   const [preview, setPreview] = useState<string>();
   const [text, setText] = useState("");
   const textRef = useRef<HTMLTextAreaElement>(null);
@@ -236,6 +236,7 @@ const CreateTweet = () => {
           <MediaTools
             onEmojiSelect={onEmojiSelect}
             onSelectFile={onSelectFile}
+            selectedFile={selectedFile}
           />
           <div className="flex-[0.4]">
             <button

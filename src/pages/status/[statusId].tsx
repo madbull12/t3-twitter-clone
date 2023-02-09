@@ -84,7 +84,7 @@ const StatusPage = () => {
     handleUnlike,
     likeLoading,
     unlikeLoading,
-  } = useLikeTweet(statusId as string);
+  } = useLikeTweet(tweetDetails as unknown as TweetWithUser);
 
   const { setModal: setLikesModal } = useLikesModal();
   const { setModal: setRetweetsModal } = useRetweetsModal();
@@ -244,7 +244,7 @@ const StatusPage = () => {
 
             {/* <AiOutlineHeart className="cursor-pointer hover:text-primary " /> */}
           </div>
-          <ReplyForm tweetId={tweetDetails?.id || ""} />
+          <ReplyForm tweet={tweetDetails as unknown as TweetWithUser} />
           {/* <div>
             {replies?.map((reply) => (
               <TweetComponent tweet={reply as TweetWithUser} key={v4()} />

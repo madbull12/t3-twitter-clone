@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { TweetWithUser } from "../interface";
 import { useLoginModal } from "../lib/zustand";
-const useLikeTweet = (tweetId: string) => {
+const useLikeTweet = (tweet: TweetWithUser) => {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { f, q, userId,statusId,listId } = router.query;
@@ -19,7 +19,7 @@ const useLikeTweet = (tweetId: string) => {
       });
     }
     utils.tweet.getTweets.invalidate();
-    utils.like.userLikeTweet.invalidate({ tweetId });
+    utils.like.userLikeTweet.invalidate({ tweetId:tweet?.id });
 
     utils.tweet.getInfiniteTweets.invalidate();
     if (router.pathname === "/status/[statusId]") {
@@ -138,6 +138,9 @@ const useLikeTweet = (tweetId: string) => {
          invalidateLikeQueries()
        },
     });
+
+    const { mutateAsync:sendNotification } = trpc.notification.sendNotification.useMutation()
+
   const [hasLiked, setHasLiked] = useState(false);
 
   const { setModal: setLoginModal } = useLoginModal();
@@ -146,15 +149,23 @@ const useLikeTweet = (tweetId: string) => {
   //   tweetId,
   // });
 
+
+
   const handleLike = async () => {
     setHasLiked(true);
 
     if (status === "authenticated") {
-      await toast.promise(likeTweet({ tweetId: tweetId as string }), {
+      await toast.promise(likeTweet({ tweetId: tweet.id as string }), {
         success: "Tweet liked",
         loading: "Liking tweet",
         error: (err) => "Oops something went wrong " + err,
       });
+
+      if(session?.user?.id !== tweet.userId) {
+        await sendNotification({ text:`${session.user?.name} just liked your tweet`,redirectUrl:`/status/${tweet.id as string}`, recipientId:tweet.userId })
+
+      }
+
     } else {
       setLoginModal(true);
     }
@@ -163,7 +174,7 @@ const useLikeTweet = (tweetId: string) => {
     setHasLiked(false);
 
     if (status === "authenticated") {
-      await toast.promise(unlikeTweet({ tweetId: tweetId as string }), {
+      await toast.promise(unlikeTweet({ tweetId: tweet.id as string }), {
         success: "Tweet unliked",
         loading: "Unliking tweet",
         error: (err) => "Oops something went wrong " + err,

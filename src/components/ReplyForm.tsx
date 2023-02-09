@@ -3,25 +3,29 @@ import { useRouter } from "next/router";
 import { useState,useRef,useEffect } from 'react'
 import toast from "react-hot-toast";
 import { RiCloseLine } from "react-icons/ri";
+import { TweetWithUser } from "../../interface";
 import { useReplyModal } from "../../lib/zustand";
 import { trpc } from "../utils/trpc";
 import Avatar from "./Avatar";
 import Button from "./Button";
 import MediaTools from "./MediaTools";
-const ReplyForm = ({ tweetId }: { tweetId: string }) => {
+
+const ReplyForm = ({ tweet }: { tweet: TweetWithUser}) => {
   const { data: session } = useSession();
-  const router = useRouter()
+  const router = useRouter();
+  const [newReply,setNewReply] = useState<TweetWithUser | null>(null)
   const [text, setText] = useState("");
   const [selectedFile, setSelectedFile] = useState<any>();
   const [preview, setPreview] = useState<string>();
   const utils = trpc.useContext();
   const { setModal } = useReplyModal();
+  const { mutateAsync:sendNotification } = trpc.notification.sendNotification.useMutation();
 
   const textRef = useRef<HTMLTextAreaElement>(null);
   const { mutateAsync: createReply } = trpc.tweet.createReply.useMutation({
     onMutate: () => {
       utils.tweet.getTweetReplies.cancel()
-      const optimisticUpdate = utils.tweet.getTweetReplies.getData({ tweetId });
+      const optimisticUpdate = utils.tweet.getTweetReplies.getData({ tweetId:tweet.id });
 
       if (optimisticUpdate) {
         utils.tweet.getTweetReplies.setData(optimisticUpdate);
@@ -63,17 +67,19 @@ const ReplyForm = ({ tweetId }: { tweetId: string }) => {
       mediaUrl = res.secure_url;
     }
 
-    toast.promise(createReply({ text, mediaUrl, tweetId ,hashtags}), {
-      success: "Reply created",
-      loading: "Replying...",
-      error: (err) => "Oops.. something went wrong " + err,
-    });
+   await toast.promise(createReply({ text, mediaUrl, tweetId:tweet.id ,hashtags }),{
+    loading:"Replying tweet",
+    success:"Tweet replied",
+    error:(err)=>`Oops something went wrong ${err}`
+   }).then((data) => sendNotification({ text:`${session?.user?.name} just replied on your tweet`,redirectUrl:`/status/${data.id}`,recipientId:tweet.userId }));
 
-    textRef!.current!.value = "";
+   
+
+    // textRef!.current!.value = "";
     setText("")
     setSelectedFile(undefined);
     
-    await router.push(`/status/${tweetId}`);
+    await router.push(`/status/${tweet.id}`);
   };
   useEffect(() => {
     if (!selectedFile) {

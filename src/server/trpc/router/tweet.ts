@@ -353,6 +353,9 @@ export const tweetRouter = router({
           userId: {
             in: followingIds,
           },
+          // retweet: {
+          //   is: null,
+          // },
         },
         take: limit + 1,
         skip: skip,
@@ -361,6 +364,14 @@ export const tweetRouter = router({
           createdAt: "desc",
         },
         include: {
+          retweet: {
+            include: {
+              user: true,
+              likes: true,
+              replies: true,
+              retweets: true,
+            },
+          },
           user: true,
           originalTweet: {
             include: {
@@ -415,6 +426,7 @@ export const tweetRouter = router({
         },
         include: {
           user: true,
+          
           originalTweet: {
             include: {
               user: true,

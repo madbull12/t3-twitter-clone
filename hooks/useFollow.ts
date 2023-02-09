@@ -2,10 +2,13 @@ import { toast } from "react-hot-toast";
 import { trpc } from "../src/utils/trpc";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 const useFollow = (userId: string) => {
   const utils = trpc.useContext();
   const router = useRouter();
   const { f, q, userId: _userId, listId } = router.query;
+  const { mutateAsync:sendNotification } = trpc.notification.sendNotification.useMutation()
+  const { data:session } = useSession()
   const invalidateFollowQueries = () => {
     utils.follow.getFollowersRecommendation.invalidate();
     utils.follow.getSingleFollower.invalidate({
@@ -96,6 +99,9 @@ const useFollow = (userId: string) => {
       loading: "Loading...",
       error: (err) => `Oops something went wrong ` + err,
     });
+    await sendNotification({ text:`${session?.user?.name} started following you`,redirectUrl:`/[${session?.user?.id}]/[${session?.user?.name}]`, recipientId:userId })
+
+    
   };
   const handleUnfollow = async (e: React.SyntheticEvent) => {
     e.stopPropagation();
