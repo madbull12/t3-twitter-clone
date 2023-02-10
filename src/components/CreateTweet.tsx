@@ -71,6 +71,7 @@ const CreateTweet = () => {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setModal(false);
+    setText("")
     if (isPollingOpen) {
       let hashtags = text
         .split(" ")
@@ -118,9 +119,10 @@ const CreateTweet = () => {
         error: (err) => "Oops.. something went wrong " + err,
       });
 
-      textRef!.current!.value = "";
       setSelectedFile(undefined);
     }
+    textRef!.current!.value = "";
+
   };
   useEffect(() => {
     if (!selectedFile) {

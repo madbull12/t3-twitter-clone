@@ -99,7 +99,7 @@ const useFollow = (userId: string) => {
       loading: "Loading...",
       error: (err) => `Oops something went wrong ` + err,
     });
-    await sendNotification({ text:`${session?.user?.name} started following you`,redirectUrl:`/[${session?.user?.id}]/[${session?.user?.name}]`, recipientId:userId })
+    await sendNotification({ text:`${session?.user?.name} started following you`,redirectUrl:`/${session?.user?.id}/${session?.user?.name}`, recipientId:userId })
 
     
   };
