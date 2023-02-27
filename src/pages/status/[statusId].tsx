@@ -36,6 +36,7 @@ import {
 import Avatar from "../../components/Avatar";
 import Body from "../../components/Body";
 import Loader from "../../components/Loader";
+import MenuDropdown from "../../components/MenuDropdown";
 import NavFeed from "../../components/NavFeed";
 import ReplyForm from "../../components/ReplyForm";
 import ShareDropdown from "../../components/ShareDropdown";
@@ -122,6 +123,11 @@ const StatusPage = () => {
             >
               {tweetDetails?.user.name}
             </Link>
+            <div className="ml-auto">
+            <MenuDropdown tweet={tweetDetails as unknown as TweetWithUser} />
+
+            </div>
+
           </div>
           {tweetDetails?.originalTweet ? (
             <p className="text-gray-500">
