@@ -38,6 +38,7 @@ import Body from "../../components/Body";
 import Loader from "../../components/Loader";
 import NavFeed from "../../components/NavFeed";
 import ReplyForm from "../../components/ReplyForm";
+import ShareDropdown from "../../components/ShareDropdown";
 import TweetComponent from "../../components/TweetComponent";
 import TweetContent from "../../components/TweetContent";
 import TweetList from "../../components/TweetList";
@@ -241,6 +242,7 @@ const StatusPage = () => {
                 </button>
               )}
             </div>
+            <ShareDropdown tweetId={tweetDetails?.id as string} />
 
             {/* <AiOutlineHeart className="cursor-pointer hover:text-primary " /> */}
           </div>

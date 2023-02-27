@@ -28,8 +28,12 @@ const MobileDrawer = () => {
       },
     },
     exit: {
-      x: "100vw",
+      x: "-100vw",
       opacity: 0,
+      transition: {
+        duration: 0.1,
+        ease:'linear'
+      },
     },
   };
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -69,7 +73,7 @@ const MobileDrawer = () => {
         variants={slideIn}
         initial="hidden"
         animate="visible"
-        exit="exit"
+        exit="hidden"
         ref={drawerRef}
         className={`fixed top-0 left-0 space-y-4 p-4 transition-transform duration-150 ease-in-out ${
           drawer ? "translate-x-0" : "-translate-x-full"

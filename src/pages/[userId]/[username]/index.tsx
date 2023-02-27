@@ -59,18 +59,28 @@ const ProfilePage = () => {
     trpc.tweet.getUserTweets.useQuery({
       userId: userId as string,
       link: _link,
+    },{
+      enabled: router.isReady
     });
   const { data: userProfile, isLoading: isLoadingUserProfile } =
     trpc.user.getUserProfile.useQuery({
       userId: userId as string,
+    },{
+      enabled: router.isReady
     });
   const { data: userTweetsCount } = trpc.tweet.getUserTweets.useQuery({
     userId: userId as string,
     link: "tweets&replies",
+  },{
+    enabled: router.isReady
   });
   const { data: alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({
     followingId: userId as string,
+    
+  },{
+    enabled: router.isReady
   });
+
   const [value, copy] = useCopyToClipboard();
   const {
     handleFollow,

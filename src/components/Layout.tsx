@@ -96,7 +96,7 @@ const Layout = ({ children }: IProps) => {
   return (
     <main className="relative mx-auto  min-h-[200vh] max-w-screen-2xl  bg-base-100 text-neutral">
       {!phone ? (
-        <AnimatePresence>
+        <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
           {mobileDrawer ? (
               <MobileDrawer />
           ) : null}

@@ -26,13 +26,13 @@ const ShareDropdown = ({ tweetId }: { tweetId: string }) => {
   return (
     <>
 
-        <div className="dropdown dropdown-top dropdown-end   list-none ">
+        <div className="dropdown dropdown-top dropdown-end   list-none  cursor-pointer">
           <li tabIndex={1}>
             <IoShareOutline className="hover:text-primary" />
           </li>
           <ul
             tabIndex={1}
-            className="dropdown-content   menu rounded-box w-52 bg-base-100  shadow"
+            className="dropdown-content text-sm  menu rounded-box w-52 bg-base-100  shadow"
           >
             <li>
               <button
