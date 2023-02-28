@@ -1,16 +1,39 @@
 import { useSession } from "next-auth/react";
 import Head from "next/head";
-import React from "react";
+import React, { useEffect } from "react";
 import { v4 } from "uuid";
+import useScrollPosition from "../../hooks/useScrollPosition";
 import { UserWithPayloads } from "../../interface";
 import Body from "../components/Body";
+import Loader from "../components/Loader";
 import NavFeed from "../components/NavFeed";
 import PeopleComponent from "../components/PeopleComponent";
+import UsersList from "../components/UsersList";
 import { trpc } from "../utils/trpc";
 
 const connect_people = () => {
-  const { data } = trpc.follow.getFollowersRecommendation.useQuery();
+  // const { data } = trpc.follow.getFollowersRecommendation.useQuery();
   const { data: session } = useSession();
+  const scrollPosition = useScrollPosition();
+
+  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
+    trpc.follow.getInfinitePeopleRecommendations.useInfiniteQuery(
+      {
+        limit: 10,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      }
+    );
+
+  useEffect(() => {
+    if (scrollPosition > 90 && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [scrollPosition, isFetching, hasNextPage, fetchNextPage]);
+
+  const users = data?.pages.flatMap((page) => page.users) ?? [];
+  console.log(users);
   return (
     <Body>
       <Head>
@@ -19,11 +42,19 @@ const connect_people = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavFeed title="Connect" />
-      {data
+      {/* {users
         ?.filter((user) => user.id !== session?.user?.id)
-        .map((user: unknown) => (
-          <PeopleComponent key={v4()} user={user as unknown as UserWithPayloads} />
-        ))}
+        .map((user) => (
+          <PeopleComponent user={user} />
+        ))} */}
+      <UsersList
+        users={users?.filter((user) => user.id !== session?.user?.id)}
+      />
+      {isFetching && hasNextPage ? (
+        <div className="pb-16">
+          <Loader  />
+        </div>
+      ) : null}
     </Body>
   );
 };

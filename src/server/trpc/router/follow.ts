@@ -107,6 +107,84 @@ export const followRouter = router({
         },
       });
     }),
+  getInfiniteUserFollowing: publicProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().nullish(),
+        skip: z.number().optional(),
+        userId:z.string()
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { limit, skip, cursor,userId } = input;
+
+      const users = await ctx.prisma.user.findMany({
+        take: limit + 1,
+        skip: skip,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+        where:{
+          followers:{
+            some:{
+              followingId:userId,
+            },
+          }
+         
+        }
+        
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (users?.length > limit) {
+        const nextItem = users?.pop(); // return the last item from the array
+        nextCursor = nextItem?.id;
+      }
+      return {
+        users,
+        nextCursor,
+      };
+    }),
+  getInfiniteUserFollowers: publicProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().nullish(),
+        skip: z.number().optional(),
+        userId:z.string()
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { limit, skip, cursor,userId } = input;
+
+      const users = await ctx.prisma.user.findMany({
+        take: limit + 1,
+        skip: skip,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+        where:{
+          followings:{
+            some:{
+              followerId:userId,
+            },
+          }
+         
+        }
+        
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (users?.length > limit) {
+        const nextItem = users?.pop(); // return the last item from the array
+        nextCursor = nextItem?.id;
+      }
+      return {
+        users,
+        nextCursor,
+      };
+    }),
   followList: publicProcedure
     .input(z.object({ userId: z.string(), listId: z.string() }))
     .mutation(({ ctx, input }) => {
@@ -132,12 +210,72 @@ export const followRouter = router({
         },
         data: {
           followers: {
-            disconnect:{
-              id:input?.userId
-            }
+            disconnect: {
+              id: input?.userId,
+            },
           },
         },
       });
+    }),
+  getInfinitePeopleRecommendations: publicProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().nullish(),
+        skip: z.number().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { limit, skip, cursor } = input;
+      const userId = ctx.session?.user?.id;
+
+      const users = await ctx.prisma.user.findMany({
+        take: limit + 1,
+        skip: skip,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+        where: {
+          NOT: {
+            followers: {
+              some: {
+                followingId: userId as string,
+              },
+            },
+          },
+        },
+        include: {
+          followers: {
+            include: {
+              follower: {
+                include: {
+                  profile: true,
+                },
+              },
+            },
+          },
+          followings: {
+            include: {
+              following: {
+                include: {
+                  profile: true,
+                },
+              },
+            },
+          },
+          profile: true,
+        },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (users.length > limit) {
+        const nextItem = users.pop(); // return the last item from the array
+        nextCursor = nextItem?.id;
+      }
+      return {
+        users,
+        nextCursor,
+      };
     }),
   getFollowersRecommendation: publicProcedure.query(({ ctx, input }) => {
     const userId = ctx.session?.user?.id;

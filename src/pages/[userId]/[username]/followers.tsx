@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { v4 } from "uuid";
 import { UserWithPayloads } from "../../../../interface";
 import Body from "../../../components/Body";
@@ -10,26 +10,49 @@ import PeopleComponent from "../../../components/PeopleComponent";
 import { trpc } from "../../../utils/trpc";
 import Image from "next/image";
 import Loader from "../../../components/Loader";
+import useScrollPosition from "../../../../hooks/useScrollPosition";
+import UsersList from "../../../components/UsersList";
 
 const FollowerPage = () => {
+  const { userId, username } = useRouter().query;
+  // const { data: userFollowing, isLoading } =
+  //   trpc.follow.getUserFollowing.useQuery({
+  //     userId: userId as string,
+  //   });
+  const scrollPosition = useScrollPosition();
+
+  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
+    trpc.follow.getInfiniteUserFollowers.useInfiniteQuery(
+      {
+        limit: 6,
+        userId: userId as string,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      }
+    );
+
+  useEffect(() => {
+    if (scrollPosition > 90 && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [scrollPosition, isFetching, hasNextPage, fetchNextPage]);
+
+  const users = data?.pages.flatMap((page) => page.users) ?? [];
+  const router = useRouter();
   const { data: session, status } = useSession();
-
-  const { userId } = useRouter().query;
-  const { data: userFollowers, isLoading } =
-    trpc.follow.getUserFollowers.useQuery({
-      userId: userId as string,
-    });
-
-  if (isLoading) return <Loader />;
 
   return (
     <Body>
       <FollowersFollowingNav />
-      {userFollowers?.followers.length !== 0 ? (
+      {users?.length !== 0 ? (
         <div>
-          {userFollowers?.followers.map((follower) => (
-            <PeopleComponent key={v4()} user={follower.following} />
-          ))}
+          <UsersList users={users as UserWithPayloads[]} />
+          {isFetching && hasNextPage ? (
+            <div className="pb-16">
+              <Loader />
+            </div>
+          ) : null}
         </div>
       ) : (
         <>

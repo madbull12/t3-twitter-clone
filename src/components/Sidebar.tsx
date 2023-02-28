@@ -78,7 +78,7 @@ const Sidebar = () => {
       active: router.pathname === "/messages",
       icon:
       router.asPath ===
-      `/${session?.user?.id}/${session?.user?.name?.replace(/\s/g, "")}` ? (
+      `/messages` ? (
         <AiFillMail/>
       ) : (
         <AiOutlineMail  />
