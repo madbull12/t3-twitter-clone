@@ -756,7 +756,7 @@ export const tweetRouter = router({
               },
             },
           },
-          
+
           retweets: {
             include: {
               user: {
@@ -770,68 +770,160 @@ export const tweetRouter = router({
       });
     }),
   searchTweets: publicProcedure
-    .input(z.object({ term: z.string(), filtering: z.string() }))
-    .query(({ ctx, input }) => {
+    .input(
+      z.object({
+        term: z.string(),
+        filtering: z.string(),
+        limit: z.number(),
+        cursor: z.string().nullish(),
+        skip: z.number().optional(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { limit, skip, cursor } = input;
+
       switch (input.filtering) {
-        case "top":
-          return ctx.prisma.tweet.findMany({
+        case "top": {
+          const tweets = await ctx.prisma.tweet.findMany({
+            take: limit + 1,
+            skip: skip,
+            cursor: cursor ? { id: cursor } : undefined,
+            // orderBy: {
+            //   createdAt: "desc",
+            // },
             include: {
               user: true,
-              replies: true,
+    
               originalTweet: {
                 include: {
                   user: true,
                 },
               },
               likes: true,
+              replies: true,
               retweets: true,
+              poll: {
+                include: {
+                  options: {
+                    include: {
+                      votes: true,
+                    },
+                  },
+                },
+              },
             },
             where: {
               text: {
                 contains: input.term,
                 mode: "insensitive",
+              },
+              retweet: {
+                is: null,
               },
             },
           });
+          let nextCursor: typeof cursor | undefined = undefined;
+          if (tweets.length > limit) {
+            const nextItem = tweets.pop(); // return the last item from the array
+            nextCursor = nextItem?.id;
+          }
+          return {
+            tweets,
+            nextCursor,
+          };
+        }
+        // return ctx.prisma.tweet.findMany({
+        //   include: {
+        //     user: true,
+        //     replies: true,
+        //     originalTweet: {
+        //       include: {
+        //         user: true,
+        //       },
+        //     },
+        //     likes: true,
+        //     retweets: true,
+        //   },
+        //   where: {
+        //     text: {
+        //       contains: input.term,
+        //       mode: "insensitive",
+        //     },
+        //   },
+        // });
 
-        case "latest":
-          return ctx.prisma.tweet.findMany({
-            include: {
-              user: true,
-              replies: true,
-
-              originalTweet: {
-                include: {
-                  user: true,
-                },
-              },
-              likes: true,
-              retweets: true,
-            },
-            where: {
-              text: {
-                contains: input.term,
-                mode: "insensitive",
-              },
-            },
+        case "latest": {
+          const tweets = await ctx.prisma.tweet.findMany({
+            take: limit + 1,
+            skip: skip,
+            cursor: cursor ? { id: cursor } : undefined,
             orderBy: {
               createdAt: "desc",
             },
-          });
-
-        case "photos":
-          return ctx.prisma.tweet.findMany({
             include: {
               user: true,
-              replies: true,
-
+    
               originalTweet: {
                 include: {
                   user: true,
                 },
               },
               likes: true,
+              replies: true,
               retweets: true,
+              poll: {
+                include: {
+                  options: {
+                    include: {
+                      votes: true,
+                    },
+                  },
+                },
+              },
+            },
+            where: {
+              text: {
+                contains: input.term,
+                mode: "insensitive",
+              },
+            },
+          });
+          let nextCursor: typeof cursor | undefined = undefined;
+          if (tweets.length > limit) {
+            const nextItem = tweets.pop(); // return the last item from the array
+            nextCursor = nextItem?.id;
+          }
+          return {
+            tweets,
+            nextCursor,
+          };
+        }
+
+        case "photos": {
+          const tweets = await ctx.prisma.tweet.findMany({
+            take: limit + 1,
+            skip: skip,
+            cursor: cursor ? { id: cursor } : undefined,
+            include: {
+              user: true,
+    
+              originalTweet: {
+                include: {
+                  user: true,
+                },
+              },
+              likes: true,
+              replies: true,
+              retweets: true,
+              poll: {
+                include: {
+                  options: {
+                    include: {
+                      votes: true,
+                    },
+                  },
+                },
+              },
             },
             where: {
               text: {
@@ -843,19 +935,42 @@ export const tweetRouter = router({
               },
             },
           });
-        case "videos":
-          return ctx.prisma.tweet.findMany({
+          let nextCursor: typeof cursor | undefined = undefined;
+          if (tweets.length > limit) {
+            const nextItem = tweets.pop(); // return the last item from the array
+            nextCursor = nextItem?.id;
+          }
+          return {
+            tweets,
+            nextCursor,
+          };
+        }
+
+        case "videos": {
+          const tweets = await ctx.prisma.tweet.findMany({
+            take: limit + 1,
+            skip: skip,
+            cursor: cursor ? { id: cursor } : undefined,
             include: {
               user: true,
-              replies: true,
-
+    
               originalTweet: {
                 include: {
                   user: true,
                 },
               },
               likes: true,
+              replies: true,
               retweets: true,
+              poll: {
+                include: {
+                  options: {
+                    include: {
+                      votes: true,
+                    },
+                  },
+                },
+              },
             },
             where: {
               text: {
@@ -866,25 +981,38 @@ export const tweetRouter = router({
               },
             },
           });
+          let nextCursor: typeof cursor | undefined = undefined;
+          if (tweets.length > limit) {
+            const nextItem = tweets.pop(); // return the last item from the array
+            nextCursor = nextItem?.id;
+          }
+          return {
+            tweets,
+            nextCursor,
+          };
+        }
 
         default:
           break;
       }
-      return ctx.prisma.tweet.findMany({
-        include: {
-          user: true,
-          originalTweet: {
-            include: {
-              user: true,
-            },
-          },
-          likes: true,
-        },
-        where: {
-          text: {
-            contains: input.term,
-          },
-        },
-      });
+      // return ctx.prisma.tweet.findMany({
+      //   take: limit + 1,
+      //   skip: skip,
+      //   cursor: cursor ? { id: cursor } : undefined,
+      //   include: {
+      //     user: true,
+      //     originalTweet: {
+      //       include: {
+      //         user: true,
+      //       },
+      //     },
+      //     likes: true,
+      //   },
+      //   where: {
+      //     text: {
+      //       contains: input.term,
+      //     },
+      //   },
+      // });
     }),
 });

@@ -1,8 +1,11 @@
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/legacy/image";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { v4 } from "uuid";
 import useBookmark from "../../hooks/useBookmark";
+import useScrollPosition from "../../hooks/useScrollPosition";
 import { TweetWithUser } from "../../interface";
 import { useDebouncedBookmarks } from "../../lib/zustand";
 import Body from "../components/Body";
@@ -13,10 +16,34 @@ import TweetComponent from "../components/TweetComponent";
 import TweetList from "../components/TweetList";
 import { trpc } from "../utils/trpc";
 const BookmarkPage = () => {
-  const { bookmarks: data, isLoading } = useBookmark();
-  const utils = trpc.useContext()
+  // const { bookmarks: data, isLoading } = useBookmark();
+  // const utils = trpc.useContext()
 
-  const bookmarks = data?.map((bookmark) => bookmark.tweet);
+  // const bookmarks = data?.map((bookmark) => bookmark.tweet);
+  const scrollPosition = useScrollPosition();
+
+  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
+    trpc.bookmark.getInfiniteUserBookmarks.useInfiniteQuery(
+      {
+        limit: 10,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage.nextCursor,
+      }
+    );
+
+  useEffect(() => {
+    if (scrollPosition > 90 && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [scrollPosition, isFetching, hasNextPage, fetchNextPage]);
+
+  const bookmarks =
+    data?.pages.flatMap((page) =>
+      page.bookmarks.map((bookmark) => bookmark.tweet)
+    ) ?? [];
+  const router = useRouter();
+  const { data: session, status } = useSession();
   const { bookmark: bookmarkValue } = useDebouncedBookmarks();
 
   const { data: searchBookmarks, isLoading: searchLoading } =
@@ -25,7 +52,7 @@ const BookmarkPage = () => {
     });
 
   const debouncedBookmarks = searchBookmarks?.map((bookmark) => bookmark.tweet);
-
+  console.log(bookmarks);
   return (
     <Body>
       <Head>
@@ -41,7 +68,7 @@ const BookmarkPage = () => {
           {bookmarks?.length !== 0 ? (
             <>
               {bookmarkValue === "" ? (
-                <TweetList tweets={bookmarks as TweetWithUser[]} />
+                <TweetList tweets={bookmarks as unknown as TweetWithUser[]} />
               ) : (
                 <>
                   {searchLoading ? (
@@ -73,11 +100,16 @@ const BookmarkPage = () => {
           )}
         </>
       )}
+      {isFetching && hasNextPage ? (
+        <div className="pb-16">
+          <Loader />
+        </div>
+      ) : null}
       {/* {bookmarks?.map((bookmark)=>(
         <p>{bookmark.text}</p>
-      ))} */}
+      ))}
 
-      {/* {bookmarks?.map((bookmark) => (
+       {bookmarks?.map((bookmark) => (
         <TweetComponent key={v4()} tweet={bookmark.tweet as TweetWithUser} />
       ))} */}
     </Body>

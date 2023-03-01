@@ -23,6 +23,7 @@ const useDeleteTweet = (tweet: TweetWithUser) => {
       utils.tweet.searchTweets.invalidate({
         term: q as string,
         filtering: f as string,
+        limit:10
       });
     }
     if(router.pathname === "/list/[userId]/[listId]") {
@@ -59,6 +60,7 @@ const useDeleteTweet = (tweet: TweetWithUser) => {
     const searchTweets = utils.tweet.searchTweets.getData({
       term: q as string,
       filtering: f as string,
+      limit:10
     })
 
     if (getTweets) {

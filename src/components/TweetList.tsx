@@ -12,7 +12,7 @@ const TweetList = ({ tweets }: { tweets: TweetWithUser[] }) => {
   const [itemCount, setItemCount] = useState(5);
   const router = useRouter();
   const phone = useMediaQuery("(min-width:768px)");
-  const exceptionLinks = ["/","/following"]
+  const exceptionLinks = ["/","/following","/bookmarks","/search"]
   return (
     <div className={`w-full ${router.pathname !== "/" ? phone ?  null:"pb-16" : null } `}>
       <>
