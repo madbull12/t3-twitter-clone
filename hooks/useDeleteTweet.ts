@@ -46,7 +46,7 @@ const useDeleteTweet = (tweet: TweetWithUser) => {
     if(router.pathname === "/[userId]/[username]") {
       utils.tweet.getUserTweets.cancel({ userId:userId as string,link:"" })
     }
-    const getUserTweets =  utils.tweet.getUserTweets.getData({ userId:userId as string,link:"" })
+    const getUserTweets =  utils.tweet.getInfiniteUserTweets.getData({ userId:userId as string,link:"",limit:10 })
     const getTweets = utils.tweet.getTweets.getData();
     const getInfiniteTweets = utils.tweet.getInfiniteTweets.getData();
     const getTweetReplies = utils.tweet.getTweetReplies.getData({
@@ -100,11 +100,15 @@ const useDeleteTweet = (tweet: TweetWithUser) => {
 
   //   console.log(isYourTweet);
   const handleDeleteTweet = async () => {
+
     toast.promise(deleteTweet({ tweetId: tweet.id }), {
       success: "Tweet deleted",
       loading: "Deleting tweet",
       error: (err) => "Oops.. something went wrong " + err,
     });
+    if(router.pathname === "/status/[statusId]") {
+      router.push("/")
+    }
   };
 
   return { handleDeleteTweet };

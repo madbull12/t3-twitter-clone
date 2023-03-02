@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   useEditProfileModal,
   usePhotoView,
@@ -24,6 +24,7 @@ import useFollow from "../../../../hooks/useFollow";
 import { toast } from "react-hot-toast";
 import { useCopyToClipboard } from "usehooks-ts";
 import { GoVerified } from "react-icons/go";
+import useScrollPosition from "../../../../hooks/useScrollPosition";
 
 const ProfilePage = () => {
   const router = useRouter();
@@ -55,31 +56,60 @@ const ProfilePage = () => {
   const { username, userId } = router.query;
   const [unfollowHovered, setUnfollowHovered] = useState<boolean>(false);
 
-  const { data: userTweets, isLoading: isLoadingUserTweets } =
-    trpc.tweet.getUserTweets.useQuery({
-      userId: userId as string,
-      link: _link,
-    },{
-      enabled: router.isReady
-    });
+  // const { data: userTweets, isLoading: isLoadingUserTweets } =
+  //   trpc.tweet.getUserTweets.useQuery({
+  //     userId: userId as string,
+  //     link: _link,
+  //   },{
+  //     enabled: router.isReady
+  //   });
+  const scrollPosition = useScrollPosition();
+
+  const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
+    trpc.tweet.getInfiniteUserTweets.useInfiniteQuery(
+      {
+        limit: 10,
+        link: _link,
+        userId: userId as string,
+      },
+      {
+        getNextPageParam: (lastPage) => lastPage?.nextCursor,
+      }
+    );
+
+  useEffect(() => {
+    if (scrollPosition > 90 && hasNextPage && !isFetching) {
+      fetchNextPage();
+    }
+  }, [scrollPosition, isFetching, hasNextPage, fetchNextPage]);
+
+  const userTweets = data?.pages.flatMap((page) => page?.tweets) ?? [];
   const { data: userProfile, isLoading: isLoadingUserProfile } =
-    trpc.user.getUserProfile.useQuery({
+    trpc.user.getUserProfile.useQuery(
+      {
+        userId: userId as string,
+      },
+      {
+        enabled: router.isReady,
+      }
+    );
+  const { data: userTweetsCount } = trpc.tweet.getUserTweets.useQuery(
+    {
       userId: userId as string,
-    },{
-      enabled: router.isReady
-    });
-  const { data: userTweetsCount } = trpc.tweet.getUserTweets.useQuery({
-    userId: userId as string,
-    link: "tweets&replies",
-  },{
-    enabled: router.isReady
-  });
-  const { data: alreadyFollowed } = trpc.follow.getSingleFollower.useQuery({
-    followingId: userId as string,
-    
-  },{
-    enabled: router.isReady
-  });
+      link: "tweets&replies",
+    },
+    {
+      enabled: router.isReady,
+    }
+  );
+  const { data: alreadyFollowed } = trpc.follow.getSingleFollower.useQuery(
+    {
+      followingId: userId as string,
+    },
+    {
+      enabled: router.isReady,
+    }
+  );
 
   const [value, copy] = useCopyToClipboard();
   const {
@@ -292,7 +322,7 @@ const ProfilePage = () => {
           </li>
         ))}
       </nav>
-      {!isLoadingUserTweets ? (
+      {!isLoading ? (
         <>
           {userTweets?.length !== 0 ? (
             <TweetList tweets={userTweets as TweetWithUser[]} />
@@ -305,6 +335,12 @@ const ProfilePage = () => {
       ) : (
         <Loader />
       )}
+
+      {isFetching && hasNextPage ? (
+        <div className="pb-16">
+          <Loader />
+        </div>
+      ) : null}
     </Body>
   );
 };

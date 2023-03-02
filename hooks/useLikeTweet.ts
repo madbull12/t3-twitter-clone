@@ -16,6 +16,7 @@ const useLikeTweet = (tweet: TweetWithUser) => {
       utils.tweet.searchTweets.invalidate({
         term: q as string,
         filtering: f as string,
+        limit:10
       });
     }
     utils.tweet.getTweets.invalidate();
@@ -27,9 +28,10 @@ const useLikeTweet = (tweet: TweetWithUser) => {
       utils.tweet.getTweetReplies.invalidate({ tweetId:statusId as string });
     }
     if (router.pathname === "/[userId]/[username]") {
-      utils.tweet.getUserTweets.invalidate({
+      utils.tweet.getInfiniteUserTweets.invalidate({
         userId: (userId as string) ?? "",
         link: "",
+        limit:10
       });
     }
 
@@ -65,7 +67,7 @@ const useLikeTweet = (tweet: TweetWithUser) => {
       utils.list.getListDetails.cancel({ listId:listId as string })
     }
 
-    const getUserTweets =  utils.tweet.getUserTweets.getData({ userId:userId as string,link:"" })
+    const getUserTweets =  utils.tweet.getInfiniteUserTweets.getData({ userId:userId as string,link:"",limit:10 })
     const getTweets = utils.tweet.getTweets.getData();
     const getInfiniteTweets = utils.tweet.getInfiniteTweets.getData();
     const getTweetReplies = utils.tweet.getTweetReplies.getData({
@@ -82,6 +84,7 @@ const useLikeTweet = (tweet: TweetWithUser) => {
     const searchTweets = utils.tweet.searchTweets.getData({
       term: q as string,
       filtering: f as string,
+      limit:10
     })
 
     if (getTweets) {

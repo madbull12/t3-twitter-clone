@@ -18,6 +18,7 @@ const useRetweet = (tweetId?: string) => {
       utils.tweet.searchTweets.invalidate({
         term: q as string,
         filtering: f as string,
+        limit:10
       });
     }
     utils.tweet.getTweets.invalidate();
@@ -69,7 +70,7 @@ const useRetweet = (tweetId?: string) => {
       utils.list.getListDetails.cancel({ listId:listId as string })
     }
 
-    const getUserTweets =  utils.tweet.getUserTweets.getData({ userId:userId as string,link:"" })
+    const getUserTweets =  utils.tweet.getInfiniteUserTweets.getData({ userId:userId as string,link:"",limit:10})
     const getTweets = utils.tweet.getTweets.getData();
     const getInfiniteTweets = utils.tweet.getInfiniteTweets.getData();
     const getTweetReplies = utils.tweet.getTweetReplies.getData({
@@ -86,6 +87,7 @@ const useRetweet = (tweetId?: string) => {
     const searchTweets = utils.tweet.searchTweets.getData({
       term: q as string,
       filtering: f as string,
+      limit:10
     })
 
     if (getTweets) {

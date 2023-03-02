@@ -9,47 +9,38 @@ import { useRouter } from "next/router";
 import { useMediaQuery } from "usehooks-ts";
 
 const TweetList = ({ tweets }: { tweets: TweetWithUser[] }) => {
-  const [itemCount, setItemCount] = useState(5);
   const router = useRouter();
   const phone = useMediaQuery("(min-width:768px)");
-  const exceptionLinks = ["/","/following","/bookmarks","/search"]
+
+
   return (
-    <div className={`w-full ${router.pathname !== "/" ? phone ?  null:"pb-16" : null } `}>
-      <>
-        {exceptionLinks.includes(router.pathname) ? (
-          <>
-            {tweets?.map((tweet) => (
-              <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
-            ))}
-          </>
-        ) : (
-          <>
-            {router.pathname === "/[userId]/[username]" ? (
-              <>
-                {tweets
-                  // ?.slice(0, itemCount)
-                  .filter((tweet) => tweet.isPinned === true)
-                  .map((tweet) => (
-                    <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
-                  ))}
-                {tweets
-                  ?.slice(0, itemCount)
-                  .filter((tweet) => tweet.isPinned === false)
-                  .map((tweet) => (
-                    <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
-                  ))}
-              </>
-            ) : (
-              <>
-                {tweets?.slice(0, itemCount).map((tweet) => (
+    <div
+      className={`w-full ${
+        router.pathname !== "/" ? (phone ? null : "pb-16") : null
+      } `}
+    >
+          {router.pathname === "/[userId]/[username]" ? (
+            <>
+              {tweets
+                // ?.slice(0, itemCount)
+                .filter((tweet) => tweet.isPinned === true)
+                .map((tweet) => (
                   <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
                 ))}
-              </>
-            )}
-          </>
-        )}
-      </>
-      {(!exceptionLinks.includes(router.pathname))? (
+              {tweets
+                .filter((tweet) => tweet.isPinned === false)
+                .map((tweet) => (
+                  <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
+                ))}
+            </>
+          ) : (
+            <>
+              {tweets?.map((tweet) => (
+                <TweetComponent tweet={tweet as TweetWithUser} key={v4()} />
+              ))}
+            </>
+          )}
+      {/* {(!exceptionLinks.includes(router.pathname))? (
         <>
           {tweets?.length > 5 ? (
             <div className="grid place-items-center">
@@ -66,7 +57,7 @@ const TweetList = ({ tweets }: { tweets: TweetWithUser[] }) => {
             </div>
           ) : null}
         </>
-      ) : null}
+      ) : null} */}
     </div>
   );
 };
