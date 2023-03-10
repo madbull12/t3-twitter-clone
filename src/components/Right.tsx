@@ -13,8 +13,10 @@ const Right = () => {
   const { status } = useSession();
 
   return (
-    <div className="absolute right-0 top-0 z-[888] min-h-[120vh] w-72 space-y-4 bg-base-100 py-3 pl-[3%] pr-4  xl:w-80 ">
-      {searchPathnames.includes(router.pathname) ? null : <Search placeholder="Search Twitter"/>}
+    <div className="absolute right-0 top-0  xl:w-80 z-[888] min-h-[120vh] w-72 space-y-4 bg-base-100 py-3 pl-[5%] pr-4   ">
+      {searchPathnames.includes(router.pathname) ? null : (
+        <Search placeholder="Search Twitter" />
+      )}
       {status === "authenticated" ? (
         <>
           {trendsPathnames.includes(router.pathname) ? null : <TrendList />}

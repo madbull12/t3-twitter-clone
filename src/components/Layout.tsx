@@ -94,7 +94,7 @@ const Layout = ({ children }: IProps) => {
   const phone = useMediaQuery("(min-width:768px)");
 
   return (
-    <main className="relative mx-auto  min-h-[200vh] max-w-screen-2xl  bg-base-100 text-neutral">
+    <main className="relative mx-auto  min-h-[200vh] max-w-screen-lg xl:max-w-screen-xl  bg-base-100 text-neutral">
       {!phone ? (
         <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
           {mobileDrawer ? (
