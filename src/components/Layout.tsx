@@ -94,12 +94,14 @@ const Layout = ({ children }: IProps) => {
   const phone = useMediaQuery("(min-width:768px)");
 
   return (
-    <main className="relative mx-auto  min-h-[200vh] max-w-screen-lg xl:max-w-screen-xl  bg-base-100 text-neutral">
+    <main>
       {!phone ? (
-        <AnimatePresence initial={false} mode="wait" onExitComplete={() => null}>
-          {mobileDrawer ? (
-              <MobileDrawer />
-          ) : null}
+        <AnimatePresence
+          initial={false}
+          mode="wait"
+          onExitComplete={() => null}
+        >
+          {mobileDrawer ? <MobileDrawer /> : null}
         </AnimatePresence>
       ) : null}
 
@@ -138,26 +140,27 @@ const Layout = ({ children }: IProps) => {
         {editListModal ? <EditListModal /> : null}
       </AnimatePresence>
 
-      {router.pathname !== "/auth/signin" ? (
-        <>
-          {phone ? (
-            <Sidebar />
-          ) : status === "authenticated" ? (
-            <MobileNav />
-          ) : null}
-        </>
-      ) : null}
-
-      {children}
-      {router.pathname !== "/auth/signin" ? (
-        <>{isNotTablet ? <Right /> : null}</>
-      ) : null}
-      {status === "authenticated" ? (
-        <>{!phone ? <MobileCreate /> : null}</>
-      ) : null}
-      {router.pathname !== "/auth/signin" ? (
-        <>{status === "unauthenticated" ? <Footer /> : null}</>
-      ) : null}
+      <div className="relative mx-auto  min-h-[200vh] max-w-screen-lg bg-base-100  text-neutral xl:max-w-screen-xl">
+        {router.pathname !== "/auth/signin" ? (
+          <>
+            {phone ? (
+              <Sidebar />
+            ) : status === "authenticated" ? (
+              <MobileNav />
+            ) : null}
+          </>
+        ) : null}
+        {children}
+        {router.pathname !== "/auth/signin" ? (
+          <>{isNotTablet ? <Right /> : null}</>
+        ) : null}
+        {status === "authenticated" ? (
+          <>{!phone ? <MobileCreate /> : null}</>
+        ) : null}
+        {router.pathname !== "/auth/signin" ? (
+          <>{status === "unauthenticated" ? <Footer /> : null}</>
+        ) : null}
+      </div>
     </main>
   );
 };

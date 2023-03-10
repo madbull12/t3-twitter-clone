@@ -74,7 +74,7 @@ const PeopleComponent = ({ user }: IProps) => {
               <button
                 disabled={unfollowingUser || followingUser}
                 onClick={handleFollow}
-                className="ml-auto rounded-full bg-primary px-4 py-2 font-semibold text-white "
+                className="ml-auto rounded-full bg-primary py-1 px-2 md:px-4 md:py-2 font-semibold text-white "
               >
                 Follow
               </button>
