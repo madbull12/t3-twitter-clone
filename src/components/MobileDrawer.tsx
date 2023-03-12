@@ -73,7 +73,7 @@ const MobileDrawer = () => {
         variants={slideIn}
         initial="hidden"
         animate="visible"
-        exit="hidden"
+        exit="hidden "
         ref={drawerRef}
         className={`fixed top-0 left-0 space-y-4 p-4 transition-transform duration-150 ease-in-out ${
           drawer ? "translate-x-0" : "-translate-x-full"

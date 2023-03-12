@@ -33,14 +33,14 @@ const SignInPage = () => {
         <div className={`px-2 py-6 ${tablet ? null : "flex flex-col items-center"}`}>
           <BsTwitter className="text-5xl text-primary" />
           {tablet ? (
-          <h1 className="mt-12 text-6xl font-black">Happening now </h1>
+          <h1 className="mt-12 text-6xl font-black">See what's happening now </h1>
 
           ):(
           <h1 className="mt-12 max-w-xs text-2xl sm:text-4xl font-black">See what's happening in the world right now </h1>
             
           )}
           <p className="mt-12 text-2xl sm:text-4xl font-black">Join Twitter today.</p>
-          <div className="mt-8 space-y-4">
+          <div className="mt-8 space-y-4 flex flex-col items-center">
             <button
               onClick={() =>
                 signIn("google", {
@@ -63,7 +63,7 @@ const SignInPage = () => {
               <BsTwitter className="text-primary" />
               <p>Sign in with Twitter</p>
             </button>
-            <p className="w-3/4 text-center text-sm text-gray-500">
+            <p className="w-3/4 text-center md:text-start text-sm text-gray-500">
               By signing up, you agree to the Terms of Service and Privacy
               Policy, including Cookie Use.
             </p>

@@ -23,6 +23,8 @@ const ProfileDropdown = ({ userId }: { userId: string; tabIndex: number }) => {
     followingId: userId as string,
   });
   const { data: session,status } = useSession();
+
+  if(status==="unauthenticated") return null
   return (
     <div
       className="dropdown-content w-72 space-y-4 rounded-xl bg-base-100 p-4 shadow-xl"
