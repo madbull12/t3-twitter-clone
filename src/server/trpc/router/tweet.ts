@@ -1,6 +1,15 @@
 import { z } from "zod";
 
 import { router, publicProcedure } from "../trpc";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+import { TRPCError } from "@trpc/server";
+
+const rateLimit = new Ratelimit({
+  redis:Redis.fromEnv(),
+  limiter:Ratelimit.slidingWindow(3,"1 m"),
+  analytics:true
+})
 
 export const tweetRouter = router({
   createTweet: publicProcedure
@@ -11,15 +20,18 @@ export const tweetRouter = router({
         hashtags: z.string().array().nullable(),
       })
     )
-    .mutation(({ input, ctx }) => {
+    .mutation(async({ input, ctx }) => {
       const userId = ctx?.session?.user?.id;
+
+      const { success } = await rateLimit.limit(userId as string);
+      if(!success) throw new TRPCError({ code:"TOO_MANY_REQUESTS",message:"Please wait for a minute before tweeting again" })
       if (!ctx.session) {
         throw new Error(
           "You have to be logged in in order to perform this action!"
         );
       }
 
-      return ctx.prisma.tweet.create({
+      return await ctx.prisma.tweet.create({
         data: {
           text: input?.text,
           image: input?.mediaUrl,
