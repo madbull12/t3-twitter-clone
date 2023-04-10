@@ -20,7 +20,7 @@ const SignInPage = () => {
     <main>
       <div className={`${!tablet ? "items-center justify-center" : null} flex min-h-screen  w-full gap-x-8 overflow-y-hidden text-neutral `}>
         {tablet ? (
-          <div className="relative flex min-h-screen w-1/2 items-center justify-center">
+          <div className="relative flex min-h-screen w-2/3 items-center justify-center">
             <Image
               src={"/twitter-banner.png"}
               objectFit="cover"
