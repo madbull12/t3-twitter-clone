@@ -153,7 +153,7 @@ export const tweetRouter = router({
     .mutation(async({ input, ctx }) => {
       const userId = ctx?.session?.user?.id;
       const { success } = await rateLimit.limit(userId as string);
-      if(!success) throw new TRPCError({ code:"TOO_MANY_REQUESTS",message:"Please wait for a minute before tweeting again" })
+      if(!success) throw new TRPCError({ code:"TOO_MANY_REQUESTS",message:"Please wait for a while before tweeting again" })
       if (!ctx.session) {
         throw new Error(
           "You have to be logged in in order to perform this action!"
