@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 
 export const notificationRouter = router({
@@ -34,7 +34,7 @@ export const notificationRouter = router({
 
     }),
 
-    deleteNotification:publicProcedure.input(z.object({ notificationId:z.string() })).mutation(({ ctx,input })=>{
+    deleteNotification:protectedProcedure.input(z.object({ notificationId:z.string() })).mutation(({ ctx,input })=>{
         return ctx.prisma.notification.delete({
             where:{
                 id:input?.notificationId

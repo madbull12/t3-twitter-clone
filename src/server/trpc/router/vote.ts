@@ -1,11 +1,9 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 export const voteRouter = router({
-    voteOption:publicProcedure.input(z.object({ userId:z.string(),optionId:z.string() })).mutation(({ ctx,input })=>{
-        if(!ctx.session) {
-            throw new Error("You have to be logged in first ")
-        }
+    voteOption:protectedProcedure.input(z.object({ userId:z.string(),optionId:z.string() })).mutation(({ ctx,input })=>{
+      
 
         return ctx.prisma.option.update({
             where:{

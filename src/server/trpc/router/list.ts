@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 export const listRouter = router({
   getUserLists: publicProcedure
@@ -20,7 +20,7 @@ export const listRouter = router({
       });
     }),
 
-  createList: publicProcedure
+  createList: protectedProcedure
     .input(
       z.object({
         name: z.string().min(4, "Name should have at least 4 characters"),
@@ -51,7 +51,7 @@ export const listRouter = router({
       });
     }),
 
-  editList: publicProcedure
+  editList: protectedProcedure
     .input(
       z.object({
         name: z.string().optional(),
@@ -84,7 +84,7 @@ export const listRouter = router({
         },
       });
     }),
-  deleteList: publicProcedure
+  deleteList: protectedProcedure
     .input(
       z.object({
         listId: z.string(),
@@ -219,14 +219,10 @@ export const listRouter = router({
       });
     }),
 
-  addMember: publicProcedure
+  addMember:protectedProcedure
     .input(z.object({ listId: z.string(), userId: z.string() }))
     .mutation(({ ctx, input }) => {
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
+ 
       const userId = ctx.session?.user?.id;
 
       return ctx.prisma.list.update({
@@ -246,14 +242,10 @@ export const listRouter = router({
       });
     }),
 
-  removeMember: publicProcedure
+  removeMember: protectedProcedure
     .input(z.object({ listId: z.string(), userId: z.string() }))
     .mutation(({ ctx, input }) => {
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
+
       const userId = ctx.session?.user?.id;
 
       return ctx.prisma.list.update({

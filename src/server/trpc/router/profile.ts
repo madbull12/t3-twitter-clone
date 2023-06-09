@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { router, publicProcedure } from "../trpc";
+import { router, publicProcedure,protectedProcedure } from "../trpc";
 
 export const profileRouter = router({
-  upsertProfile: publicProcedure
+  upsertProfile: protectedProcedure
   
     .input(
       z.object({

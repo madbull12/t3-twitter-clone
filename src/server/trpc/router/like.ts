@@ -1,13 +1,11 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 export const likeRouter = router({
-    likeTweet:publicProcedure
+    likeTweet:protectedProcedure
         .input(z.object({ tweetId:z.string() }))
         .mutation(({ ctx,input })=>{
-            if(!ctx.session) {
-                throw new Error("You have to be logged in")
-            }
+     
             const userId = ctx.session?.user?.id;
 
             return ctx.prisma.like.create({
@@ -27,7 +25,7 @@ export const likeRouter = router({
 
 
     }),
-    unlikeTweet:publicProcedure
+    unlikeTweet:protectedProcedure
         .input(z.object({ tweetId:z.string() }))
         .mutation(({ ctx,input })=>{
             if(!ctx.session) {

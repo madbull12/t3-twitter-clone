@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-import { router, publicProcedure } from "../trpc";
+import { router, publicProcedure, protectedProcedure } from "../trpc";
 
 export const followRouter = router({
-  followUser: publicProcedure
+  followUser: protectedProcedure
     .input(z.object({ followingId: z.string() }))
     .mutation(({ ctx, input }) => {
       if (!ctx.session) {
@@ -26,7 +26,7 @@ export const followRouter = router({
         },
       });
     }),
-  unfollowUser: publicProcedure
+  unfollowUser: protectedProcedure
     .input(z.object({ followingId: z.string() }))
     .mutation(({ ctx, input }) => {
       if (!ctx.session) {
@@ -185,7 +185,7 @@ export const followRouter = router({
         nextCursor,
       };
     }),
-  followList: publicProcedure
+  followList: protectedProcedure
     .input(z.object({ userId: z.string(), listId: z.string() }))
     .mutation(({ ctx, input }) => {
       return ctx.prisma.list.update({
@@ -201,7 +201,7 @@ export const followRouter = router({
         },
       });
     }),
-  unfollowList: publicProcedure
+  unfollowList: protectedProcedure
     .input(z.object({ userId: z.string(), listId: z.string() }))
     .mutation(({ ctx, input }) => {
       return ctx.prisma.list.update({

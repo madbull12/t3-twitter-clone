@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 export const bookmarkRouter = router({
   userAlreadyBookmark: publicProcedure
@@ -103,15 +103,13 @@ export const bookmarkRouter = router({
         nextCursor,
       };
     }),
-  createBookmark: publicProcedure
-    .input(z.object({ tweetId: z.string() }))
+  createBookmark: protectedProcedure
+    .input(z.object({ tweetId: z.string().min(1,{
+      message:"No tweet"
+    }) }))
     .mutation(({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
+
       return ctx.prisma.bookmark.create({
         data: {
           user: {
@@ -127,15 +125,11 @@ export const bookmarkRouter = router({
         },
       });
     }),
-  deleteBookmark: publicProcedure
+  deleteBookmark: protectedProcedure
     .input(z.object({ tweetId: z.string() }))
     .mutation(({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
+
       return ctx.prisma.bookmark.delete({
         where: {
           userId_tweetId: {

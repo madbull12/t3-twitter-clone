@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { router, publicProcedure } from "../trpc";
+import { router, publicProcedure, protectedProcedure } from "../trpc";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { TRPCError } from "@trpc/server";
@@ -12,7 +12,7 @@ const rateLimit = new Ratelimit({
 })
 
 export const tweetRouter = router({
-  createTweet: publicProcedure
+  createTweet: protectedProcedure
     .input(
       z.object({
         text: z.string().min(1,{
@@ -26,12 +26,12 @@ export const tweetRouter = router({
       const userId = ctx?.session?.user?.id;
 
       const { success } = await rateLimit.limit(userId as string);
-      if(!success) throw new TRPCError({ code:"TOO_MANY_REQUESTS",message:"Please wait for a while before tweeting again" })
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
+      if(!success) throw new TRPCError({  code:"TOO_MANY_REQUESTS",message:"Please wait for a while before tweeting again" })
+      // if (!ctx.session) {
+      //   throw new Error(
+      //     "You have to be logged in in order to perform this action!"
+      //   );
+      // }
 
       return await ctx.prisma.tweet.create({
         data: {
@@ -56,21 +56,23 @@ export const tweetRouter = router({
         },
       });
     }),
-  createPoll: publicProcedure
+  createPoll: protectedProcedure
     .input(
       z.object({
-        text: z.string(),
+        text: z.string().min(1,{
+          message:"Text required"
+        }),
         hashtags: z.string().array().nullable(),
-        options: z.string().array(),
+        options: z.string().array().nonempty({message:"Options can't be empty"}),
       })
     )
     .mutation(({ ctx, input }) => {
       const userId = ctx?.session?.user?.id;
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
+      // if (!ctx.session) {
+      //   throw new Error(
+      //     "You have to be logged in in order to perform this action!"
+      //   );
+      // }
       return ctx.prisma.tweet.create({
         data: {
           text: input?.text,
@@ -108,7 +110,7 @@ export const tweetRouter = router({
         },
       });
     }),
-  deleteTweet: publicProcedure
+  deleteTweet: protectedProcedure
 
     .input(
       z.object({
@@ -118,11 +120,11 @@ export const tweetRouter = router({
     .mutation(({ input, ctx }) => {
       const userId = ctx.session?.user?.id;
      
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
+      // if (!ctx.session) {
+      //   throw new Error(
+      //     "You have to be logged in in order to perform this action!"
+      //   );
+      // }
 
       // if(userId !== input?.userId) {
       //   throw new Error(
@@ -139,7 +141,7 @@ export const tweetRouter = router({
         },
       });
     }),
-  createReply: publicProcedure
+  createReply: protectedProcedure
     .input(
       z.object({
         text: z.string().min(1,{
@@ -154,11 +156,11 @@ export const tweetRouter = router({
       const userId = ctx?.session?.user?.id;
       const { success } = await rateLimit.limit(userId as string);
       if(!success) throw new TRPCError({ code:"TOO_MANY_REQUESTS",message:"Please wait for a while before tweeting again" })
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
+      // if (!ctx.session) {
+      //   throw new Error(
+      //     "You have to be logged in in order to perform this action!"
+      //   );
+      // }
 
       return ctx.prisma.tweet.create({
         data: {
@@ -189,7 +191,7 @@ export const tweetRouter = router({
       });
     }),
 
-  createRetweet: publicProcedure
+  createRetweet: protectedProcedure
     .input(
       z.object({
         text: z.string().nullable(),
@@ -200,11 +202,11 @@ export const tweetRouter = router({
     .mutation(({ input, ctx }) => {
       const userId = ctx?.session?.user?.id;
 
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
+      // if (!ctx.session) {
+      //   throw new Error(
+      //     "You have to be logged in in order to perform this action!"
+      //   );
+      // }
 
       return ctx.prisma.tweet.create({
         data: {
@@ -224,7 +226,7 @@ export const tweetRouter = router({
         },
       });
     }),
-  undoRetweet: publicProcedure
+  undoRetweet: protectedProcedure
     .input(
       z.object({
         tweetId: z.string(),
@@ -232,11 +234,11 @@ export const tweetRouter = router({
     )
     .mutation(({ input, ctx }) => {
       const userId = ctx?.session?.user?.id;
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
+      // if (!ctx.session) {
+      //   throw new Error(
+      //     "You have to be logged in in order to perform this action!"
+      //   );
+      // }
       return ctx.prisma.tweet.delete({
         where: {
           retweetId_userId: {
@@ -472,12 +474,12 @@ export const tweetRouter = router({
       };
     }),
 
-  pinTweet: publicProcedure
+  pinTweet: protectedProcedure
     .input(z.object({ tweetId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session) {
-        throw new Error("You have to be logged in first");
-      }
+      // if (!ctx.session) {
+      //   throw new Error("You have to be logged in first");
+      // }
       const userId = ctx?.session?.user?.id;
       await ctx.prisma.tweet.updateMany({
         where: {
@@ -501,13 +503,11 @@ export const tweetRouter = router({
       });
     }),
 
-  unpinTweet: publicProcedure
+  unpinTweet: protectedProcedure
     .input(z.object({ tweetId: z.string() }))
     .mutation(({ ctx, input }) => {
       const userId = ctx?.session?.user?.id;
-      if (!ctx.session) {
-        throw new Error("You have to be logged in first");
-      }
+
       return ctx.prisma.tweet.update({
         where: {
           id_userId: {
