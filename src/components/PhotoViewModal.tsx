@@ -1,11 +1,9 @@
 import Image from "next/legacy/image";
 import { useRouter } from "next/router";
 import React, { useRef } from "react";
-import { BsTwitter } from "react-icons/bs";
-import { IoClose } from "react-icons/io5";
+
 import { useOnClickOutside } from "usehooks-ts";
 import { usePhotoView, usePhotoViewModal } from "../../lib/zustand";
-import Backdrop from "./Backdrop";
 import Modal from "./Modal";
 
 const PhotoViewModal = () => {
@@ -17,13 +15,12 @@ const PhotoViewModal = () => {
     setModal(false);
   });
 
-  const router = useRouter()
   return (
       <Modal>
         <div
           ref={modalRef}
-          className={`relative mx-auto ${
-            size === "medium" ? "h-[200px]  w-[200px]" : "h-[400px] w-[700px]"
+          className={`relative mx-auto flex items-center  ${
+            size === "medium" ? "h-[200px]  w-[200px]" : "w-3/4 h-[400px]"
           } `}
         >
           <Image

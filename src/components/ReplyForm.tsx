@@ -157,7 +157,7 @@ const ReplyForm = ({ tweet }: { tweet: TweetWithUser }) => {
       <div className="mt-4 flex items-center justify-between gap-x-2  ">
         <MediaTools onSelectFile={onSelectFile} onEmojiSelect={onEmojiSelect} />
         <div className="flex-[0.5]">
-          <Button text="Reply" />
+          <Button text="Reply" disabled={text === ""} />
         </div>
       </div>
     </form>

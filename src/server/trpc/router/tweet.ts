@@ -7,7 +7,7 @@ import { TRPCError } from "@trpc/server";
 
 const rateLimit = new Ratelimit({
   redis:Redis.fromEnv(),
-  limiter:Ratelimit.slidingWindow(3,"1 m"),
+  limiter:Ratelimit.slidingWindow(3,"1 h"),
   analytics:true
 })
 
@@ -15,7 +15,9 @@ export const tweetRouter = router({
   createTweet: publicProcedure
     .input(
       z.object({
-        text: z.string(),
+        text: z.string().min(1,{
+          message:"Text required"
+        }),
         mediaUrl: z.string().nullable(),
         hashtags: z.string().array().nullable(),
       })
@@ -24,7 +26,7 @@ export const tweetRouter = router({
       const userId = ctx?.session?.user?.id;
 
       const { success } = await rateLimit.limit(userId as string);
-      if(!success) throw new TRPCError({ code:"TOO_MANY_REQUESTS",message:"Please wait for a minute before tweeting again" })
+      if(!success) throw new TRPCError({ code:"TOO_MANY_REQUESTS",message:"Please wait for a while before tweeting again" })
       if (!ctx.session) {
         throw new Error(
           "You have to be logged in in order to perform this action!"
@@ -115,6 +117,7 @@ export const tweetRouter = router({
     )
     .mutation(({ input, ctx }) => {
       const userId = ctx.session?.user?.id;
+     
       if (!ctx.session) {
         throw new Error(
           "You have to be logged in in order to perform this action!"
@@ -139,15 +142,18 @@ export const tweetRouter = router({
   createReply: publicProcedure
     .input(
       z.object({
-        text: z.string(),
+        text: z.string().min(1,{
+          message:"Text required"
+        }),
         mediaUrl: z.string().nullable(),
         tweetId: z.string().nullable(),
         hashtags: z.string().array().nullable(),
       })
     )
-    .mutation(({ input, ctx }) => {
+    .mutation(async({ input, ctx }) => {
       const userId = ctx?.session?.user?.id;
-
+      const { success } = await rateLimit.limit(userId as string);
+      if(!success) throw new TRPCError({ code:"TOO_MANY_REQUESTS",message:"Please wait for a minute before tweeting again" })
       if (!ctx.session) {
         throw new Error(
           "You have to be logged in in order to perform this action!"

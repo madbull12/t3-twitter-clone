@@ -31,7 +31,7 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
           initial="hidden"
           animate="visible"
           exit="exit"
-          // className="mx-auto h-[500px] w-3/4 overflow-y-scroll rounded-2xl  bg-base-100 sm:w-1/2"
+          className="w-full "
         >
           {children}
         </motion.div>
