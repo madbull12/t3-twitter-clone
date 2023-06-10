@@ -1,10 +1,16 @@
 import { z } from "zod";
 import { protectedProcedure, publicProcedure, router } from "../trpc";
+import { TRPCError } from "@trpc/server";
+import { NextResponse } from "next/server";
 
 export const listRouter = router({
-  getUserLists: publicProcedure
+  getUserLists: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .query(({ ctx, input }) => {
+      const userId = ctx?.session?.user?.id;
+      const isOwner = userId === input.userId;
+
+
       return ctx.prisma.list.findMany({
         where: {
           creatorId: input?.userId,
@@ -91,11 +97,6 @@ export const listRouter = router({
       })
     )
     .mutation(({ ctx, input }) => {
-      if (!ctx.session) {
-        throw new Error(
-          "You have to be logged in in order to perform this action!"
-        );
-      }
       const userId = ctx.session.user?.id;
       return ctx.prisma.list.delete({
         where: {
@@ -107,10 +108,13 @@ export const listRouter = router({
       });
     }),
 
-  getListDetails: publicProcedure
+  getListDetails: protectedProcedure
     .input(z.object({ listId: z.string() }))
-    .query(({ ctx, input }) => {
-      return ctx.prisma.list.findUnique({
+    .query(async ({ ctx, input }) => {
+      const userId = ctx.session.user.id;
+    
+
+      return await ctx.prisma.list.findUnique({
         where: {
           id: input?.listId,
         },
@@ -120,6 +124,7 @@ export const listRouter = router({
               profile: true,
             },
           },
+
           followers: {
             include: {
               profile: true,
@@ -219,10 +224,9 @@ export const listRouter = router({
       });
     }),
 
-  addMember:protectedProcedure
+  addMember: protectedProcedure
     .input(z.object({ listId: z.string(), userId: z.string() }))
     .mutation(({ ctx, input }) => {
- 
       const userId = ctx.session?.user?.id;
 
       return ctx.prisma.list.update({
@@ -245,7 +249,6 @@ export const listRouter = router({
   removeMember: protectedProcedure
     .input(z.object({ listId: z.string(), userId: z.string() }))
     .mutation(({ ctx, input }) => {
-
       const userId = ctx.session?.user?.id;
 
       return ctx.prisma.list.update({
@@ -283,6 +286,7 @@ export const listRouter = router({
   getTweetsByListMembers: publicProcedure
     .input(z.object({ listId: z.string() }))
     .query(async ({ ctx, input }) => {
+      const userId = ctx?.session?.user?.id;
       const listMembers = await ctx.prisma.list.findUnique({
         where: {
           id: input?.listId,
@@ -297,7 +301,26 @@ export const listRouter = router({
       });
 
       // console.log(listMembers?.members?.map((member)=>member.id))
+      const list = await ctx.prisma.list.findUnique({
+        where:{
+          id:input?.listId
+        },
+        select:{
+          creatorId:true,
+          isPrivate:true,
+          followers:true
+        }
+      });
+      console.log(list?.creatorId);
+      const isOwner = list?.creatorId === userId;
+
       const memberIds = listMembers?.members?.map((member) => member.id);
+      const isFollowed = list?.followers.find((follower)=>follower.id === userId);
+
+      if(!isOwner && list?.isPrivate && !isFollowed) {
+        return null
+      }
+
       return ctx.prisma.tweet.findMany({
         where: {
           userId: {

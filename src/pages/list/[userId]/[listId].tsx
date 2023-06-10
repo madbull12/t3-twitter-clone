@@ -14,6 +14,7 @@ import Loader from "../../../components/Loader";
 import NavFeed from "../../../components/NavFeed";
 import TweetList from "../../../components/TweetList";
 import { trpc } from "../../../utils/trpc";
+import { AiFillLock } from "react-icons/ai";
 
 const ListDetails = () => {
   const router = useRouter();
@@ -21,23 +22,11 @@ const ListDetails = () => {
   const { listId, userId } = router.query;
   const { setModal } = useEditListModal();
   const [value, copy] = useCopyToClipboard();
-  const utils = trpc.useContext()
+  const utils = trpc.useContext();
   const [followed, setFollowed] = useState<boolean>();
 
-  const { mutateAsync: followList,isLoading:followLoading } = trpc.follow.followList.useMutation({
-    onMutate: () => {
-      utils.list.getListDetails.invalidate({ listId: listId as string });
-      const optimisticUpdate = utils.list.getListDetails.getData();
-      if (optimisticUpdate) {
-        utils.list.getListDetails.setData(optimisticUpdate);
-      }
-    },
-    onSettled: () => {
-      utils.list.getListDetails.invalidate({ listId: listId as string });
-    },
-  });
-  const { mutateAsync: unfollowList,isLoading:unfollowLoading } = trpc.follow.unfollowList.useMutation(
-    {
+  const { mutateAsync: followList, isLoading: followLoading } =
+    trpc.follow.followList.useMutation({
       onMutate: () => {
         utils.list.getListDetails.invalidate({ listId: listId as string });
         const optimisticUpdate = utils.list.getListDetails.getData();
@@ -48,8 +37,20 @@ const ListDetails = () => {
       onSettled: () => {
         utils.list.getListDetails.invalidate({ listId: listId as string });
       },
-    }
-  );
+    });
+  const { mutateAsync: unfollowList, isLoading: unfollowLoading } =
+    trpc.follow.unfollowList.useMutation({
+      onMutate: () => {
+        utils.list.getListDetails.invalidate({ listId: listId as string });
+        const optimisticUpdate = utils.list.getListDetails.getData();
+        if (optimisticUpdate) {
+          utils.list.getListDetails.setData(optimisticUpdate);
+        }
+      },
+      onSettled: () => {
+        utils.list.getListDetails.invalidate({ listId: listId as string });
+      },
+    });
 
   const handleFollowList = async () => {
     setFollowed(true);
@@ -94,7 +95,7 @@ const ListDetails = () => {
   return (
     <Body>
       <NavFeed
-        title={listDetails?.name ?? ""}
+        title={`${listDetails?.name}` ?? ""}
         subtitle={`${
           listDetails?.creator.handle ? `@${listDetails?.creator.handle}` : ""
         }`}
@@ -145,7 +146,11 @@ const ListDetails = () => {
         ) : null}
       </div>
       <div className="my-4 flex flex-col items-center gap-y-4">
-        <p className="font-bold">{listDetails?.name}</p>
+        <div className="flex items-center gap-x-2">
+          <p className="font-bold">{listDetails?.name}</p>
+          {listDetails?.isPrivate ? <AiFillLock /> : null}
+        </div>
+
         {listDetails?.description ? <p>{listDetails?.description}</p> : null}
         <div className="flex items-center gap-x-1 text-xs xs:text-sm">
           <Avatar
@@ -181,7 +186,7 @@ const ListDetails = () => {
               <button
                 onClick={handleUnfollowList}
                 disabled={unfollowLoading || followLoading}
-                className=" border-red-600 border rounded-full px-4 py-2 font-semibold "
+                className=" rounded-full border border-red-600 px-4 py-2 font-semibold "
               >
                 Unfollow
               </button>
@@ -197,7 +202,13 @@ const ListDetails = () => {
           </>
         )}
       </div>
-      <TweetList tweets={tweetsByList as TweetWithUser[]} />
+      {tweetsByList ? (
+        <TweetList tweets={tweetsByList as TweetWithUser[]} />
+      ) : (
+        <div>
+          Nothing to see here.
+        </div>
+      )}
     </Body>
   );
 };
