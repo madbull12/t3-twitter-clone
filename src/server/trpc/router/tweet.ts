@@ -63,7 +63,7 @@ export const tweetRouter = router({
           message:"Text required"
         }),
         hashtags: z.string().array().nullable(),
-        options: z.string().array().nonempty({message:"Options can't be empty"}),
+        options: z.string().array(),
       })
     )
     .mutation(({ ctx, input }) => {
