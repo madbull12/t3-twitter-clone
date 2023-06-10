@@ -10,7 +10,6 @@ export const listRouter = router({
       const userId = ctx?.session?.user?.id;
       const isOwner = userId === input.userId;
 
-
       return ctx.prisma.list.findMany({
         where: {
           creatorId: input?.userId,
@@ -22,6 +21,7 @@ export const listRouter = router({
               profile: true,
             },
           },
+          members:true
         },
       });
     }),
@@ -112,7 +112,6 @@ export const listRouter = router({
     .input(z.object({ listId: z.string() }))
     .query(async ({ ctx, input }) => {
       const userId = ctx.session.user.id;
-    
 
       return await ctx.prisma.list.findUnique({
         where: {
@@ -302,23 +301,28 @@ export const listRouter = router({
 
       // console.log(listMembers?.members?.map((member)=>member.id))
       const list = await ctx.prisma.list.findUnique({
-        where:{
-          id:input?.listId
+        where: {
+          id: input?.listId,
         },
-        select:{
-          creatorId:true,
-          isPrivate:true,
-          followers:true
-        }
+        select: {
+          creatorId: true,
+          isPrivate: true,
+          followers: true,
+        },
       });
       console.log(list?.creatorId);
       const isOwner = list?.creatorId === userId;
 
       const memberIds = listMembers?.members?.map((member) => member.id);
-      const isFollowed = list?.followers.find((follower)=>follower.id === userId);
+      const isFollowed = list?.followers.find(
+        (follower) => follower.id === userId
+      );
 
-      if(!isOwner && list?.isPrivate && !isFollowed) {
-        return null
+      if (!isOwner && list?.isPrivate && !isFollowed) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "To see the list, you have to follow first",
+        });
       }
 
       return ctx.prisma.tweet.findMany({

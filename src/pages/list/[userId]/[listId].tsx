@@ -88,10 +88,11 @@ const ListDetails = () => {
     (follower) => follower.id === session?.user?.id
   );
 
-  const { data: tweetsByList } = trpc.list.getTweetsByListMembers.useQuery({
-    listId: listId as string,
-  });
-  if (isLoading) return <Loader />;
+  const { data: tweetsByList, error,isLoading:isLoadingTweets } =
+    trpc.list.getTweetsByListMembers.useQuery({
+      listId: listId as string,
+    });
+  if (isLoadingTweets || isLoading) return <Loader />;
   return (
     <Body>
       <NavFeed
@@ -202,12 +203,22 @@ const ListDetails = () => {
           </>
         )}
       </div>
-      {tweetsByList ? (
-        <TweetList tweets={tweetsByList as TweetWithUser[]} />
+      {error ? (
+        <>
+          <div className="px-4">
+            <p className="text-base">{error.message}</p>
+          </div>
+        </>
       ) : (
-        <div>
-          Nothing to see here.
-        </div>
+        <>
+          {tweetsByList?.length !== 0 ? (
+            <TweetList tweets={tweetsByList as TweetWithUser[]} />
+          ) : (
+            <div className="px-4">
+              <p className="text-base">Nothing to see here</p>
+            </div>
+          )}
+        </>
       )}
     </Body>
   );
